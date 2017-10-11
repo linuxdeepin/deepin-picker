@@ -90,7 +90,8 @@ void Picker::updateScreenshot()
         painter.setRenderHint(QPainter::Antialiasing, true);
         
         QPainterPath circlePath;
-        painter.setClipRegion(QRegion(0, 0, width, height, QRegion::Ellipse));
+        circlePath.addEllipse(0, 0, width, height);
+        painter.setClipPath(circlePath);
         painter.drawPixmap(0, 0, screenshotPixmap);
 
         // Draw circle bound.
