@@ -33,6 +33,9 @@ private:
     int width;
     int height;
     
+    int windowWidth;
+    int windowHeight;
+    
     int screenshotWidth;
     int screenshotHeight;
     
@@ -44,7 +47,6 @@ private:
     
     int blockWidth;
     int blockHeight;
-
     QTimer *updateScreenshotTimer;
     
     bool displayCursorDot;

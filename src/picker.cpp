@@ -25,6 +25,9 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     // Init attributes.
     width = 220;
     height = 220;
+    
+    windowWidth = 236;
+    windowHeight = 236;
 
     screenshotWidth = 11;
     screenshotHeight = 11;
@@ -75,7 +78,10 @@ void Picker::updateScreenshot()
         cursorX = QCursor::pos().x();
         cursorY = QCursor::pos().y();
         
-        QPixmap cursorPixmap(Utils::getQrcPath("transparent.png"));
+        int offsetX = (windowWidth - width) / 2;
+        int offsetY = (windowHeight - height) / 2;
+        
+        QPixmap cursorPixmap(Utils::getQrcPath("shadow.png"));
 
         // Get image under cursor.
         screenshotPixmap = QApplication::primaryScreen()->grabWindow(
@@ -91,9 +97,9 @@ void Picker::updateScreenshot()
         
         painter.save();
         QPainterPath circlePath;
-        circlePath.addEllipse(2, 2, width - 4, height - 4);
+        circlePath.addEllipse(2 + offsetX, 2 + offsetY, width - 4, height - 4);
         painter.setClipPath(circlePath);
-        painter.drawPixmap(1, 1, screenshotPixmap);
+        painter.drawPixmap(1 + offsetX, 1 + offsetY, screenshotPixmap);
         painter.restore();
 
         // Draw circle bound.
@@ -102,24 +108,24 @@ void Picker::updateScreenshot()
         outsidePen.setWidth(outsidePenWidth);
         painter.setOpacity(0.05);
         painter.setPen(outsidePen);
-        painter.drawEllipse(1, 1, width - 2, height - 2);
+        painter.drawEllipse(1 + offsetX, 1 + offsetY, width - 2, height - 2);
 
         int insidePenWidth = 4;
         QPen insidePen("#ffffff");
         insidePen.setWidth(insidePenWidth);
         painter.setOpacity(0.5);
         painter.setPen(insidePen);
-        painter.drawEllipse(3, 3, width - 6, height - 6);
+        painter.drawEllipse(3 + offsetX, 3 + offsetY, width - 6, height - 6);
         
         // Draw focus block.
         painter.setOpacity(1);
         painter.setRenderHint(QPainter::Antialiasing, false);
         painter.setOpacity(0.2);
         painter.setPen("#000000");
-        painter.drawRect(QRect(width / 2 - blockWidth / 2, height / 2 - blockHeight / 2, blockWidth, blockHeight));
+        painter.drawRect(QRect(width / 2 - blockWidth / 2 + offsetX, height / 2 - blockHeight / 2 + offsetY, blockWidth, blockHeight));
         painter.setOpacity(1);
         painter.setPen("#ffffff");
-        painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1, height / 2 - blockHeight / 2 + 1, blockWidth - 2, blockHeight - 2));
+        painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1 + offsetX, height / 2 - blockHeight / 2 + 1 + offsetY, blockWidth - 2, blockHeight - 2));
 
         // Set screenshot as cursor.
         QApplication::setOverrideCursor(QCursor(cursorPixmap));
