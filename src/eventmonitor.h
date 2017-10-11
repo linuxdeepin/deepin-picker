@@ -47,19 +47,19 @@ public:
     EventMonitor(QObject *parent = 0);
     
 signals:
-    void leftButtonPress(int x, int y);
-    void rightButtonPress(int x, int y);
-    void mouseDrag(int x, int y);
-    void mouseMove(int x, int y);
-    void leftButtonRelease(int x, int y);
-    void rightButtonRelease(int x, int y);
     void keyPress(int code);
     void keyRelease(int code);
+    void leftButtonPress(int x, int y);
+    void leftButtonRelease(int x, int y);
+    void mouseDrag(int x, int y);
+    void mouseMove(int x, int y);
     void pressEsc();
+    void rightButtonPress(int x, int y);
+    void rightButtonRelease(int x, int y);
 
 protected:
-    bool filterWheelEvent(int detail);
     static void callback(XPointer trash, XRecordInterceptData* data);
+    bool filterWheelEvent(int detail);
     void handleRecordEvent(XRecordInterceptData *);
     void run();
     

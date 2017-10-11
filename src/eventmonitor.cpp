@@ -31,6 +31,7 @@ EventMonitor::EventMonitor(QObject *parent) : QThread(parent)
 
 void EventMonitor::run()
 {
+    // Init x11 display.
     Display* display = XOpenDisplay(0);
     if (display == 0) {
         fprintf(stderr, "unable to open display\n");
@@ -58,6 +59,7 @@ void EventMonitor::run()
     }
     XFree(range);
 
+    // Sync x11 display message.
     XSync(display, True);
 
     Display* display_datalink = XOpenDisplay(0);
@@ -66,6 +68,7 @@ void EventMonitor::run()
         return;
     }
 
+    // Enter in xrecord event loop.
     if (!XRecordEnableContext(display_datalink, context,  callback, (XPointer) this)) {
         fprintf(stderr, "XRecordEnableContext() failed\n");
         return;
@@ -86,6 +89,7 @@ void EventMonitor::handleRecordEvent(XRecordInterceptData* data)
         case ButtonPress:
             if (filterWheelEvent(event->u.u.detail)) {
                 isPress = true;
+                
                 if (event->u.u.detail == Button1) {
                     emit leftButtonPress(
                         event->u.keyButtonPointer.rootX,
