@@ -21,15 +21,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QString>
-#include <QDir>
+#include "utils.h"
 #include <QApplication>
 #include <QDebug>
-#include <QtMath>
+#include <QDir>
 #include <QFontMetrics>
 #include <QPainter>
+#include <QString>
 #include <QWidget>
-#include "utils.h"
+#include <QtMath>
 
 QString Utils::getQrcPath(QString imageName)
 {
@@ -39,44 +39,6 @@ QString Utils::getQrcPath(QString imageName)
 QString Utils::getQssPath(QString qssName)
 {
     return QString(":/qss/%1").arg(qssName);
-}
-
-QSize Utils::getRenderSize(int fontSize, QString string)
-{
-    QFont font;
-    font.setPointSize(fontSize);
-    QFontMetrics fm(font);
-
-    int width = 0;
-    int height = 0;
-    foreach (auto line, string.split("\n")) {
-        int lineWidth = fm.width(line);
-        int lineHeight = fm.height();
-
-        if (lineWidth > width) {
-            width = lineWidth;
-        }
-        height += lineHeight;
-    }
-
-    return QSize(width, height);
-}
-
-void Utils::setFontSize(QPainter &painter, int textSize)
-{
-    QFont font = painter.font() ;
-    font.setPointSize(textSize);
-    painter.setFont(font);
-}
-
-void Utils::applyQss(QWidget *widget, QString qssName)
-{
-    QFile file(Utils::getQssPath(qssName));
-    file.open(QFile::ReadOnly);
-    QTextStream filetext(&file);
-    QString stylesheet = filetext.readAll();
-    widget->setStyleSheet(stylesheet);
-    file.close();
 }
 
 QString Utils::colorToHex(QColor color)

@@ -28,8 +28,8 @@
 
 Settings::Settings(QObject *parent) : QObject(parent)
 {
+    // Init.
     settings = new QSettings(QDir(configPath()).filePath("config.conf"), QSettings::IniFormat);
-
     groupName = "Configure";
 }
 

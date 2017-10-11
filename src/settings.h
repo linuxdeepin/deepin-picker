@@ -33,8 +33,8 @@ class Settings : public QObject
 public:
     Settings(QObject *parent = 0);
     ~Settings();
-    QString configPath();
     
+    QString configPath();
     QVariant getOption(const QString &key);
     void setOption(const QString &key, const QVariant &value);
     
