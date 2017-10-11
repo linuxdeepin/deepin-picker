@@ -1,0 +1,13 @@
+[Desktop Entry]
+Categories=Graphics;Picker;
+Comment=Color picker
+Exec=deepin-picker
+Icon=deepin-picker
+Name=Deepin Picker
+StartupNotify=true
+TryExec=deepin-picker
+Type=Application
+
+# Translations
+Name[zh_CN]=深度取色器
+Comment[zh_CN]=颜色取色工具

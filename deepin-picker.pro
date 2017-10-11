@@ -35,3 +35,45 @@ QT += svg
 
 QMAKE_CXXFLAGS += -g
 LIBS += -lX11 -lXext -lXtst
+
+isEmpty(BINDIR):BINDIR=/usr/bin
+isEmpty(ICONDIR):ICONDIR=/usr/share/icons/hicolor/scalable/apps
+isEmpty(APPDIR):APPDIR=/usr/share/applications
+isEmpty(DSRDIR):DSRDIR=/usr/share/deepin-picker
+isEmpty(DOCDIR):DOCDIR=/usr/share/dman/deepin-picker
+
+target.path = $$INSTROOT$$BINDIR
+icon.path = $$INSTROOT$$ICONDIR
+desktop.path = $$INSTROOT$$APPDIR
+translations.path = $$INSTROOT$$DSRDIR/translations
+manual.path = $$INSTROOT$$DOCDIR
+
+icon.files = image/deepin-picker.svg
+desktop.files = deepin-picker.desktop
+manual.files = manual/*
+
+INSTALLS += target icon desktop manual
+
+isEmpty(TRANSLATIONS) {
+     include(translations.pri)
+
+}
+
+TRANSLATIONS_COMPILED = $$TRANSLATIONS
+TRANSLATIONS_COMPILED ~= s/\.ts/.qm/g
+
+translations.files = $$TRANSLATIONS_COMPILED
+INSTALLS += translations
+CONFIG *= update_translations release_translations
+
+CONFIG(update_translations) {
+    isEmpty(lupdate):lupdate=lupdate
+    system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
+}
+CONFIG(release_translations) {
+    isEmpty(lrelease):lrelease=lrelease
+    system($$lrelease $$_PRO_FILE_)
+}
+
+DSR_LANG_PATH += $$DSRDIR/translations
+DEFINES += "DSR_LANG_PATH=\\\"$$DSR_LANG_PATH\\\""

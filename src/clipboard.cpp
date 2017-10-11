@@ -44,14 +44,14 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     settings->setOption("color_type", colorType);
 
     QList<QVariant> arg;
-    arg << (QCoreApplication::applicationName())                 // appname
-        << ((unsigned int) 0)                                    // id
-        << QString("deepin-picker")                              // icon
-        << tr("Copy color")                                      // summary
-        << QString("Has copy %1 to clipboard").arg(colorString)  // body
-        << actions                                               // actions
-        << hints                                                 // hints
-        << (int) -1;                                             // timeout
+    arg << (QCoreApplication::applicationName())                             // appname
+        << ((unsigned int) 0)                                                // id
+        << QString("deepin-picker")                                          // icon
+        << tr("Deepin Picker")                                               // summary
+        << QString(tr("Copy color %1 to system clipboard")).arg(colorString) // body
+        << actions                                                           // actions
+        << hints                                                             // hints
+        << (int) -1;                                                         // timeout
     notification.callWithArgumentList(QDBus::AutoDetect, "Notify", arg);
     
     // Copy to clipbard.
