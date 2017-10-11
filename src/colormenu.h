@@ -20,35 +20,32 @@ signals:
     void exit();
                                                      
 public slots:
-    void showMenu();
-    void copyRGBColor();
-    void copyFloatRGBColor();
-    void copyRGBAColor();
     void copyFloatRGBAColor();
+    void copyFloatRGBColor();
     void copyHexColor();
+    void copyRGBAColor();
+    void copyRGBColor();
+    void showMenu();
     
 protected:
     void paintEvent(QPaintEvent *);
     
 private:
-    int windowX;
-    int windowY;
-    int windowSize;
-    
-    QColor windowColor;
-
-    QMenu *colorMenu;
+    QAction *hexAction;
     QAction *rgbAction;
     QAction *rgbFloatAction;
     QAction *rgbaAction;
     QAction *rgbaFloatAction;
-    QAction *hexAction;
-    
-    int menuOffsetY;
-    int menuOffsetX;
-    int shadowXMargin;
-    int shadowBottomMargin;
+    QColor windowColor;
+    QMenu *colorMenu;
     bool clickMenuItem;
+    int menuOffsetX;
+    int menuOffsetY;
+    int shadowBottomMargin;
+    int shadowXMargin;
+    int windowSize;
+    int windowX;
+    int windowY;
 };	
 
 #endif

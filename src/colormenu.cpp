@@ -12,24 +12,24 @@
 
 ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QWidget(parent)
 {
-    windowX = x;
-    windowY = y;
-    windowSize = size;
-    windowColor = color;
-    
-    menuOffsetX = 10;
-    menuOffsetY = 40;
-    
-    shadowXMargin = 20;
-    shadowBottomMargin = 20;
-    
-    clickMenuItem = false;
-
+    // Init window flags.
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
     
+    // Init attributes.
+    clickMenuItem = false;
+    menuOffsetX = 10;
+    menuOffsetY = 40;
+    shadowBottomMargin = 20;
+    shadowXMargin = 20;
+    windowColor = color;
+    windowSize = size;
+    windowX = x;
+    windowY = y;
+
+    // Add drop shadow window effect.
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setColor(QColor(0, 0, 0, 255 * 0.2));
     effect->setBlurRadius(10);
@@ -37,6 +37,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     effect->setYOffset(5);
     this->setGraphicsEffect(effect);
 
+    // Build menu and menu actions.
     colorMenu = new QMenu();
     connect(colorMenu, &QMenu::aboutToHide, this, [&] () {
             QTimer::singleShot(200, this, [&] () {
@@ -66,6 +67,13 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     hexAction->setCheckable(true);
     connect(hexAction, &QAction::triggered, this, &ColorMenu::copyHexColor);
     
+    colorMenu->addAction(rgbAction);
+    colorMenu->addAction(rgbFloatAction);
+    colorMenu->addAction(rgbaAction);
+    colorMenu->addAction(rgbaFloatAction);
+    colorMenu->addAction(hexAction);
+
+    // Set menu action check status with color type.
     Settings *settings = new Settings();
     QString colorType = settings->getOption("color_type").toString();
 
@@ -81,12 +89,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
         rgbaFloatAction->setChecked(true);
     }
     
-    colorMenu->addAction(rgbAction);
-    colorMenu->addAction(rgbFloatAction);
-    colorMenu->addAction(rgbaAction);
-    colorMenu->addAction(rgbaFloatAction);
-    colorMenu->addAction(hexAction);
-
+    // Move and resize window.
     move(x - shadowXMargin, y);
     resize(windowSize + shadowXMargin * 2, windowSize + shadowBottomMargin);
 }
