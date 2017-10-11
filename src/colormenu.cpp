@@ -1,5 +1,6 @@
 #include "colormenu.h"
 #include "settings.h"
+#include <QGraphicsDropShadowEffect>
 #include "utils.h"
 #include <QPoint>
 #include <QPen>
@@ -15,9 +16,12 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     windowY = y;
     windowSize = size;
     windowColor = color;
-
+    
     menuOffsetX = 10;
     menuOffsetY = 40;
+    
+    shadowXMargin = 50;
+    shadowBottomMargin = 50;
     
     clickMenuItem = false;
 
@@ -25,6 +29,13 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
+    
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+    effect->setColor(QColor(0, 0, 0, 255 * 0.2));
+    effect->setBlurRadius(10);
+    effect->setXOffset(0);
+    effect->setYOffset(5);
+    this->setGraphicsEffect(effect);
 
     colorMenu = new QMenu();
     connect(colorMenu, &QMenu::aboutToHide, this, [&] () {
@@ -76,8 +87,8 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     colorMenu->addAction(rgbaFloatAction);
     colorMenu->addAction(hexAction);
 
-    move(x, y);
-    resize(windowSize, windowSize);
+    move(x - shadowXMargin, y);
+    resize(windowSize + shadowXMargin * 2, windowSize + shadowBottomMargin);
 }
 
 ColorMenu::~ColorMenu()
@@ -86,20 +97,22 @@ ColorMenu::~ColorMenu()
 
 void ColorMenu::paintEvent(QPaintEvent *)
 {
+    int x = shadowXMargin;
+    
     QPainter painter(this);
     painter.setOpacity(1);
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setBrush(windowColor);
-    painter.drawRect(QRect(1, 1, windowSize - 3, windowSize - 3));
+    painter.drawRect(QRect(x + 1, 1, windowSize - 3, windowSize - 3));
     painter.setPen(windowColor);
-    painter.drawRect(QRect(1, 1, windowSize - 3, windowSize - 3));
+    painter.drawRect(QRect(x + 1, 1, windowSize - 3, windowSize - 3));
     
     painter.setRenderHint(QPainter::Antialiasing, false);
     QPen outsidePen("#000000");
     outsidePen.setWidth(1);
     painter.setOpacity(0.2);
     painter.setPen(outsidePen);
-    painter.drawRect(QRect(0, 0, windowSize - 1, windowSize - 1));
+    painter.drawRect(QRect(x, 0, windowSize - 1, windowSize - 1));
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     QPen insidePen("#ffffff");
@@ -107,7 +120,7 @@ void ColorMenu::paintEvent(QPaintEvent *)
     insidePen.setJoinStyle(Qt::MiterJoin);
     painter.setOpacity(0.5);
     painter.setPen(insidePen);
-    painter.drawRect(QRect(2, 2, windowSize - 4, windowSize - 4));
+    painter.drawRect(QRect(x + 2, 2, windowSize - 4, windowSize - 4));
 }
 
 void ColorMenu::showMenu()

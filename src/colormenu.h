@@ -46,6 +46,8 @@ private:
     
     int menuOffsetY;
     int menuOffsetX;
+    int shadowXMargin;
+    int shadowBottomMargin;
     bool clickMenuItem;
 };	
 
