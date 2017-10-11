@@ -119,6 +119,12 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
 
 ColorMenu::~ColorMenu()
 {
+    delete hexAction;
+    delete rgbAction;
+    delete rgbFloatAction;
+    delete rgbaAction;
+    delete rgbaFloatAction;
+    delete colorMenu;
 }
 
 void ColorMenu::paintEvent(QPaintEvent *)

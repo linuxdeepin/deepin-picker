@@ -78,6 +78,10 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
 
 Picker::~Picker()
 {
+    delete animation;
+    delete menu;
+    delete cursorPixmap;
+    delete updateScreenshotTimer;
 }
 
 void Picker::paintEvent(QPaintEvent *)

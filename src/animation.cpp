@@ -60,6 +60,7 @@ Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent
 
 Animation::~Animation()
 {
+    delete renderTimer;
 }
 
 void Animation::paintEvent(QPaintEvent *)

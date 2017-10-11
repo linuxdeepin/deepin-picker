@@ -36,6 +36,7 @@ Clipboard::Clipboard(QObject *parent) : QObject(parent)
 
 Clipboard::~Clipboard()
 {
+    
 }
 
 void Clipboard::copyToClipboard(QColor color, QString colorType)
