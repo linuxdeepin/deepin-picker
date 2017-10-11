@@ -89,25 +89,27 @@ void Picker::updateScreenshot()
         QPainter painter(&cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
         
+        painter.save();
         QPainterPath circlePath;
-        circlePath.addEllipse(1, 1, width - 2, height - 2);
+        circlePath.addEllipse(2, 2, width - 4, height - 4);
         painter.setClipPath(circlePath);
-        painter.drawPixmap(0, 0, screenshotPixmap);
+        painter.drawPixmap(1, 1, screenshotPixmap);
+        painter.restore();
 
         // Draw circle bound.
         int outsidePenWidth = 1;
-        QPen outsidePen("#00000");
+        QPen outsidePen("#000000");
         outsidePen.setWidth(outsidePenWidth);
         painter.setOpacity(0.05);
         painter.setPen(outsidePen);
-        painter.drawEllipse(outsidePenWidth / 2 + 1, outsidePenWidth / 2 + 1, width - outsidePenWidth - 1, height - outsidePenWidth - 1);
+        painter.drawEllipse(1, 1, width - 2, height - 2);
 
         int insidePenWidth = 4;
         QPen insidePen("#ffffff");
         insidePen.setWidth(insidePenWidth);
         painter.setOpacity(0.5);
         painter.setPen(insidePen);
-        painter.drawEllipse(insidePenWidth / 2 + 2, insidePenWidth / 2 + 2, width - insidePenWidth - 4, height - insidePenWidth - 4);
+        painter.drawEllipse(3, 3, width - 6, height - 6);
         
         // Draw focus block.
         painter.setOpacity(1);
