@@ -23,38 +23,33 @@ signals:
     void exit();
                  
 public slots:
-    void handleMouseMove(int x, int y);
     void handleLeftButtonPress(int x, int y);
+    void handleMouseMove(int x, int y);
     void handleRightButtonRelease(int x, int y);
-    void updateScreenshot();
     void popupColorMenu();
+    void updateScreenshot();
     
 protected:
     void paintEvent(QPaintEvent *);
     
 private:
-    int width;
-    int height;
-    
-    int windowWidth;
-    int windowHeight;
-    
-    int screenshotWidth;
-    int screenshotHeight;
-    
+    Animation *animation;
+    ColorMenu *menu;
+    QPixmap *cursorPixmap;
     QPixmap screenPixmap;
     QPixmap screenshotPixmap;
-    
+    QTimer *updateScreenshotTimer;
+    bool displayCursorDot;
+    int blockHeight;
+    int blockWidth;
     int cursorX;
     int cursorY;
-    
-    int blockWidth;
-    int blockHeight;
-    QTimer *updateScreenshotTimer;
-    
-    Animation *animation;
-    bool displayCursorDot;
-    ColorMenu *menu;
+    int height;
+    int screenshotHeight;
+    int screenshotWidth;
+    int width;
+    int windowHeight;
+    int windowWidth;
 };	
 
 #endif

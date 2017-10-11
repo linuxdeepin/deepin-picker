@@ -24,19 +24,17 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     installEventFilter(this);
 
     // Init attributes.
-    width = 220;
-    height = 220;
-
-    windowWidth = 236;
-    windowHeight = 236;
-
-    screenshotWidth = 11;
-    screenshotHeight = 11;
-
-    blockWidth = 20;
     blockHeight = 20;
-
+    blockWidth = 20;
     displayCursorDot = false;
+    height = 220;
+    screenshotHeight = 11;
+    screenshotWidth = 11;
+    width = 220;
+    windowHeight = 236;
+    windowWidth = 236;
+    
+    cursorPixmap = new QPixmap(Utils::getQrcPath("shadow.png"));
 
     // Init update screenshot timer.
     updateScreenshotTimer = new QTimer(this);
@@ -79,10 +77,9 @@ void Picker::updateScreenshot()
         cursorX = QCursor::pos().x();
         cursorY = QCursor::pos().y();
 
+        // Need add offset to make drop shadow's position correctly.
         int offsetX = (windowWidth - width) / 2;
         int offsetY = (windowHeight - height) / 2;
-
-        QPixmap cursorPixmap(Utils::getQrcPath("shadow.png"));
 
         // Get image under cursor.
         screenshotPixmap = QApplication::primaryScreen()->grabWindow(
@@ -92,8 +89,8 @@ void Picker::updateScreenshot()
             screenshotWidth,
             screenshotHeight).scaled(width, height);
 
-        // Draw on screenshot.
-        QPainter painter(&cursorPixmap);
+        // Clip screenshot pixmap to circle.
+        QPainter painter(cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
 
         painter.save();
@@ -129,58 +126,61 @@ void Picker::updateScreenshot()
         painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1 + offsetX, height / 2 - blockHeight / 2 + 1 + offsetY, blockWidth - 2, blockHeight - 2));
 
         // Set screenshot as cursor.
-        QApplication::setOverrideCursor(QCursor(cursorPixmap));
+        QApplication::setOverrideCursor(QCursor(*cursorPixmap));
     }
 }
 
 void Picker::handleLeftButtonPress(int x, int y)
 {
     if (!displayCursorDot) {
+        // Rest cursor and hide window.
         QApplication::setOverrideCursor(Qt::ArrowCursor);
         hide();
 
+        // Rest color type to hex if config file not exist.
         Settings *settings = new Settings();
-
         if (!Utils::fileExists(settings->configPath())) {
             settings->setOption("color_type", "HEX");
         }
-        QString colorType = settings->getOption("color_type").toString();
-
-        QColor color = getColorAtCursor(x, y);
-
-        copyColor(color, colorType);
+        
+        // Emit copyColor signal to copy color to system clipboard.
+        copyColor(getColorAtCursor(x, y), settings->getOption("color_type").toString());
     }
 }
 
 void Picker::handleRightButtonRelease(int x, int y)
 {
     if (!displayCursorDot) {
+        // Set displayCursorDot flag when click right button.
         displayCursorDot = true;
 
+        // Popup color menu window.
         menu = new ColorMenu(x - blockWidth / 2, y - blockHeight / 2, blockWidth, getColorAtCursor(x, y));
         connect(menu, &ColorMenu::copyColor, this, &Picker::copyColor, Qt::QueuedConnection);
         connect(menu, &ColorMenu::exit, this, &Picker::exit, Qt::QueuedConnection);
         menu->show();
-        menu->setFocus();
+        menu->setFocus();       // set focus to monitor 'aboutToHide' signal of color menu
     
+        // Display animation before poup color menu.
         animation = new Animation(x, y, screenshotPixmap, getColorAtCursor(x, y));
         connect(animation, &Animation::finish, this, &Picker::popupColorMenu, Qt::QueuedConnection);
 
+        // Rest cursor to default cursor.
         QApplication::setOverrideCursor(Qt::ArrowCursor);
 
-        QTimer::singleShot(10, animation, &Animation::show);
+        // Show animation after rest cursor to avoid flash screen.
+        animation->show();
     }
 }
 
 QColor Picker::getColorAtCursor(int x, int y)
 {
-    QImage img = screenPixmap.copy(x, y, 1, 1).toImage();
-    return QColor(img.pixel(0, 0));
+    return QColor(screenPixmap.copy(x, y, 1, 1).toImage().pixel(0, 0));
 }
 
 void Picker::popupColorMenu()
 {
+    // Hide picker main window and popup color menu.
     hide();
-
-    QTimer::singleShot(10, menu, &ColorMenu::showMenu);
+    menu->showMenu();
 }
