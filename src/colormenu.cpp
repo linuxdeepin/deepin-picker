@@ -20,8 +20,8 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     menuOffsetX = 10;
     menuOffsetY = 40;
     
-    shadowXMargin = 50;
-    shadowBottomMargin = 50;
+    shadowXMargin = 20;
+    shadowBottomMargin = 20;
     
     clickMenuItem = false;
 
