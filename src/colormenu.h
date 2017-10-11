@@ -45,6 +45,7 @@ private:
     QAction *hexAction;
     
     int menuOffsetY;
+    int menuOffsetX;
     bool clickMenuItem;
 };	
 

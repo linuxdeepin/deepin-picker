@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     
     QObject::connect(&eventMonitor, &EventMonitor::mouseMove, picker, &Picker::handleMouseMove, Qt::QueuedConnection);
     QObject::connect(&eventMonitor, &EventMonitor::leftButtonPress, picker, &Picker::handleLeftButtonPress, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &EventMonitor::rightButtonPress, picker, &Picker::handleRightButtonPress, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &EventMonitor::rightButtonRelease, picker, &Picker::handleRightButtonRelease, Qt::QueuedConnection);
     QObject::connect(&eventMonitor, &EventMonitor::pressEsc, clipboard, [&] () {
             eventMonitor.terminate();
             QApplication::quit();

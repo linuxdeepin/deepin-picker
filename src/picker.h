@@ -23,7 +23,7 @@ signals:
 public slots:
     void handleMouseMove(int x, int y);
     void handleLeftButtonPress(int x, int y);
-    void handleRightButtonPress(int x, int y);
+    void handleRightButtonRelease(int x, int y);
     void updateScreenshot();
     
 protected:

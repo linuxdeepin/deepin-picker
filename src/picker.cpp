@@ -96,21 +96,27 @@ void Picker::updateScreenshot()
         painter.setRenderHint(QPainter::Antialiasing, true);
 
         // Draw circle bound.
-        int penWidth = 2;
-        QPen outsidePen("#000000");
-        outsidePen.setWidth(penWidth);
+        int outsidePenWidth = 1;
+        QPen outsidePen("#00000");
+        outsidePen.setWidth(outsidePenWidth);
+        painter.setOpacity(0.05);
         painter.setPen(outsidePen);
-        painter.drawEllipse(penWidth / 2, penWidth / 2, mask.width() - penWidth, mask.height() - penWidth);
+        painter.drawEllipse(outsidePenWidth / 2 + 1, outsidePenWidth / 2 + 1, mask.width() - outsidePenWidth - 1, mask.height() - outsidePenWidth - 1);
 
+        int insidePenWidth = 4;
         QPen insidePen("#ffffff");
-        insidePen.setWidth(penWidth);
+        insidePen.setWidth(insidePenWidth);
+        painter.setOpacity(0.5);
         painter.setPen(insidePen);
-        painter.drawEllipse(penWidth * 3 / 2, penWidth * 3 / 2, mask.width() - penWidth * 3, mask.height() - penWidth * 3);
-
+        painter.drawEllipse(insidePenWidth / 2 + 2, insidePenWidth / 2 + 2, mask.width() - insidePenWidth - 4, mask.height() - insidePenWidth - 4);
+        
         // Draw focus block.
+        painter.setOpacity(1);
         painter.setRenderHint(QPainter::Antialiasing, false);
+        painter.setOpacity(0.2);
         painter.setPen("#000000");
         painter.drawRect(QRect(width / 2 - blockWidth / 2, height / 2 - blockHeight / 2, blockWidth, blockHeight));
+        painter.setOpacity(1);
         painter.setPen("#ffffff");
         painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1, height / 2 - blockHeight / 2 + 1, blockWidth - 2, blockHeight - 2));
 
@@ -132,18 +138,19 @@ void Picker::handleLeftButtonPress(int x, int y)
     }
 }
 
-void Picker::handleRightButtonPress(int x, int y)
+void Picker::handleRightButtonRelease(int x, int y)
 {
     if (!displayCursorDot) {
         displayCursorDot = true;
 
-        QApplication::setOverrideCursor(Qt::ArrowCursor);
-        hide();
-        
         ColorMenu *menu = new ColorMenu(x - blockWidth / 2, y - blockHeight / 2, blockWidth, getColorAtCursor(x, y));
         connect(menu, &ColorMenu::copyColor, this, &Picker::copyColor, Qt::QueuedConnection);
         connect(menu, &ColorMenu::exit, this, &Picker::exit, Qt::QueuedConnection);
         menu->show();
+        menu->setFocus();
+        
+        QApplication::setOverrideCursor(Qt::ArrowCursor);
+        hide();
         
         QTimer::singleShot(10, menu, &ColorMenu::showMenu);
     }

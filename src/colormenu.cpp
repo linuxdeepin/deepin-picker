@@ -1,6 +1,7 @@
 #include "colormenu.h"
 #include "utils.h"
 #include <QPoint>
+#include <QPen>
 #include <QTimer>
 #include <QClipboard>
 #include <QPainter>
@@ -14,11 +15,13 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     windowSize = size;
     windowColor = color;
 
-    menuOffsetY = 50;
+    menuOffsetX = 10;
+    menuOffsetY = 40;
     
     clickMenuItem = false;
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
 
@@ -48,8 +51,6 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     colorMenu->addAction(rgbaFloatAction);
     colorMenu->addAction(hexAction);
 
-    setFocus();
-
     move(x, y);
     resize(windowSize, windowSize);
 }
@@ -62,14 +63,31 @@ void ColorMenu::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setOpacity(1);
-    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setBrush(windowColor);
-    painter.drawRect(QRect(0, 0, windowSize, windowSize));
+    painter.drawRect(QRect(1, 1, windowSize - 3, windowSize - 3));
+    painter.setPen(windowColor);
+    painter.drawRect(QRect(1, 1, windowSize - 3, windowSize - 3));
+    
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    QPen outsidePen("#000000");
+    outsidePen.setWidth(1);
+    painter.setOpacity(0.2);
+    painter.setPen(outsidePen);
+    painter.drawRect(QRect(0, 0, windowSize - 1, windowSize - 1));
+
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    QPen insidePen("#ffffff");
+    insidePen.setWidth(2);
+    insidePen.setJoinStyle(Qt::MiterJoin);
+    painter.setOpacity(0.5);
+    painter.setPen(insidePen);
+    painter.drawRect(QRect(2, 2, windowSize - 4, windowSize - 4));
 }
 
 void ColorMenu::showMenu()
 {
-    colorMenu->exec(QPoint(windowX - windowSize / 2, windowY - windowSize / 2 + menuOffsetY));
+    colorMenu->exec(QPoint(windowX - windowSize / 2 + menuOffsetX, windowY - windowSize / 2 + menuOffsetY));
 }
 
 void ColorMenu::copyRGBColor()
