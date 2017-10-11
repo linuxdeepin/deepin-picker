@@ -18,7 +18,7 @@ public slots:
     void renderAnimation();
     
 signals:
-    void finish(int x, int y, QColor color);
+    void finish();
     
 protected:
     void paintEvent(QPaintEvent *);

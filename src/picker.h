@@ -27,7 +27,7 @@ public slots:
     void handleLeftButtonPress(int x, int y);
     void handleRightButtonRelease(int x, int y);
     void updateScreenshot();
-    void popupColorMenu(int x, int y, QColor color);
+    void popupColorMenu();
     
 protected:
     void paintEvent(QPaintEvent *);

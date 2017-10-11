@@ -178,7 +178,7 @@ QColor Picker::getColorAtCursor(int x, int y)
     return QColor(img.pixel(0, 0));
 }
 
-void Picker::popupColorMenu(int x, int y, QColor color)
+void Picker::popupColorMenu()
 {
     hide();
 

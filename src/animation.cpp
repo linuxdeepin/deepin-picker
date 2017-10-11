@@ -68,7 +68,7 @@ void Animation::renderAnimation()
         renderTimer->stop();
         hide();
         
-        emit finish(cursorX, cursorY, cursorColor);
+        emit finish();
     }
 }
 
