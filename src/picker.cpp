@@ -74,6 +74,8 @@ void Picker::updateScreenshot()
         // Get cursor coordinate.
         cursorX = QCursor::pos().x();
         cursorY = QCursor::pos().y();
+        
+        QPixmap cursorPixmap(Utils::getQrcPath("transparent.png"));
 
         // Get image under cursor.
         screenshotPixmap = QApplication::primaryScreen()->grabWindow(
@@ -83,18 +85,13 @@ void Picker::updateScreenshot()
             screenshotWidth,
             screenshotHeight).scaled(width, height);
 
-        // Clip cursor image with circle.
-        QBitmap mask(screenshotPixmap.size());
-        QPainter maskPainter(&mask);
-        maskPainter.setRenderHint(QPainter::Antialiasing, true);
-        mask.fill(Qt::white);
-        maskPainter.setBrush(Qt::black);
-        maskPainter.drawEllipse(1, 1, mask.width() - 2, mask.height() - 2);
-        screenshotPixmap.setMask(mask);
-
         // Draw on screenshot.
-        QPainter painter(&screenshotPixmap);
+        QPainter painter(&cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
+        
+        QPainterPath circlePath;
+        painter.setClipRegion(QRegion(0, 0, width, height, QRegion::Ellipse));
+        painter.drawPixmap(0, 0, screenshotPixmap);
 
         // Draw circle bound.
         int outsidePenWidth = 1;
@@ -102,14 +99,14 @@ void Picker::updateScreenshot()
         outsidePen.setWidth(outsidePenWidth);
         painter.setOpacity(0.05);
         painter.setPen(outsidePen);
-        painter.drawEllipse(outsidePenWidth / 2 + 1, outsidePenWidth / 2 + 1, mask.width() - outsidePenWidth - 1, mask.height() - outsidePenWidth - 1);
+        painter.drawEllipse(outsidePenWidth / 2 + 1, outsidePenWidth / 2 + 1, width - outsidePenWidth - 1, height - outsidePenWidth - 1);
 
         int insidePenWidth = 4;
         QPen insidePen("#ffffff");
         insidePen.setWidth(insidePenWidth);
         painter.setOpacity(0.5);
         painter.setPen(insidePen);
-        painter.drawEllipse(insidePenWidth / 2 + 2, insidePenWidth / 2 + 2, mask.width() - insidePenWidth - 4, mask.height() - insidePenWidth - 4);
+        painter.drawEllipse(insidePenWidth / 2 + 2, insidePenWidth / 2 + 2, width - insidePenWidth - 4, height - insidePenWidth - 4);
         
         // Draw focus block.
         painter.setOpacity(1);
@@ -122,7 +119,7 @@ void Picker::updateScreenshot()
         painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1, height / 2 - blockHeight / 2 + 1, blockWidth - 2, blockHeight - 2));
 
         // Set screenshot as cursor.
-        QApplication::setOverrideCursor(QCursor(screenshotPixmap));
+        QApplication::setOverrideCursor(QCursor(cursorPixmap));
     }
 }
 

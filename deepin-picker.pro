@@ -8,6 +8,7 @@ TARGET = deepin-picker
 CONFIG += link_pkgconfig
 CONFIG += c++11 
 PKGCONFIG += xcb xcb-util dtkwidget 
+RESOURCES = deepin-picker.qrc
 
 # Input
 HEADERS += src/picker.h \		   		   
