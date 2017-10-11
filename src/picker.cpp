@@ -1,4 +1,5 @@
 #include "picker.h"
+#include "animation.h"
 #include "settings.h"
 #include "utils.h"
 #include "colormenu.h"
@@ -25,7 +26,7 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     // Init attributes.
     width = 220;
     height = 220;
-    
+
     windowWidth = 236;
     windowHeight = 236;
 
@@ -77,10 +78,10 @@ void Picker::updateScreenshot()
         // Get cursor coordinate.
         cursorX = QCursor::pos().x();
         cursorY = QCursor::pos().y();
-        
+
         int offsetX = (windowWidth - width) / 2;
         int offsetY = (windowHeight - height) / 2;
-        
+
         QPixmap cursorPixmap(Utils::getQrcPath("shadow.png"));
 
         // Get image under cursor.
@@ -94,7 +95,7 @@ void Picker::updateScreenshot()
         // Draw on screenshot.
         QPainter painter(&cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
-        
+
         painter.save();
         QPainterPath circlePath;
         circlePath.addEllipse(2 + offsetX, 2 + offsetY, width - 4, height - 4);
@@ -116,7 +117,7 @@ void Picker::updateScreenshot()
         painter.setOpacity(0.5);
         painter.setPen(insidePen);
         painter.drawEllipse(3 + offsetX, 3 + offsetY, width - 6, height - 6);
-        
+
         // Draw focus block.
         painter.setOpacity(1);
         painter.setRenderHint(QPainter::Antialiasing, false);
@@ -137,16 +138,16 @@ void Picker::handleLeftButtonPress(int x, int y)
     if (!displayCursorDot) {
         QApplication::setOverrideCursor(Qt::ArrowCursor);
         hide();
-        
+
         Settings *settings = new Settings();
-        
+
         if (!Utils::fileExists(settings->configPath())) {
             settings->setOption("color_type", "HEX");
         }
         QString colorType = settings->getOption("color_type").toString();
-        
+
         QColor color = getColorAtCursor(x, y);
-        
+
         copyColor(color, colorType);
     }
 }
@@ -156,16 +157,18 @@ void Picker::handleRightButtonRelease(int x, int y)
     if (!displayCursorDot) {
         displayCursorDot = true;
 
-        ColorMenu *menu = new ColorMenu(x - blockWidth / 2, y - blockHeight / 2, blockWidth, getColorAtCursor(x, y));
+        menu = new ColorMenu(x - blockWidth / 2, y - blockHeight / 2, blockWidth, getColorAtCursor(x, y));
         connect(menu, &ColorMenu::copyColor, this, &Picker::copyColor, Qt::QueuedConnection);
         connect(menu, &ColorMenu::exit, this, &Picker::exit, Qt::QueuedConnection);
         menu->show();
         menu->setFocus();
-        
+    
+        animation = new Animation(x, y, screenshotPixmap, getColorAtCursor(x, y));
+        connect(animation, &Animation::finish, this, &Picker::popupColorMenu, Qt::QueuedConnection);
+
         QApplication::setOverrideCursor(Qt::ArrowCursor);
-        hide();
-        
-        QTimer::singleShot(10, menu, &ColorMenu::showMenu);
+
+        QTimer::singleShot(10, animation, &Animation::show);
     }
 }
 
@@ -173,4 +176,11 @@ QColor Picker::getColorAtCursor(int x, int y)
 {
     QImage img = screenPixmap.copy(x, y, 1, 1).toImage();
     return QColor(img.pixel(0, 0));
+}
+
+void Picker::popupColorMenu(int x, int y, QColor color)
+{
+    hide();
+
+    QTimer::singleShot(10, menu, &ColorMenu::showMenu);
 }

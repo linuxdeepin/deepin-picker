@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QMenu>
+#include "colormenu.h"
+#include "animation.h"
 #include <QAction>
 #include <QTimer>
 
@@ -25,6 +27,7 @@ public slots:
     void handleLeftButtonPress(int x, int y);
     void handleRightButtonRelease(int x, int y);
     void updateScreenshot();
+    void popupColorMenu(int x, int y, QColor color);
     
 protected:
     void paintEvent(QPaintEvent *);
@@ -49,7 +52,9 @@ private:
     int blockHeight;
     QTimer *updateScreenshotTimer;
     
+    Animation *animation;
     bool displayCursorDot;
+    ColorMenu *menu;
 };	
 
 #endif

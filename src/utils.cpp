@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QApplication>
 #include <QDebug>
+#include <QtMath>
 #include <QFontMetrics>
 #include <QPainter>
 #include <QWidget>
@@ -109,5 +110,30 @@ bool Utils::fileExists(QString path)
     
     // check if file exists and if yes: Is it really a file and no directory?
     return check_file.exists() && check_file.isFile();
+}
+
+qreal Utils::easeInOut(qreal x)
+{
+    return (1 - qCos(M_PI * x)) / 2;
+}
+
+qreal Utils::easeInQuad(qreal x)
+{
+    return qPow(x, 2);
+}
+
+qreal Utils::easeOutQuad(qreal x)
+{
+    return -1 * qPow(x - 1, 2) + 1;
+}
+
+qreal Utils::easeInQuint(qreal x)
+{
+    return qPow(x, 5);
+}
+
+qreal Utils::easeOutQuint(qreal x)
+{
+    return qPow(x - 1, 5) + 1;
 }
 

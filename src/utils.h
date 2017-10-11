@@ -43,4 +43,9 @@ public:
     static QString colorToFloatRGB(QColor color);
     static QString colorToFloatRGBA(QColor color);
     static bool fileExists(QString path);
+    static qreal easeInOut(qreal x);
+    static qreal easeInQuad(qreal x);
+    static qreal easeInQuint(qreal x);
+    static qreal easeOutQuad(qreal x);
+    static qreal easeOutQuint(qreal x);
 };
