@@ -24,22 +24,18 @@ protected:
     void paintEvent(QPaintEvent *);
     
 private:
-    QPixmap screenshotPixmap;
     QColor cursorColor;
-    int cursorX;
-    int cursorY;
-    
+    QPixmap screenshotPixmap;
     QTimer *renderTimer;
     int animationDuration;
     int animationFrames;
-    
-    int blockWidth;
     int blockHeight;
-    
-    int width;
+    int blockWidth;
+    int cursorX;
+    int cursorY;
     int height;
-    
     int renderTicker;
+    int width;
 };	
 
 #endif

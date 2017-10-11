@@ -49,7 +49,7 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     // Show.
     show();
 
-    // Update screenshot.
+    // Update screenshot when start.
     updateScreenshot();
 }
 

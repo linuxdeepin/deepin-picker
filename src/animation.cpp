@@ -6,29 +6,30 @@
 
 Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent) : QWidget(parent)
 {
-    cursorX = x;
-    cursorY = y;
-    screenshotPixmap = pixmap;
-    cursorColor = color;
-
-    blockWidth = 20;
-    blockHeight = 20;
-
+    // Init window flags to make window transparent and get correctly behavior.
     setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
 
-    width = 220;
+    // Init attributes.
+    animationDuration = 25;
+    animationFrames = 12;
+    blockHeight = 20;
+    blockWidth = 20;
+    cursorColor = color;
+    cursorX = x;
+    cursorY = y;
     height = 220;
-
+    renderTicker = 0;
+    screenshotPixmap = pixmap;
+    width = 220;
+    
+    // Move and resize window.
     move(x - width / 2, y - height / 2);
     resize(width, height);
     
-    renderTicker = 0;
-    animationFrames = 12;
-    animationDuration = 25;
-    
+    // Start animation when module init. 
     renderTimer = new QTimer();
     connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderAnimation()));
     renderTimer->start(animationDuration);
@@ -40,18 +41,20 @@ Animation::~Animation()
 
 void Animation::paintEvent(QPaintEvent *)
 {
-    
+    // Make clip radius change along with ticker.
     int radius = screenshotPixmap.width() / 2 * (1 - Utils::easeInOut(renderTicker * 1.0 / animationFrames));
-    qDebug() << renderTicker << animationFrames << radius << Utils::easeInOut(renderTicker * 1.0 / animationFrames);
     
     int width = rect().width();
     int height = rect().height();
 
+    // Init painter.
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     
+    // Make opacity change along with ticker.
     painter.setOpacity(Utils::easeInOut(renderTicker * 1.0 / animationFrames));
 
+    // Draw screenshot pixmap.
     QPainterPath circlePath;
     circlePath.addEllipse(width / 2 - radius, height / 2 - radius, radius * 2, radius * 2);
     painter.setClipPath(circlePath);
@@ -66,7 +69,7 @@ void Animation::renderAnimation()
         repaint();
     } else {
         renderTimer->stop();
-        hide();
+        hide();                 // hide window when animation finish
         
         emit finish();
     }
