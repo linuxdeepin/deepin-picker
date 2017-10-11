@@ -58,6 +58,10 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     Settings *settings = new Settings();
     settings->setOption("color_type", colorType);
     
+    // Copy to clipbard.
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(colorString);
+    
     // Popup notify.
     QDBusInterface notification("org.freedesktop.Notifications",
                                 "/org/freedesktop/Notifications",
@@ -77,10 +81,6 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
         << hints                                                             // hints
         << (int) -1;                                                         // timeout
     notification.callWithArgumentList(QDBus::AutoDetect, "Notify", arg);
-    
-    // Copy to clipbard.
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(colorString);
     
     // Quit application.
     QApplication::quit();
