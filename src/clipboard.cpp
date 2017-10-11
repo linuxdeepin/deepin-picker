@@ -17,17 +17,8 @@ Clipboard::~Clipboard()
 
 void Clipboard::copyToClipboard(QColor color, QString colorType)
 {
-    
-    // Popup notify.
-    QDBusInterface notification("org.freedesktop.Notifications",
-                                "/org/freedesktop/Notifications",
-                                "org.freedesktop.Notifications",
-                                QDBusConnection::sessionBus());
-
-    QStringList actions;
-    QVariantMap hints;
+    // Save color type to config file.
     QString colorString;
-    
     if (colorType == "HEX") {
         colorString = Utils::colorToHex(color);
     } else if (colorType == "RGB") {
@@ -42,7 +33,16 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     
     Settings *settings = new Settings();
     settings->setOption("color_type", colorType);
+    
+    // Popup notify.
+    QDBusInterface notification("org.freedesktop.Notifications",
+                                "/org/freedesktop/Notifications",
+                                "org.freedesktop.Notifications",
+                                QDBusConnection::sessionBus());
 
+    QStringList actions;
+    QVariantMap hints;
+    
     QList<QVariant> arg;
     arg << (QCoreApplication::applicationName())                             // appname
         << ((unsigned int) 0)                                                // id
@@ -58,5 +58,6 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(colorString);
     
+    // Quit application.
     QApplication::quit();
 }
