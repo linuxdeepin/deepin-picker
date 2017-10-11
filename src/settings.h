@@ -21,26 +21,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
 
-#include <QObject>
-#include <QString>
-#include <QPainter>
-#include <QColor>
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-class Utils : public QObject
+#include <QSettings>
+
+class Settings : public QObject 
 {
     Q_OBJECT
     
 public:
-    static QString getQrcPath(QString imageName);
-    static QString getQssPath(QString qssName);
-    static QSize getRenderSize(int fontSize, QString string);
-    static void setFontSize(QPainter &painter, int textSize);
-    static void passInputEvent(int wid);
-    static void applyQss(QWidget *widget, QString qssName);
-    static QString colorToHex(QColor color);
-    static QString colorToRGB(QColor color);
-    static QString colorToRGBA(QColor color);
-    static QString colorToFloatRGB(QColor color);
-    static QString colorToFloatRGBA(QColor color);
-    static bool fileExists(QString path);
+    Settings(QObject *parent = 0);
+    ~Settings();
+    QString configPath();
+    
+    QVariant getOption(const QString &key);
+    void setOption(const QString &key, const QVariant &value);
+    
+private:
+    QSettings* settings;
+    QString groupName;
 };
+
+#endif // SETTINGS_H

@@ -17,7 +17,7 @@ public:
     QColor getColorAtCursor(int x, int y);
                                          
 signals:
-    void copyColor(QColor color, QString colorString);
+    void copyColor(QColor color, QString colorType);
     void exit();
                  
 public slots:

@@ -14,11 +14,13 @@ HEADERS += src/picker.h \
            src/eventmonitor.h \		   		   
            src/colormenu.h \		   		   
            src/clipboard.h \		   		   
+           src/settings.h \		   		   
            src/utils.h
 SOURCES += src/picker.cpp \		   
            src/eventmonitor.cpp \		   
            src/colormenu.cpp \		   
            src/clipboard.cpp \		   
+           src/settings.cpp \		   
            src/utils.cpp \		   
 		   src/main.cpp		   
 		   

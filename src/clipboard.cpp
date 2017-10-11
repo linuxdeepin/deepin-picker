@@ -1,4 +1,6 @@
 #include "clipboard.h"
+#include "settings.h"
+#include "utils.h"
 #include <QApplication>
 #include <QClipboard>
 #include <QtDBus>
@@ -13,7 +15,7 @@ Clipboard::~Clipboard()
 {
 }
 
-void Clipboard::copyToClipboard(QColor color, QString colorString)
+void Clipboard::copyToClipboard(QColor color, QString colorType)
 {
     
     // Popup notify.
@@ -23,8 +25,23 @@ void Clipboard::copyToClipboard(QColor color, QString colorString)
                                 QDBusConnection::sessionBus());
 
     QStringList actions;
-
     QVariantMap hints;
+    QString colorString;
+    
+    if (colorType == "HEX") {
+        colorString = Utils::colorToHex(color);
+    } else if (colorType == "RGB") {
+        colorString = Utils::colorToRGB(color);
+    } else if (colorType == "RGBA") {
+        colorString = Utils::colorToRGBA(color);
+    } else if (colorType == "Float_RGB") {
+        colorString = Utils::colorToFloatRGB(color);
+    } else if (colorType == "Float_RGBA") {
+        colorString = Utils::colorToFloatRGBA(color);
+    }
+    
+    Settings *settings = new Settings();
+    settings->setOption("color_type", colorType);
 
     QList<QVariant> arg;
     arg << (QCoreApplication::applicationName())                 // appname

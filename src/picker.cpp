@@ -1,4 +1,5 @@
 #include "picker.h"
+#include "settings.h"
 #include "utils.h"
 #include "colormenu.h"
 #include <QPainter>
@@ -131,10 +132,16 @@ void Picker::handleLeftButtonPress(int x, int y)
         QApplication::setOverrideCursor(Qt::ArrowCursor);
         hide();
         
-        QColor color = getColorAtCursor(x, y);
-        QString hex = Utils::colorToHex(color);
+        Settings *settings = new Settings();
         
-        copyColor(color, hex);
+        if (!Utils::fileExists(settings->configPath())) {
+            settings->setOption("color_type", "HEX");
+        }
+        QString colorType = settings->getOption("color_type").toString();
+        
+        QColor color = getColorAtCursor(x, y);
+        
+        copyColor(color, colorType);
     }
 }
 

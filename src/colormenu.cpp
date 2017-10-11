@@ -1,4 +1,5 @@
 #include "colormenu.h"
+#include "settings.h"
 #include "utils.h"
 #include <QPoint>
 #include <QPen>
@@ -35,16 +36,40 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
         });
     
     rgbAction = new QAction("RGB", this);
+    rgbAction->setCheckable(true);
     connect(rgbAction, &QAction::triggered, this, &ColorMenu::copyRGBColor);
+    
     rgbFloatAction = new QAction("RGB (1.0)", this);
+    rgbFloatAction->setCheckable(true);
     connect(rgbFloatAction, &QAction::triggered, this, &ColorMenu::copyFloatRGBColor);
+    
     rgbaAction = new QAction("RGBA", this);
+    rgbaAction->setCheckable(true);
     connect(rgbaAction, &QAction::triggered, this, &ColorMenu::copyRGBAColor);
+    
     rgbaFloatAction = new QAction("RGBA (1.0)", this);
+    rgbaFloatAction->setCheckable(true);
     connect(rgbaFloatAction, &QAction::triggered, this, &ColorMenu::copyFloatRGBAColor);
+    
     hexAction = new QAction("HEX",this);
+    hexAction->setCheckable(true);
     connect(hexAction, &QAction::triggered, this, &ColorMenu::copyHexColor);
+    
+    Settings *settings = new Settings();
+    QString colorType = settings->getOption("color_type").toString();
 
+    if (colorType == "HEX") {
+        hexAction->setChecked(true);
+    } else if (colorType == "RGB") {
+        rgbAction->setChecked(true);
+    } else if (colorType == "RGBA") {
+        rgbaAction->setChecked(true);
+    } else if (colorType == "Float_RGB") {
+        rgbFloatAction->setChecked(true);
+    } else if (colorType == "Float_RGBA") {
+        rgbaFloatAction->setChecked(true);
+    }
+    
     colorMenu->addAction(rgbAction);
     colorMenu->addAction(rgbFloatAction);
     colorMenu->addAction(rgbaAction);
@@ -93,29 +118,29 @@ void ColorMenu::showMenu()
 void ColorMenu::copyRGBColor()
 {
     clickMenuItem = true;
-    copyColor(windowColor, Utils::colorToRGB(windowColor));
+    copyColor(windowColor, "RGB");
 }
 
 void ColorMenu::copyFloatRGBColor()
 {
     clickMenuItem = true;
-    copyColor(windowColor, Utils::colorToFloatRGB(windowColor));
+    copyColor(windowColor, "FLOAT_RGB");
 }
 
 void ColorMenu::copyRGBAColor()
 {
     clickMenuItem = true;
-    copyColor(windowColor, Utils::colorToRGBA(windowColor));
+    copyColor(windowColor, "RGBA");
 }
 
 void ColorMenu::copyFloatRGBAColor()
 {
     clickMenuItem = true;
-    copyColor(windowColor, Utils::colorToFloatRGBA(windowColor));
+    copyColor(windowColor, "Float_RGBA");
 }
 
 void ColorMenu::copyHexColor()
 {
     clickMenuItem = true;
-    copyColor(windowColor, Utils::colorToHex(windowColor));
+    copyColor(windowColor, "HEX");
 }
