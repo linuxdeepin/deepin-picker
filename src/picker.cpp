@@ -90,7 +90,7 @@ void Picker::updateScreenshot()
         painter.setRenderHint(QPainter::Antialiasing, true);
         
         QPainterPath circlePath;
-        circlePath.addEllipse(0, 0, width, height);
+        circlePath.addEllipse(1, 1, width - 2, height - 2);
         painter.setClipPath(circlePath);
         painter.drawPixmap(0, 0, screenshotPixmap);
 
