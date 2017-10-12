@@ -58,11 +58,8 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     Settings *settings = new Settings();
     settings->setOption("color_type", colorType);
     
-    // Copy to clipbard.
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(colorString);
-    
     // Popup notify.
+    // We need poup notify in first time, because copy to clipboard maybe block event loop.
     QDBusInterface notification("org.freedesktop.Notifications",
                                 "/org/freedesktop/Notifications",
                                 "org.freedesktop.Notifications",
@@ -72,15 +69,19 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     QVariantMap hints;
     
     QList<QVariant> arg;
-    arg << (QCoreApplication::applicationName())                             // appname
-        << ((unsigned int) 0)                                                // id
-        << QString("deepin-picker")                                          // icon
-        << tr("Deepin Picker")                                               // summary
-        << QString(tr("Copy color %1 to system clipboard")).arg(colorString) // body
-        << actions                                                           // actions
-        << hints                                                             // hints
-        << (int) -1;                                                         // timeout
+    arg << (QCoreApplication::applicationName()) // appname
+        << ((unsigned int) 0)                    // id
+        << QString("deepin-picker")              // icon
+        << ""                                    // summary
+        << QString(tr("Copy color %1 to clipboard")).arg(colorString) // body
+        << actions              // actions
+        << hints                // hints
+        << (int) -1;            // timeout
     notification.callWithArgumentList(QDBus::AutoDetect, "Notify", arg);
+    
+    // Copy to clipbard.
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(colorString);
     
     // Quit application.
     QApplication::quit();

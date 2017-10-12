@@ -4,11 +4,7 @@
 <context>
     <name>Clipboard</name>
     <message>
-        <source>Deepin Picker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy color %1 to system clipboard</source>
+        <source>Has copied the color %1 to the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
