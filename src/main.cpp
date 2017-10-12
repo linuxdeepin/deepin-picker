@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP("MainWindow", 
-                                                    "Deepin Picker is color picker tools for deepin"
+                                                    "Deepin picker is a small, easy-to-use screen picker."
                                                     );
 
     const QString acknowledgementLink = "https://www.deepin.org/acknowledgments/deepin-picker";
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     app.loadTranslator();
         
     app.setOrganizationName("deepin");
-    app.setApplicationName(QObject::tr("deepin-picker"));
+    app.setApplicationName("deepin-picker");
     app.setApplicationVersion("1.0");
         
     app.setProductIcon(QPixmap::fromImage(QImage(Utils::getQrcPath("logo_96.svg"))));
