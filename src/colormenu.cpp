@@ -169,7 +169,7 @@ void ColorMenu::copyRGBColor()
 void ColorMenu::copyFloatRGBColor()
 {
     clickMenuItem = true;
-    copyColor(windowColor, "FLOAT_RGB");
+    copyColor(windowColor, "Float_RGB");
 }
 
 void ColorMenu::copyRGBAColor()
