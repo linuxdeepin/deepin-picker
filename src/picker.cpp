@@ -57,7 +57,7 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     windowHeight = 236;
     windowWidth = 236;
     
-    cursorPixmap = new QPixmap(Utils::getQrcPath("shadow.png"));
+    shadowPixmap = new QPixmap(Utils::getQrcPath("shadow.png"));
 
     // Init update screenshot timer.
     updateScreenshotTimer = new QTimer(this);
@@ -80,7 +80,7 @@ Picker::~Picker()
 {
     delete animation;
     delete menu;
-    delete cursorPixmap;
+    delete shadowPixmap;
     delete updateScreenshotTimer;
 }
 
@@ -117,7 +117,9 @@ void Picker::updateScreenshot()
             screenshotHeight).scaled(width, height);
 
         // Clip screenshot pixmap to circle.
-        QPainter painter(cursorPixmap);
+        // NOTE: need copy pixmap here, otherwise we will got bad circle.
+        QPixmap cursorPixmap = *shadowPixmap;
+        QPainter painter(&cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
 
         painter.save();
@@ -153,7 +155,7 @@ void Picker::updateScreenshot()
         painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1 + offsetX, height / 2 - blockHeight / 2 + 1 + offsetY, blockWidth - 2, blockHeight - 2));
 
         // Set screenshot as cursor.
-        QApplication::setOverrideCursor(QCursor(*cursorPixmap));
+        QApplication::setOverrideCursor(QCursor(cursorPixmap));
     }
 }
 

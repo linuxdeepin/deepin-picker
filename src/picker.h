@@ -58,7 +58,7 @@ protected:
 private:
     Animation *animation;
     ColorMenu *menu;
-    QPixmap *cursorPixmap;
+    QPixmap *shadowPixmap;
     QPixmap screenPixmap;
     QPixmap screenshotPixmap;
     QTimer *updateScreenshotTimer;
