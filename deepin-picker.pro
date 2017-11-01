@@ -16,6 +16,7 @@ HEADERS += src/picker.h \
            src/colormenu.h \		   		   
            src/clipboard.h \		   		   
            src/animation.h \		   		   
+           src/dbusnotify.h \		   		   
            src/settings.h \		   		   
            src/utils.h
 SOURCES += src/picker.cpp \		   
@@ -23,6 +24,7 @@ SOURCES += src/picker.cpp \
            src/colormenu.cpp \		   
            src/clipboard.cpp \		   
            src/animation.cpp \		   
+           src/dbusnotify.cpp \		   
            src/settings.cpp \		   
            src/utils.cpp \		   
 		   src/main.cpp		   
