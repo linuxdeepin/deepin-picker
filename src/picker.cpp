@@ -168,6 +168,7 @@ void Picker::handleLeftButtonPress(int x, int y)
 
         // Rest color type to hex if config file not exist.
         Settings *settings = new Settings();
+        
         if (!Utils::fileExists(settings->configPath())) {
             settings->setOption("color_type", "HEX");
         }

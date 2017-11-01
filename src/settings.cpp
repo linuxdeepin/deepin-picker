@@ -29,7 +29,7 @@
 Settings::Settings(QObject *parent) : QObject(parent)
 {
     // Init.
-    settings = new QSettings(QDir(configPath()).filePath("config.conf"), QSettings::IniFormat);
+    settings = new QSettings(configPath());
     groupName = "Configure";
 }
 
@@ -40,7 +40,11 @@ Settings::~Settings()
 
 QString Settings::configPath()
 {
-    return QDir(QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(qApp->organizationName())).filePath(qApp->applicationName());
+    QDir path = QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first());
+    path.cd(qApp->organizationName());
+    path.cd(qApp->applicationName());
+    
+    return path.filePath("config.conf");
 }
 
 QVariant Settings::getOption(const QString &key)
