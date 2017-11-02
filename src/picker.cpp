@@ -160,7 +160,7 @@ void Picker::updateScreenshot()
     }
 }
 
-void Picker::handleLeftButtonPress(int, int)
+void Picker::handleLeftButtonPress(int x, int y)
 {
     if (!displayCursorDot) {
         // Rest cursor and hide window.
@@ -175,6 +175,7 @@ void Picker::handleLeftButtonPress(int, int)
         }
         
         // Emit copyColor signal to copy color to system clipboard.
+        cursorColor = getColorAtCursor(x, y);
         copyColor(cursorColor, settings->getOption("color_type").toString());
     }
 }
