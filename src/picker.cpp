@@ -164,8 +164,9 @@ void Picker::handleLeftButtonPress(int x, int y)
 {
     if (!displayCursorDot) {
         // Rest cursor and hide window.
+        // NOTE: Don't call hide() at here, let process die,
+        // Otherwise mouse event will pass to application window under picker.
         QApplication::setOverrideCursor(Qt::ArrowCursor);
-        hide();
 
         // Rest color type to hex if config file not exist.
         Settings *settings = new Settings();
@@ -220,6 +221,7 @@ QColor Picker::getColorAtCursor(int x, int y)
 void Picker::popupColorMenu()
 {
     // Hide picker main window and popup color menu.
-    hide();
+    // NOTE: Don't call hide() at here, let process die,
+    // Otherwise mouse event will pass to application window under picker.
     menu->showMenu();
 }
