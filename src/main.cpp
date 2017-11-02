@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         
     app.setOrganizationName("deepin");
     app.setApplicationName("deepin-picker");
-    app.setApplicationVersion("1.0");
+    app.setApplicationVersion("1.2");
         
     app.setProductIcon(QPixmap::fromImage(QImage(Utils::getQrcPath("logo_96.svg"))));
     app.setProductName(DApplication::translate("MainWindow", "Deepin Picker"));
