@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
     
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP("MainWindow", 
-                                                    "Deepin picker is a small, easy-to-use screen picker."
-                                                    );
+                                                    "Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked."
+        );
 
     const QString acknowledgementLink = "https://www.deepin.org/acknowledgments/deepin-picker";
 
