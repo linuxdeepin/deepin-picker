@@ -4,6 +4,14 @@ Simplest color picker.
 ## [Unreleased]
 
 
+## [1.3] - 2017-11-02
+### Added
+- Use DBus start process to compatible with FlatPak
+- Use DBus popup composite warning dialog to compatible with FlatPak
+
+### Fixed
+- Fix left button got empty color.
+
 ## [1.2] - 2017-11-02
 ### Added
 - Support CMYK color
