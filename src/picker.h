@@ -35,7 +35,9 @@ class Picker : public QWidget
 {
     Q_OBJECT
     
-public:
+    Q_CLASSINFO("D-Bus Interface", "com.deepin.Picker")
+    
+    public:
     Picker(QWidget *parent=0);
 	~Picker(); 
              

@@ -23,6 +23,7 @@
 
 #include <DApplication>
 #include <DMainWindow>
+#include <QDBusConnection>
 #include <QApplication>
 #include <QScreen>
 #include <QDesktopWidget>
@@ -102,6 +103,11 @@ int main(int argc, char *argv[])
 
     // Start event monitor thread.
     eventMonitor.start();    
+    
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    if (dbus.registerService("com.deepin.Picker")) {
+        dbus.registerObject("/com/deepin/Picker", picker, QDBusConnection::ExportScriptableSlots);
+    }
     
     return app.exec();
 
