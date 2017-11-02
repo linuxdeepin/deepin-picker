@@ -10,6 +10,7 @@ Simplest color picker.
 - Support HSV color
 - Support HiDPI
 - Popup warning dialog if composite is not enable in system
+- Update translations from transifex.com
 
 ### Fixed
 - Fix the edge of the magnifying glass
