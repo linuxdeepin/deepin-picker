@@ -62,14 +62,14 @@ private:
     QPixmap screenPixmap;
     QPixmap screenshotPixmap;
     QTimer *updateScreenshotTimer;
+    QColor cursorColor;
     bool displayCursorDot;
     int blockHeight;
     int blockWidth;
     int cursorX;
     int cursorY;
     int height;
-    int screenshotHeight;
-    int screenshotWidth;
+    int screenshotSize;
     int width;
     int windowHeight;
     int windowWidth;

@@ -51,8 +51,7 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     blockWidth = 20;
     displayCursorDot = false;
     height = 220;
-    screenshotHeight = 11;
-    screenshotWidth = 11;
+    screenshotSize = 11;
     width = 220;
     windowHeight = 236;
     windowWidth = 236;
@@ -109,12 +108,14 @@ void Picker::updateScreenshot()
         int offsetY = (windowHeight - height) / 2;
 
         // Get image under cursor.
+        qreal devicePixelRatio = qApp->devicePixelRatio();
+        int size = screenshotSize / devicePixelRatio;
         screenshotPixmap = QApplication::primaryScreen()->grabWindow(
             0,
-            cursorX - screenshotWidth / 2,
-            cursorY - screenshotHeight / 2,
-            screenshotWidth,
-            screenshotHeight).scaled(width, height);
+            cursorX - size / 2,
+            cursorY - size / 2,
+            size,
+            size).scaled(width * devicePixelRatio, height * devicePixelRatio);
 
         // Clip screenshot pixmap to circle.
         // NOTE: need copy pixmap here, otherwise we will got bad circle.
@@ -159,7 +160,7 @@ void Picker::updateScreenshot()
     }
 }
 
-void Picker::handleLeftButtonPress(int x, int y)
+void Picker::handleLeftButtonPress(int, int)
 {
     if (!displayCursorDot) {
         // Rest cursor and hide window.
@@ -174,7 +175,7 @@ void Picker::handleLeftButtonPress(int x, int y)
         }
         
         // Emit copyColor signal to copy color to system clipboard.
-        copyColor(getColorAtCursor(x, y), settings->getOption("color_type").toString());
+        copyColor(cursorColor, settings->getOption("color_type").toString());
     }
 }
 
@@ -183,16 +184,23 @@ void Picker::handleRightButtonRelease(int x, int y)
     if (!displayCursorDot) {
         // Set displayCursorDot flag when click right button.
         displayCursorDot = true;
+        
+        cursorColor = getColorAtCursor(x, y);
 
         // Popup color menu window.
-        menu = new ColorMenu(x - blockWidth / 2, y - blockHeight / 2, blockWidth, getColorAtCursor(x, y));
+        qreal devicePixelRatio = qApp->devicePixelRatio();
+        menu = new ColorMenu(
+            x / devicePixelRatio - blockWidth / 2, 
+            y / devicePixelRatio - blockHeight / 2, 
+            blockWidth, 
+            cursorColor);
         connect(menu, &ColorMenu::copyColor, this, &Picker::copyColor, Qt::QueuedConnection);
         connect(menu, &ColorMenu::exit, this, &Picker::exit, Qt::QueuedConnection);
         menu->show();
         menu->setFocus();       // set focus to monitor 'aboutToHide' signal of color menu
     
         // Display animation before poup color menu.
-        animation = new Animation(x, y, screenshotPixmap, getColorAtCursor(x, y));
+        animation = new Animation(x / devicePixelRatio, y / devicePixelRatio, screenshotPixmap, cursorColor);
         connect(animation, &Animation::finish, this, &Picker::popupColorMenu, Qt::QueuedConnection);
 
         // Rest cursor to default cursor.

@@ -23,6 +23,7 @@
 
 #include "animation.h"
 #include "utils.h"
+#include <QApplication>
 #include <QColor>
 #include <QPainter>
 #include <QDebug>
@@ -66,7 +67,9 @@ Animation::~Animation()
 void Animation::paintEvent(QPaintEvent *)
 {
     // Make clip radius change along with ticker.
+    qreal devicePixelRatio = qApp->devicePixelRatio();
     int radius = screenshotPixmap.width() / 2 * (1 - Utils::easeInOut(renderTicker * 1.0 / animationFrames));
+    radius = radius / devicePixelRatio;
     
     int width = rect().width();
     int height = rect().height();

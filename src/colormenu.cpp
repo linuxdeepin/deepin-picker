@@ -49,6 +49,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     shadowXMargin = 20;
     windowColor = color;
     windowSize = size;
+    qreal devicePixelRatio = qApp->devicePixelRatio();
     windowX = x;
     windowY = y;
 
