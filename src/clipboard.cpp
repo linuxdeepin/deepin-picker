@@ -43,6 +43,7 @@ Clipboard::~Clipboard()
 void Clipboard::copyToClipboard(QColor color, QString colorType)
 {
     // Save color type to config file.
+    
     QString colorString;
     if (colorType == "HEX") {
         colorString = Utils::colorToHex(color);
@@ -56,6 +57,8 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
         colorString = Utils::colorToFloatRGBA(color);
     } else if (colorType == "CMYK") {
         colorString = Utils::colorToCMYK(color);
+    } else if (colorType == "HSV") {
+        colorString = Utils::colorToHSV(color);
     }
 
     Settings *settings = new Settings();

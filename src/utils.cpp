@@ -51,6 +51,11 @@ QString Utils::colorToCMYK(QColor color)
     return QString("(%1, %2, %3, %4)").arg(color.cyan()).arg(color.magenta()).arg(color.yellow()).arg(color.black());
 }
 
+QString Utils::colorToHSV(QColor color)
+{
+    return QString("(%1, %2, %3)").arg(color.hue()).arg(color.saturation()).arg(color.value());
+}
+
 QString Utils::colorToRGB(QColor color)
 {
     return QString("(%1, %2, %3)").arg(color.red()).arg(color.green()).arg(color.blue());

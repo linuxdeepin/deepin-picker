@@ -93,6 +93,10 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     cmykAction = new QAction("CMYK",this);
     cmykAction->setCheckable(true);
     connect(cmykAction, &QAction::triggered, this, &ColorMenu::copyCmykColor);
+
+    hsvAction = new QAction("HSV",this);
+    hsvAction->setCheckable(true);
+    connect(hsvAction, &QAction::triggered, this, &ColorMenu::copyHsvColor);
     
     colorMenu->addAction(rgbAction);
     colorMenu->addAction(rgbFloatAction);
@@ -100,6 +104,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     colorMenu->addAction(rgbaFloatAction);
     colorMenu->addAction(hexAction);
     colorMenu->addAction(cmykAction);
+    colorMenu->addAction(hsvAction);
 
     // Set menu action check status with color type.
     Settings *settings = new Settings();
@@ -115,6 +120,10 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
         rgbFloatAction->setChecked(true);
     } else if (colorType == "Float_RGBA") {
         rgbaFloatAction->setChecked(true);
+    } else if (colorType == "CMYK") {
+        cmykAction->setChecked(true);
+    } else if (colorType == "HSV") {
+        hsvAction->setChecked(true);
     }
     
     // Move and resize window.
@@ -200,4 +209,10 @@ void ColorMenu::copyCmykColor()
 {
     clickMenuItem = true;
     copyColor(windowColor, "CMYK");
+}
+
+void ColorMenu::copyHsvColor()
+{
+    clickMenuItem = true;
+    copyColor(windowColor, "HSV");
 }

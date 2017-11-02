@@ -47,6 +47,7 @@ public slots:
     void copyFloatRGBColor();
     void copyHexColor();
     void copyCmykColor();
+    void copyHsvColor();
     void copyRGBAColor();
     void copyRGBColor();
     void showMenu();
@@ -61,6 +62,7 @@ private:
     QAction *rgbaAction;
     QAction *rgbaFloatAction;
     QAction *cmykAction;
+    QAction *hsvAction;
     QColor windowColor;
     QMenu *colorMenu;
     bool clickMenuItem;
