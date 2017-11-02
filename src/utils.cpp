@@ -23,6 +23,7 @@
 
 #include "utils.h"
 #include <QApplication>
+#include <QDBusInterface>
 #include <QDebug>
 #include <QDir>
 #include <QFontMetrics>
@@ -30,6 +31,10 @@
 #include <QString>
 #include <QWidget>
 #include <QtMath>
+
+static const QString WarningDialogService = "com.deepin.dde.WarningDialog";
+static const QString WarningDialogPath = "/com/deepin/dde/WarningDialog";
+static const QString WarningDialogInterface = "com.deepin.dde.WarningDialog";
 
 QString Utils::getQrcPath(QString imageName)
 {
@@ -107,5 +112,13 @@ qreal Utils::easeInQuint(qreal x)
 qreal Utils::easeOutQuint(qreal x)
 {
     return qPow(x - 1, 5) + 1;
+}
+
+void Utils::warnNoComposite()
+{
+    QDBusInterface iface(WarningDialogService,
+                         WarningDialogPath,
+                         WarningDialogService);
+    iface.call("RaiseWindow");
 }
 

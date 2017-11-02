@@ -54,8 +54,7 @@ int main(int argc, char *argv[])
     DApplication app(argc, argv);
     
     if (!DWindowManagerHelper::instance()->hasComposite()) {
-        QProcess p;
-        p.startDetached("/usr/lib/deepin-daemon/dde-warning-dialog");
+        Utils::warnNoComposite();
         return 0;
     }
 

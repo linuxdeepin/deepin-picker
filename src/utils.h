@@ -47,4 +47,5 @@ public:
     static qreal easeInQuint(qreal x);
     static qreal easeOutQuad(qreal x);
     static qreal easeOutQuint(qreal x);
+    static void warnNoComposite();
 };
