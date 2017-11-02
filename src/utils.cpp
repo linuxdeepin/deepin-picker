@@ -43,7 +43,7 @@ QString Utils::getQssPath(QString qssName)
 
 QString Utils::colorToHex(QColor color)
 {
-    return QString("#%1%2%3").arg(color.red(), 2, 16, QLatin1Char('0')).arg(color.green(), 2, 16, QLatin1Char('0')).arg(color.blue(), 2, 16, QLatin1Char('0')).toUpper();
+    return color.name().toUpper();
 }
 
 QString Utils::colorToCMYK(QColor color)
