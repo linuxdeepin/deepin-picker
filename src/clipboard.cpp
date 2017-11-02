@@ -54,6 +54,8 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
         colorString = Utils::colorToFloatRGB(color);
     } else if (colorType == "Float_RGBA") {
         colorString = Utils::colorToFloatRGBA(color);
+    } else if (colorType == "CMYK") {
+        colorString = Utils::colorToCMYK(color);
     }
 
     Settings *settings = new Settings();

@@ -35,6 +35,7 @@ public:
     static QString getQssPath(QString qssName);
     static void passInputEvent(int wid);
     static QString colorToHex(QColor color);
+    static QString colorToCMYK(QColor color);
     static QString colorToRGB(QColor color);
     static QString colorToRGBA(QColor color);
     static QString colorToFloatRGB(QColor color);

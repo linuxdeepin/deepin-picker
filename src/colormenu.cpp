@@ -89,12 +89,17 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     hexAction = new QAction("HEX",this);
     hexAction->setCheckable(true);
     connect(hexAction, &QAction::triggered, this, &ColorMenu::copyHexColor);
+
+    cmykAction = new QAction("CMYK",this);
+    cmykAction->setCheckable(true);
+    connect(cmykAction, &QAction::triggered, this, &ColorMenu::copyCmykColor);
     
     colorMenu->addAction(rgbAction);
     colorMenu->addAction(rgbFloatAction);
     colorMenu->addAction(rgbaAction);
     colorMenu->addAction(rgbaFloatAction);
     colorMenu->addAction(hexAction);
+    colorMenu->addAction(cmykAction);
 
     // Set menu action check status with color type.
     Settings *settings = new Settings();
@@ -124,6 +129,7 @@ ColorMenu::~ColorMenu()
     delete rgbFloatAction;
     delete rgbaAction;
     delete rgbaFloatAction;
+    delete cmykAction;
     delete colorMenu;
 }
 
@@ -188,4 +194,10 @@ void ColorMenu::copyHexColor()
 {
     clickMenuItem = true;
     copyColor(windowColor, "HEX");
+}
+
+void ColorMenu::copyCmykColor()
+{
+    clickMenuItem = true;
+    copyColor(windowColor, "CMYK");
 }
