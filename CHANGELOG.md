@@ -4,6 +4,9 @@ Simplest color picker.
 ## [Unreleased]
 
 
+## [1.4] - 2017-11-02
+- Fix mouse event pass to application window under picker
+
 ## [1.3] - 2017-11-02
 ### Added
 - Use DBus start process to compatible with FlatPak
