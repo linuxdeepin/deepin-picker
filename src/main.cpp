@@ -27,6 +27,8 @@
 #include <QScreen>
 #include <QDesktopWidget>
 #include <DWidgetUtil>
+#include <QProcess>
+#include <DWindowManagerHelper>
 #include <QDebug>
 #include <iostream>
 #include "utils.h"
@@ -50,6 +52,13 @@ int main(int argc, char *argv[])
 
     // Init dtk application's attrubites.
     DApplication app(argc, argv);
+    
+    if (!DWindowManagerHelper::instance()->hasComposite()) {
+        QProcess p;
+        p.startDetached("/usr/lib/deepin-daemon/dde-warning-dialog");
+        return 0;
+    }
+
     app.loadTranslator();
         
     app.setOrganizationName("deepin");
