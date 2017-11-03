@@ -40,6 +40,10 @@ QT += svg
 QMAKE_CXXFLAGS += -g
 LIBS += -lX11 -lXext -lXtst
 
+isEmpty(PREFIX){
+    PREFIX = /usr
+}
+
 isEmpty(BINDIR):BINDIR=/usr/bin
 isEmpty(ICONDIR):ICONDIR=/usr/share/icons/hicolor/scalable/apps
 isEmpty(APPDIR):APPDIR=/usr/share/applications
@@ -56,11 +60,13 @@ icon.files = image/deepin-picker.svg
 desktop.files = deepin-picker.desktop
 manual.files = manual/*
 
-INSTALLS += target icon desktop manual
+dbus_service.files = $$PWD/com.deepin.Picker.service
+dbus_service.path = $$PREFIX/share/dbus-1/services
+
+INSTALLS += target icon desktop manual dbus_service
 
 isEmpty(TRANSLATIONS) {
      include(translations.pri)
-
 }
 
 TRANSLATIONS_COMPILED = $$TRANSLATIONS
