@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #include "picker.h"
 #include "animation.h"
@@ -55,7 +55,7 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     width = 220;
     windowHeight = 236;
     windowWidth = 236;
-    
+
     shadowPixmap = new QPixmap(Utils::getQrcPath("shadow.png"));
 
     // Init update screenshot timer.
@@ -170,14 +170,10 @@ void Picker::handleLeftButtonPress(int x, int y)
 
         // Rest color type to hex if config file not exist.
         Settings *settings = new Settings();
-        
-        if (!Utils::fileExists(settings->configPath())) {
-            settings->setOption("color_type", "HEX");
-        }
-        
+
         // Emit copyColor signal to copy color to system clipboard.
         cursorColor = getColorAtCursor(x, y);
-        copyColor(cursorColor, settings->getOption("color_type").toString());
+        copyColor(cursorColor, settings->getOption("color_type", "HEX").toString());
     }
 }
 
@@ -186,21 +182,21 @@ void Picker::handleRightButtonRelease(int x, int y)
     if (!displayCursorDot) {
         // Set displayCursorDot flag when click right button.
         displayCursorDot = true;
-        
+
         cursorColor = getColorAtCursor(x, y);
 
         // Popup color menu window.
         qreal devicePixelRatio = qApp->devicePixelRatio();
         menu = new ColorMenu(
-            x / devicePixelRatio - blockWidth / 2, 
-            y / devicePixelRatio - blockHeight / 2, 
-            blockWidth, 
+            x / devicePixelRatio - blockWidth / 2,
+            y / devicePixelRatio - blockHeight / 2,
+            blockWidth,
             cursorColor);
         connect(menu, &ColorMenu::copyColor, this, &Picker::copyColor, Qt::QueuedConnection);
         connect(menu, &ColorMenu::exit, this, &Picker::exit, Qt::QueuedConnection);
         menu->show();
         menu->setFocus();       // set focus to monitor 'aboutToHide' signal of color menu
-    
+
         // Display animation before poup color menu.
         animation = new Animation(x / devicePixelRatio, y / devicePixelRatio, screenshotPixmap, cursorColor);
         connect(animation, &Animation::finish, this, &Picker::popupColorMenu, Qt::QueuedConnection);

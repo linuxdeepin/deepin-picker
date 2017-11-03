@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #include <QObject>
 #include <QString>
@@ -29,7 +29,7 @@
 class Utils : public QObject
 {
     Q_OBJECT
-    
+
 public:
     static QString getQrcPath(QString imageName);
     static QString getQssPath(QString qssName);
@@ -41,7 +41,6 @@ public:
     static QString colorToRGBA(QColor color);
     static QString colorToFloatRGB(QColor color);
     static QString colorToFloatRGBA(QColor color);
-    static bool fileExists(QString path);
     static qreal easeInOut(qreal x);
     static qreal easeInQuad(qreal x);
     static qreal easeInQuint(qreal x);

@@ -43,7 +43,7 @@ Clipboard::~Clipboard()
 void Clipboard::copyToClipboard(QColor color, QString colorType)
 {
     // Save color type to config file.
-    
+
     QString colorString;
     if (colorType == "HEX") {
         colorString = Utils::colorToHex(color);
@@ -65,7 +65,7 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     settings->setOption("color_type", colorType);
 
     // Popup notify.
-    DBusNotify* notifyDBus = new DBusNotify(this);
+    DBusNotify *notifyDBus = new DBusNotify(this);
     notifyDBus->CloseNotification(0); // we need hide last time system notify first
 
     QStringList actions;

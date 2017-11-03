@@ -19,12 +19,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #include <QApplication>
 #include <QStandardPaths>
 #include <QDir>
 #include "settings.h"
+
+#include <QDebug>
 
 Settings::Settings(QObject *parent) : QObject(parent)
 {
@@ -40,28 +42,23 @@ Settings::~Settings()
 
 QString Settings::configPath()
 {
-    QDir path = QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first());
-    path.cd(qApp->organizationName());
-    path.cd(qApp->applicationName());
-    
-    return path.filePath("config.conf");
+    QString path = QString("%1/%2/config.conf").
+                   arg(qApp->organizationName()).
+                   arg(qApp->applicationName());
+    return path;
 }
 
-QVariant Settings::getOption(const QString &key)
+QVariant Settings::getOption(const QString &key, const QVariant &defaultValue)
 {
-    settings->beginGroup(groupName);
     QVariant result;
-    if (settings->contains(key)) {
-        result = settings->value(key);
-    } else {
-        result = QVariant();
-    }
+    settings->beginGroup(groupName);
+    result = settings->value(key, defaultValue);
     settings->endGroup();
-
     return result;
 }
 
-void Settings::setOption(const QString &key, const QVariant &value) {
+void Settings::setOption(const QString &key, const QVariant &value)
+{
     settings->beginGroup(groupName);
     settings->setValue(key, value);
     settings->endGroup();

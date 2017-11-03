@@ -81,14 +81,6 @@ QString Utils::colorToFloatRGBA(QColor color)
     return QString("(%1, %2, %3, 1.0)").arg(color.red() / 255.0).arg(color.green() / 255.0).arg(color.blue() / 255.0);
 }
 
-bool Utils::fileExists(QString path) 
-{
-    QFileInfo check_file(path);
-    
-    // check if file exists and if yes: Is it really a file and no directory?
-    return check_file.exists() && check_file.isFile();
-}
-
 qreal Utils::easeInOut(qreal x)
 {
     return (1 - qCos(M_PI * x)) / 2;

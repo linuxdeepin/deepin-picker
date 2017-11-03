@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #include "colormenu.h"
 #include "settings.h"
@@ -40,7 +40,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
-    
+
     // Init attributes.
     clickMenuItem = false;
     menuOffsetX = 10;
@@ -49,13 +49,12 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     shadowXMargin = 20;
     windowColor = color;
     windowSize = size;
-    qreal devicePixelRatio = qApp->devicePixelRatio();
     windowX = x;
     windowY = y;
 
     // Add drop shadow window effect.
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
-    effect->setColor(QColor(0, 0, 0, 255 * 0.2));
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect();
+    effect->setColor(QColor(0, 0, 0, 255 * 2 / 10));
     effect->setBlurRadius(10);
     effect->setXOffset(0);
     effect->setYOffset(5);
@@ -63,42 +62,42 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
 
     // Build menu and menu actions.
     colorMenu = new QMenu();
-    connect(colorMenu, &QMenu::aboutToHide, this, [&] () {
-            QTimer::singleShot(200, this, [&] () {
-                    if (!clickMenuItem) {
-                        exit();
-                    }
-                });
+    connect(colorMenu, &QMenu::aboutToHide, this, [&]() {
+        QTimer::singleShot(200, this, [&]() {
+            if (!clickMenuItem) {
+                exit();
+            }
         });
-    
+    });
+
     rgbAction = new QAction("RGB", this);
     rgbAction->setCheckable(true);
     connect(rgbAction, &QAction::triggered, this, &ColorMenu::copyRGBColor);
-    
+
     rgbFloatAction = new QAction("RGB (1.0)", this);
     rgbFloatAction->setCheckable(true);
     connect(rgbFloatAction, &QAction::triggered, this, &ColorMenu::copyFloatRGBColor);
-    
+
     rgbaAction = new QAction("RGBA", this);
     rgbaAction->setCheckable(true);
     connect(rgbaAction, &QAction::triggered, this, &ColorMenu::copyRGBAColor);
-    
+
     rgbaFloatAction = new QAction("RGBA (1.0)", this);
     rgbaFloatAction->setCheckable(true);
     connect(rgbaFloatAction, &QAction::triggered, this, &ColorMenu::copyFloatRGBAColor);
-    
-    hexAction = new QAction("HEX",this);
+
+    hexAction = new QAction("HEX", this);
     hexAction->setCheckable(true);
     connect(hexAction, &QAction::triggered, this, &ColorMenu::copyHexColor);
 
-    cmykAction = new QAction("CMYK",this);
+    cmykAction = new QAction("CMYK", this);
     cmykAction->setCheckable(true);
     connect(cmykAction, &QAction::triggered, this, &ColorMenu::copyCmykColor);
 
-    hsvAction = new QAction("HSV",this);
+    hsvAction = new QAction("HSV", this);
     hsvAction->setCheckable(true);
     connect(hsvAction, &QAction::triggered, this, &ColorMenu::copyHsvColor);
-    
+
     colorMenu->addAction(rgbAction);
     colorMenu->addAction(rgbFloatAction);
     colorMenu->addAction(rgbaAction);
@@ -109,7 +108,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
 
     // Set menu action check status with color type.
     Settings *settings = new Settings();
-    QString colorType = settings->getOption("color_type").toString();
+    QString colorType = settings->getOption("color_type", "HEX").toString();
 
     if (colorType == "HEX") {
         hexAction->setChecked(true);
@@ -126,7 +125,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     } else if (colorType == "HSV") {
         hsvAction->setChecked(true);
     }
-    
+
     // Move and resize window.
     move(x - shadowXMargin, y);
     resize(windowSize + shadowXMargin * 2, windowSize + shadowBottomMargin);
@@ -146,7 +145,7 @@ ColorMenu::~ColorMenu()
 void ColorMenu::paintEvent(QPaintEvent *)
 {
     int x = shadowXMargin;
-    
+
     QPainter painter(this);
     painter.setOpacity(1);
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -154,7 +153,7 @@ void ColorMenu::paintEvent(QPaintEvent *)
     painter.drawRect(QRect(x + 1, 1, windowSize - 3, windowSize - 3));
     painter.setPen(windowColor);
     painter.drawRect(QRect(x + 1, 1, windowSize - 3, windowSize - 3));
-    
+
     painter.setRenderHint(QPainter::Antialiasing, false);
     QPen outsidePen("#000000");
     outsidePen.setWidth(1);
