@@ -4,6 +4,11 @@ Simplest color picker.
 ## [Unreleased]
 
 
+## [1.5] - 2017-11-06
+- Support FlatPak, add dbus service file
+- Fix color type can't save in config file with FlatPak environment
+- Synchronous translations
+
 ## [1.4] - 2017-11-02
 - Fix mouse event pass to application window under picker
 
