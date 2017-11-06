@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/main.cpp" line="47"/>
         <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation type="unfinished"/>
+        <translation>Deepin Výber je nástroj rýchleho vyberania farieb na obrazovke. RGB a HEX kód je možné získať podľa vybratej farby a automaticky uloženej do schránky. Oblasť výberu farieb je miesto, kde kliknete myšou.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="69"/>

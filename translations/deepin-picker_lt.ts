@@ -12,7 +12,7 @@
     <message>
         <location filename="../src/main.cpp" line="47"/>
         <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation type="unfinished"/>
+        <translation>Deepin parinkiklis yra greitas ekrano spalvos parinkimo įrankis. Pagal parinktą spalvą gali būti gautas ir nukopijuotas į iškarpinę RGB ir HEX kodas. Spalvos parinkimo sritis yra ten, kur yra spustelėjama pele.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="69"/>
