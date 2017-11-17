@@ -3,6 +3,15 @@ Simplest color picker.
 
 ## [Unreleased]
 
+## [1.6] - 2017-11-17
+
+### Features
+- Install dbus service
+
+### Bug Fixes
+
+- Flatpak_icon_workaround
+- Set color_type default value
 
 ## [1.4] - 2017-11-02
 - Fix mouse event pass to application window under picker
