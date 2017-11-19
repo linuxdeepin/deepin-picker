@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt" version="2.1">
 <context>
     <name>Clipboard</name>
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>Copiando a cor faltando 1% para a área de  transferência</translation>
+        <translation>Copiar cor %1 para memória</translation>
     </message>
 </context>
 <context>
@@ -12,12 +12,12 @@
     <message>
         <location filename="../src/main.cpp" line="47"/>
         <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>Deepin Picker é uma ferramenta de seleção rápida de cores de tela. O código RGB e HEX pode ser obtido de acordo com a cor escolhida e auto salva na área de transferência. A área de escolha de cores é onde o mouse clicou.</translation>
+        <translation>Identificador de Cor do Deepin é uma ferramenta rápida para escolha de cores. O código HEX ou RGB pode ser obtido de acordo com a cor seleccionada e gravado automaticamente para a memória. O ponteiro do rato é usado para escolher a zona a identificar.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="69"/>
         <source>Deepin Picker</source>
-        <translation>Deepin Picker</translation>
+        <translation>Identificador de Cor Deepin</translation>
     </message>
 </context>
 </TS>
