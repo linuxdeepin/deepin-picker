@@ -3,13 +3,14 @@ Simplest color picker.
 
 ## [Unreleased]
 
-## [1.6] - 2017-11-17
+## [1.6.1] - 2017-11-22
+- Update translation
 
+## [1.5] - 2017-11-17
 ### Features
 - Install dbus service
 
 ### Bug Fixes
-
 - Flatpak_icon_workaround
 - Set color_type default value
 
