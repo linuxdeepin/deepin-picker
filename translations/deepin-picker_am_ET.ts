@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="am_ET" version="2.1">
 <context>
     <name>Clipboard</name>
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>Copiar color %1 al portapapeles </translation>
+        <translation>ቀለም ኮፒ ማድረጊያ ወደ  %1  ቁራጭ ሰሌዳ</translation>
     </message>
 </context>
 <context>
@@ -12,12 +12,12 @@
     <message>
         <location filename="../src/main.cpp" line="47"/>
         <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>El selector deepin es una herramienta de selección de color en pantalla. El código RGB y HEX se  obtiene de acuerdo al color elegido y se guarda automáticamente en el portapapeles. El área de selección de color es donde debe hacer clic con el ratón.</translation>
+        <translation>ዲፕኢን መምረጫ ፈጣን የ መመልከቻ ቀለም መምረጫ መሳሪያ ነው: RGB እና HEX ኮድ ማግኘት ይቻላል እንደ ቀለም ምርጫው አይነት:  እና በራሱ ያስቀምጣል ወደ ቁራጭ ሰሌዳ ውስጥ:የ ቀለም መምረጫ ቦታ ላይ ነው አይጡን መጫን ያለብዎት</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="69"/>
         <source>Deepin Picker</source>
-        <translation>Selector Deepin</translation>
+        <translation>ዲፕኢን መምረጫ</translation>
     </message>
 </context>
 </TS>
