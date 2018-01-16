@@ -1,0 +1,17 @@
+[Desktop Entry]
+Categories=Graphics;Picker;
+Comment=Color picker
+Exec=deepin-picker
+Icon=deepin-picker
+Name=Deepin Picker
+StartupNotify=true
+TryExec=deepin-picker
+Type=Application
+
+# Translations
+
+
+# Translations
+Name[ca]=Selector del Deepin
+Comment[ca]=Selector de color
+Icon[ca]=selector-deepin
