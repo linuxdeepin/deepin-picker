@@ -211,6 +211,7 @@ void Picker::handleRightButtonRelease(int x, int y)
 
 QColor Picker::getColorAtCursor(int x, int y)
 {
+    screenPixmap = QApplication::primaryScreen()->grabWindow(0);
     return QColor(screenPixmap.copy(x, y, 1, 1).toImage().pixel(0, 0));
 }
 
