@@ -173,7 +173,7 @@ void Picker::handleLeftButtonPress(int x, int y)
         copyColor(cursorColor, settings->getOption("color_type", "HEX").toString());
         
         // Send 
-        if (isLaunchByDBus) {
+        if (isLaunchByDBus && appid != "") {
             colorPicked(appid, Utils::colorToHex(cursorColor));
         }
     }
@@ -227,8 +227,10 @@ void Picker::popupColorMenu()
 
 void Picker::StartPick(QString id)
 {
+    // Update app id.
     appid = id;
     
+    // Show window.
     show();
 
     // Update screenshot when start.

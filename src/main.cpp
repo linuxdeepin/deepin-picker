@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     Clipboard *clipboard = new Clipboard();
     Picker *picker = new Picker(isLaunchByDBus);
     if (!isLaunchByDBus) {
-        picker->show();
+        picker->StartPick("");
     }
 
     EventMonitor eventMonitor;
