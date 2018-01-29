@@ -38,7 +38,7 @@ class Picker : public QWidget
     Q_CLASSINFO("D-Bus Interface", "com.deepin.Picker")
     
     public:
-    Picker(QWidget *parent=0);
+    Picker(bool launchByDBus);
 	~Picker(); 
              
     QColor getColorAtCursor(int x, int y);
@@ -46,6 +46,8 @@ class Picker : public QWidget
 signals:
     void copyColor(QColor color, QString colorType);
     void exit();
+               
+    Q_SCRIPTABLE void colorPicked(QString appid, QString color);
                  
 public slots:
     void handleLeftButtonPress(int x, int y);
@@ -53,6 +55,8 @@ public slots:
     void handleRightButtonRelease(int x, int y);
     void popupColorMenu();
     void updateScreenshot();
+    
+    Q_SCRIPTABLE void StartPick(QString appid);
     
 protected:
     void paintEvent(QPaintEvent *);
@@ -75,6 +79,8 @@ private:
     int width;
     int windowHeight;
     int windowWidth;
+    bool isLaunchByDBus;
+    QString appid;
 };	
 
 #endif

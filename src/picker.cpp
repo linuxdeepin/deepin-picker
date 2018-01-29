@@ -38,8 +38,11 @@
 #include <QDesktopWidget>
 #include <QDebug>
 
-Picker::Picker(QWidget *parent) : QWidget(parent)
+Picker::Picker(bool launchByDBus)
 {
+    // Init app id.
+    isLaunchByDBus = launchByDBus;
+    
     // Init window flags.
     setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -67,12 +70,6 @@ Picker::Picker(QWidget *parent) : QWidget(parent)
     screenPixmap = QApplication::primaryScreen()->grabWindow(0);
     resize(screenPixmap.size());
     move(0, 0);
-
-    // Show.
-    show();
-
-    // Update screenshot when start.
-    updateScreenshot();
 }
 
 Picker::~Picker()
@@ -98,7 +95,7 @@ void Picker::handleMouseMove(int, int)
 
 void Picker::updateScreenshot()
 {
-    if (!displayCursorDot) {
+    if (!displayCursorDot && isVisible()) {
         // Get cursor coordinate.
         cursorX = QCursor::pos().x();
         cursorY = QCursor::pos().y();
@@ -162,7 +159,7 @@ void Picker::updateScreenshot()
 
 void Picker::handleLeftButtonPress(int x, int y)
 {
-    if (!displayCursorDot) {
+    if (!displayCursorDot && isVisible()) {
         // Rest cursor and hide window.
         // NOTE: Don't call hide() at here, let process die,
         // Otherwise mouse event will pass to application window under picker.
@@ -174,12 +171,17 @@ void Picker::handleLeftButtonPress(int x, int y)
         // Emit copyColor signal to copy color to system clipboard.
         cursorColor = getColorAtCursor(x, y);
         copyColor(cursorColor, settings->getOption("color_type", "HEX").toString());
+        
+        // Send 
+        if (isLaunchByDBus) {
+            colorPicked(appid, Utils::colorToHex(cursorColor));
+        }
     }
 }
 
 void Picker::handleRightButtonRelease(int x, int y)
 {
-    if (!displayCursorDot) {
+    if (!displayCursorDot && isVisible()) {
         // Set displayCursorDot flag when click right button.
         displayCursorDot = true;
 
@@ -221,4 +223,14 @@ void Picker::popupColorMenu()
     // NOTE: Don't call hide() at here, let process die,
     // Otherwise mouse event will pass to application window under picker.
     menu->showMenu();
+}
+
+void Picker::StartPick(QString id)
+{
+    appid = id;
+    
+    show();
+
+    // Update screenshot when start.
+    updateScreenshot();
 }
