@@ -172,7 +172,7 @@ void Picker::handleLeftButtonPress(int x, int y)
         cursorColor = getColorAtCursor(x, y);
         copyColor(cursorColor, settings->getOption("color_type", "HEX").toString());
         
-        // Send 
+        // Send colorPicked signal when call by DBus and no empty appid.
         if (isLaunchByDBus && appid != "") {
             colorPicked(appid, Utils::colorToHex(cursorColor));
         }
