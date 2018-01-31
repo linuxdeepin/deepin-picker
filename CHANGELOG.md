@@ -3,6 +3,11 @@ Simplest color picker.
 
 ## [Unreleased]
 
+## [1.6.2] - 2018-1-31
+- Update translation
+- Regenerate screenPixmap when the color is picked, thanks Bet4
+- Provide dbus API to make other application can call deepin-picker for color pick
+
 ## [1.6.1] - 2017-11-22
 - Update translation
 
