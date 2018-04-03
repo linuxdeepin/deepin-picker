@@ -64,11 +64,11 @@ protected:
 private:
     Animation *animation;
     ColorMenu *menu;
-    QPixmap *shadowPixmap;
     QPixmap screenPixmap;
     QPixmap screenshotPixmap;
     QTimer *updateScreenshotTimer;
     QColor cursorColor;
+    QPixmap shadowPixmap;
     bool displayCursorDot;
     int blockHeight;
     int blockWidth;

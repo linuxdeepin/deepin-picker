@@ -32,6 +32,7 @@
 #include <QProcess>
 #include <DWindowManagerHelper>
 #include <QDebug>
+#include <QPointer>
 #include <iostream>
 #include "utils.h"
 #include "clipboard.h"
@@ -83,37 +84,51 @@ int main(int argc, char *argv[])
     bool isLaunchByDBus = parser.isSet(appidOption);
 
     // Init modules.
-    Clipboard *clipboard = new Clipboard();
-    Picker *picker = new Picker(isLaunchByDBus);
+    Clipboard clipboard;
+    QPointer<Picker> picker = new Picker(isLaunchByDBus);
     if (!isLaunchByDBus) {
         picker->StartPick("");
     }
 
     EventMonitor eventMonitor;
 
+    QObject::connect(qApp, &DApplication::destroyed, [&] { if (eventMonitor.isRunning()) eventMonitor.terminate(); });
+
     // Exit xrecord thread when copy color to system clipboard.
-    QObject::connect(picker, &Picker::copyColor, clipboard, [&] () {
-                                                                eventMonitor.terminate();
+    QObject::connect(picker.data(), &Picker::copyColor, &clipboard, [&] () {
+                                                                            if (eventMonitor.isRunning())
+                                                                            {
+                                                                                eventMonitor.terminate();
+                                                                                eventMonitor.wait();
+                                                                            }
                                                             });
 
     // Exit application when module trigger exit signal.
-    QObject::connect(picker, &Picker::exit, clipboard, [&] () {
-                                                           eventMonitor.terminate();
+    QObject::connect(picker.data(), &Picker::exit, &clipboard, [&] () {
+                                                           if (eventMonitor.isRunning())
+                                                           {
+                                                               eventMonitor.terminate();
+                                                               eventMonitor.wait();
+                                                           }
                                                            QApplication::quit();
                                                        });
     // Exit application when user press esc to cancel pick.
-    QObject::connect(&eventMonitor, &EventMonitor::pressEsc, clipboard, [&] () {
-                                                                            eventMonitor.terminate();
+    QObject::connect(&eventMonitor, &EventMonitor::pressEsc, &clipboard, [&] () {
+                                                                            if (eventMonitor.isRunning())
+                                                                            {
+                                                                                eventMonitor.terminate();
+                                                                                eventMonitor.wait();
+                                                                            }
                                                                             QApplication::quit();
                                                                         });
 
     // Trigger copyToClipboard slot when got copyColor signal.
-    QObject::connect(picker, &Picker::copyColor, clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
+    QObject::connect(picker.data(), &Picker::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
 
     // Binding handler to xrecord signal.
-    QObject::connect(&eventMonitor, &EventMonitor::mouseMove, picker, &Picker::handleMouseMove, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &EventMonitor::leftButtonPress, picker, &Picker::handleLeftButtonPress, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &EventMonitor::rightButtonRelease, picker, &Picker::handleRightButtonRelease, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &EventMonitor::mouseMove, picker.data(), &Picker::handleMouseMove, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &EventMonitor::leftButtonPress, picker.data(), &Picker::handleLeftButtonPress, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &EventMonitor::rightButtonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
 
     // Start event monitor thread.
     eventMonitor.start();
@@ -121,7 +136,7 @@ int main(int argc, char *argv[])
     if (isLaunchByDBus) {
         QDBusConnection dbus = QDBusConnection::sessionBus();
         if (dbus.registerService("com.deepin.Picker")) {
-            dbus.registerObject("/com/deepin/Picker", picker, QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
+            dbus.registerObject("/com/deepin/Picker", picker.data(), QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
         }
     }
     
