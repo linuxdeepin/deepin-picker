@@ -12,6 +12,6 @@ Type=Application
 
 
 # Translations
-Name[tr]=Deepin Seçici
 Comment[tr]=Renk seçici
-Icon[tr]=deepin-seçici
+Icon[tr]=deepin-renk-secici
+Name[tr]=Deepin Renk Seçici

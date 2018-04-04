@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>Kopijuoti %1 spalvą į iškarpinę</translation>
+        <translation>Spalva %1 nukopijuota į iškarpinę</translation>
     </message>
 </context>
 <context>

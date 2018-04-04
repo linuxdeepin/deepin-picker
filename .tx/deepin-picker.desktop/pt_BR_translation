@@ -12,6 +12,6 @@ Type=Application
 
 
 # Translations
-Name[pt_BR]=Deepin Picker
 Comment[pt_BR]=Selecionador de cor
 Icon[pt_BR]=deepin-picker
+Name[pt_BR]=Deepin Picker

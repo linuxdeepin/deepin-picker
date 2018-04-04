@@ -12,6 +12,6 @@ Type=Application
 
 
 # Translations
-Name[ru]=Сборщик Deepin
 Comment[ru]=Выбор цвета
-Icon[ru]=сборщик-deepin
+Icon[ru]=сборщик цветовых кодов-deepin
+Name[ru]=Сборщик Цветовых Кодов Deepin

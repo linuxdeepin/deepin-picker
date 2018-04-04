@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>Скопировать цвет %1 в буфер обмена</translation>
+        <translation>Цвет %1 скопирован в буфер обмена</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/main.cpp" line="69"/>
         <source>Deepin Picker</source>
-        <translation>Выбор цвета Deepin</translation>
+        <translation>Сборщик Цветовых Кодов Deepin</translation>
     </message>
 </context>
 </TS>

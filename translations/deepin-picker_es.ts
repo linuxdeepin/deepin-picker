@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>Copiar color %1 al portapapeles </translation>
+        <translation>Color copiado %1 al portapapeles </translation>
     </message>
 </context>
 <context>

@@ -12,6 +12,6 @@ Type=Application
 
 
 # Translations
-Comment[hr]=Birač boja
-Icon[hr]=deepin-birač
-Name[hr]=Deepin birač
+Comment[bg]=Избор на цвят
+Icon[bg]=deepin-picker
+Name[bg]=Deepin Picker

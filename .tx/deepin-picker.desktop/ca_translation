@@ -12,6 +12,6 @@ Type=Application
 
 
 # Translations
-Name[ca]=Selector del Deepin
 Comment[ca]=Selector de color
 Icon[ca]=selector-deepin
+Name[ca]=Selector del Deepin

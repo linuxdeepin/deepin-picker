@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>%1 rengi panoya kopyala</translation>
+        <translation>%1 rengini panoya kopyala</translation>
     </message>
 </context>
 <context>
@@ -12,12 +12,12 @@
     <message>
         <location filename="../src/main.cpp" line="47"/>
         <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>Deepin Seçici hızlı bir ekran renk toplama aracıdır. RGB ve HEX kodu alınmış renge göre elde edilebilir ve otomatik olarak panoya kaydedilir. Renk toplama alanı fare tıklandığı yerdir.</translation>
+        <translation>Deepin Renk Seçici ekrandaki renk kodlarını kolayca almayı sağlayan bir araçtır. Seçilen rengin RGB ve HEX kodları otomatik olarak alınarak panoya kopyalanır. Fare ile tıklanan alandaki renk alınır.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="69"/>
         <source>Deepin Picker</source>
-        <translation>Deepin Seçici</translation>
+        <translation>Deepin Renk Seçici</translation>
     </message>
 </context>
 </TS>

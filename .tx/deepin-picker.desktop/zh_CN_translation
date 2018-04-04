@@ -12,6 +12,6 @@ Type=Application
 
 
 # Translations
-Name[zh_CN]=深度取色器
 Comment[zh_CN]=颜色取色器
 Icon[zh_CN]=deepin-picker
+Name[zh_CN]=深度取色器
