@@ -1,3 +1,9 @@
+<a name=""></a>
+##  1.6.3 (2018-07-31)
+
+
+
+
 # Change Log
 Simplest color picker.
 
