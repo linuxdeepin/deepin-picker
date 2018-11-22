@@ -10,6 +10,7 @@ source_lang = en
 type = QT
 
 [deepin-picker.desktop]
-source_file = deepin-picker.desktop
+file_filter = translations/desktop/desktop_<lang>.ts
+source_file = translations/desktop.ts
 source_lang = en
-type = DESKTOP
+type = QT
