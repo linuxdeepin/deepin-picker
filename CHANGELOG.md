@@ -1,4 +1,14 @@
 <a name=""></a>
+##  1.6.4 (2018-11-23)
+
+
+#### Features
+
+* **desktop:**  add generic name. ([78df0a1b](https://github.com/linuxdeepin/deepin-picker/commit/78df0a1b33c9300d9d222e07292d657d1361506b))
+
+
+
+<a name=""></a>
 ##  1.6.3 (2018-07-31)
 
 
