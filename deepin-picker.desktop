@@ -10,3 +10,45 @@ TryExec=deepin-picker
 Type=Application
 X-Deepin-Vendor=deepin
 
+# Translations:
+# Do not manually modify!
+Comment[ast]=Seleutor de colores
+Comment[ca]=Selector de color
+Comment[fr]=Pipette à couleurs
+Comment[it]=Color picker
+Comment[lt]=Spalvos parinkiklis
+Comment[nl]=Kleurkiezer
+Comment[pt_BR]=Selecionador de cor
+Comment[ru]=Выбор цвета
+Comment[sk]=Výber farby
+Comment[sq]=Zgjedhës ngjyrash
+Comment[sr]=Пипета за боје
+Comment[tr]=Renk seçici
+Comment[zh_CN]=取色器
+GenericName[ast]=Seleutor
+GenericName[ca]=Selector
+GenericName[fr]=Pipette
+GenericName[it]=Picker
+GenericName[lt]=Parinkiklis
+GenericName[nl]=Kiezer
+GenericName[pt_BR]=Selecionador
+GenericName[ru]=Сборщик Цветовых Кодов
+GenericName[sk]=Výber
+GenericName[sq]=Zgjedhës
+GenericName[sr]=Пипета
+GenericName[tr]=Renk Seçici
+GenericName[zh_CN]=取色器
+Name[ast]=Deepin Picker
+Name[ca]=Selector del Deepin
+Name[fr]=Deepin Picker
+Name[it]=Deepin Picker
+Name[lt]=Deepin parinkiklis
+Name[nl]=Deepin Kleurkiezer
+Name[pt_BR]=Selecionador Deepin
+Name[ru]=Сборщик Цветовых Кодов Deepin
+Name[sk]=Deepin Výber
+Name[sq]=Zgjedhësi Deepin
+Name[sr]=Дипин Пипета
+Name[tr]=Deepin Renk Seçici
+Name[zh_CN]=深度取色器
+
