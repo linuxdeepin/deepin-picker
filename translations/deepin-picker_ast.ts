@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/main.cpp" line="69"/>
         <source>Deepin Picker</source>
-        <translation>Seleutor Deepin</translation>
+        <translation>Deepin Picker</translation>
     </message>
 </context>
 </TS>

@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ne" version="2.1">
 <context>
     <name>Clipboard</name>
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>將顏色 %1 複製到剪貼簿</translation>
+        <translation>क्लिपबोर्डमा%1 रंग कपी भयो </translation>
     </message>
 </context>
 <context>
@@ -12,12 +12,12 @@
     <message>
         <location filename="../src/main.cpp" line="47"/>
         <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>Deepin 取色器是款快速的螢幕取色工具。透過滑鼠選擇顏色後，能自動將 RGB 及十六進位等色彩模式儲存到剪貼簿。</translation>
+        <translation>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="69"/>
         <source>Deepin Picker</source>
-        <translation>Deepin 取色器</translation>
+        <translation>डिपिन चयनकर्ता</translation>
     </message>
 </context>
 </TS>
