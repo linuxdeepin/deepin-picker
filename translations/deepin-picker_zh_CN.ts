@@ -10,12 +10,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main.cpp" line="47"/>
-        <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>深度取色器是一款帮助你快速在屏幕上取色的工具。并且能根据你取的颜色得到RGB、HEX代码。打开软件后，鼠标经过的地方即为深度取色器取色的区域。</translation>
+        <location filename="../src/main.cpp" line="50"/>
+        <source>Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes are obtained on click and auto saved to the clipboard.</source>
+        <translation>深度取色器是一款帮助您快速在屏幕上取色的工具。并且能根据您拾取的颜色得到RGB、HEX代码。打开软件后，鼠标经过的地方即为深度取色器取色的区域。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="72"/>
         <source>Deepin Picker</source>
         <translation>深度取色器</translation>
     </message>

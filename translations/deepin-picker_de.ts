@@ -10,12 +10,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main.cpp" line="47"/>
-        <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>Die Deepin Farbpipette ist eine einfache Bildschirm-Farbpipette. Der RGB- und HEX-Farbcode eines Bildschirmpixels kann schnell und einfach abgegriffen und in die Zwischenablage abgelegt werden. Das gelingt mit einem einfachen Mausklick an der entsprechenden Bildschirm-Position. Eine integrierte Lupe hilft beim exakten Wählen des richtigen Pixels.</translation>
+        <location filename="../src/main.cpp" line="50"/>
+        <source>Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes are obtained on click and auto saved to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="72"/>
         <source>Deepin Picker</source>
         <translation>Deepin Farbpipette</translation>
     </message>

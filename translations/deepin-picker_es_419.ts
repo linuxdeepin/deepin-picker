@@ -10,12 +10,12 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/main.cpp" line="47"/>
-        <source>Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked.</source>
-        <translation>Deepin Picker es una herramienta  veloz para seleccionar un color en pantalla activa. Se puede obtener códigos RGB y HEX de acuerdo al color seleccionado y se guarda automáticamente en el portapapeles. La zona de selección de color es en donde se hace clic al ratón.</translation>
+        <location filename="../src/main.cpp" line="50"/>
+        <source>Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes are obtained on click and auto saved to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="72"/>
         <source>Deepin Picker</source>
         <translation>Selector de color Deepin Picker</translation>
     </message>

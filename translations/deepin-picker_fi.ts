@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" version="2.1">
 <context>
     <name>Clipboard</name>
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>%1 rengini panoya kopyala</translation>
+        <translation>Kopioi värin %1 leikepöydälle</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/main.cpp" line="72"/>
         <source>Deepin Picker</source>
-        <translation>Deepin Renk Seçici</translation>
+        <translation>Deepin kerääjä</translation>
     </message>
 </context>
 </TS>
