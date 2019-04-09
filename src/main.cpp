@@ -47,9 +47,10 @@ int main(int argc, char *argv[])
     DApplication::loadDXcbPlugin();
 
     // Init attributes.
-    const char *descriptionText = QT_TRANSLATE_NOOP("MainWindow",
-                                                    "Deepin Picker is a fast screen color picking tool. RGB and HEX code can be obtained according color picked and auto saved to clipboard. The color picking area is where mouse clicked."
-        );
+    const char *descriptionText = QT_TRANSLATE_NOOP(
+        "MainWindow",
+        "Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes "
+        "are obtained on click and auto saved to the clipboard.");
 
     const QString acknowledgementLink = "https://www.deepin.org/acknowledgments/deepin-picker";
 
@@ -139,6 +140,6 @@ int main(int argc, char *argv[])
             dbus.registerObject("/com/deepin/Picker", picker.data(), QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
         }
     }
-    
+
     return app.exec();
 }
