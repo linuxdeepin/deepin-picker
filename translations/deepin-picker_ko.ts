@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ko" version="2.1">
 <context>
     <name>Clipboard</name>
     <message>
         <location filename="../src/clipboard.cpp" line="79"/>
         <source>Copy color %1 to clipboard</source>
-        <translation>Kopírovat barvu %1 do schránky</translation>
+        <translation>%1 색상을 클립보드에 복사</translation>
     </message>
 </context>
 <context>
@@ -12,12 +12,12 @@
     <message>
         <location filename="../src/main.cpp" line="50"/>
         <source>Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes are obtained on click and auto saved to the clipboard.</source>
-        <translation>Sběrač barev je rychlý a snadno se obsluhující nástroj na sbírání barev na obrazovce. Klepnutím ukazovátka myši jsou získány kódy RGB a HEX a automaticky uloženy do schránky.</translation>
+        <translation>Deepin 선택 도구는 빠르고 쉬운 화면 색상 선택 도구 입니다. RGB 및 HEX 코드는 클릭 후 클립보드에 자동으로 저장됩니다.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="72"/>
         <source>Deepin Picker</source>
-        <translation>Sběrač barev</translation>
+        <translation>Deepin 선택 도구</translation>
     </message>
 </context>
 </TS>
