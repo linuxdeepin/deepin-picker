@@ -38,6 +38,8 @@
 #include <QDesktopWidget>
 #include <QDebug>
 
+#include <dregionmonitor.h>
+
 Picker::Picker(bool launchByDBus)
 {
     // Init app id.
@@ -83,7 +85,7 @@ void Picker::paintEvent(QPaintEvent *)
 {
 }
 
-void Picker::handleMouseMove(int, int)
+void Picker::handleMouseMove()
 {
     // Update screenshot.
     if (updateScreenshotTimer->isActive()) {
@@ -156,8 +158,11 @@ void Picker::updateScreenshot()
     }
 }
 
-void Picker::handleLeftButtonPress(int x, int y)
+void Picker::handleLeftButtonPress(const QPoint &pos, int button)
 {
+    if (button != DTK_WIDGET_NAMESPACE::DRegionMonitor::Button_Left)
+        return;
+
     if (!displayCursorDot && isVisible()) {
         // Rest cursor and hide window.
         // NOTE: Don't call hide() at here, let process die,
@@ -168,7 +173,7 @@ void Picker::handleLeftButtonPress(int x, int y)
         Settings *settings = new Settings();
 
         // Emit copyColor signal to copy color to system clipboard.
-        cursorColor = getColorAtCursor(x, y);
+        cursorColor = getColorAtCursor(pos.x(), pos.y());
         copyColor(cursorColor, settings->getOption("color_type", "HEX").toString());
         
         // Send colorPicked signal when call by DBus and no empty appid.
@@ -178,19 +183,22 @@ void Picker::handleLeftButtonPress(int x, int y)
     }
 }
 
-void Picker::handleRightButtonRelease(int x, int y)
+void Picker::handleRightButtonRelease(const QPoint &pos, int button)
 {
+    if (button != DTK_WIDGET_NAMESPACE::DRegionMonitor::Button_Left)
+        return;
+
     if (!displayCursorDot && isVisible()) {
         // Set displayCursorDot flag when click right button.
         displayCursorDot = true;
 
-        cursorColor = getColorAtCursor(x, y);
+        cursorColor = getColorAtCursor(pos.x(), pos.y());
 
         // Popup color menu window.
         qreal devicePixelRatio = qApp->devicePixelRatio();
         menu = new ColorMenu(
-            x / devicePixelRatio - blockWidth / 2,
-            y / devicePixelRatio - blockHeight / 2,
+            pos.x() / devicePixelRatio - blockWidth / 2,
+            pos.y() / devicePixelRatio - blockHeight / 2,
             blockWidth,
             cursorColor);
         connect(menu, &ColorMenu::copyColor, this, &Picker::copyColor, Qt::QueuedConnection);
@@ -199,7 +207,7 @@ void Picker::handleRightButtonRelease(int x, int y)
         menu->setFocus();       // set focus to monitor 'aboutToHide' signal of color menu
 
         // Display animation before poup color menu.
-        animation = new Animation(x / devicePixelRatio, y / devicePixelRatio, screenshotPixmap, cursorColor);
+        animation = new Animation(pos.x() / devicePixelRatio, pos.y() / devicePixelRatio, screenshotPixmap, cursorColor);
         connect(animation, &Animation::finish, this, &Picker::popupColorMenu, Qt::QueuedConnection);
 
         // Rest cursor to default cursor.

@@ -50,9 +50,9 @@ signals:
     Q_SCRIPTABLE void colorPicked(QString appid, QString color);
                  
 public slots:
-    void handleLeftButtonPress(int x, int y);
-    void handleMouseMove(int x, int y);
-    void handleRightButtonRelease(int x, int y);
+    void handleLeftButtonPress(const QPoint &pos, int button);
+    void handleMouseMove();
+    void handleRightButtonRelease(const QPoint &pos, int button);
     void popupColorMenu();
     void updateScreenshot();
     

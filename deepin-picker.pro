@@ -12,7 +12,6 @@ RESOURCES = deepin-picker.qrc
 
 # Input
 HEADERS += src/picker.h \		   		   
-           src/eventmonitor.h \		   		   
            src/colormenu.h \		   		   
            src/clipboard.h \		   		   
            src/animation.h \		   		   
@@ -20,7 +19,6 @@ HEADERS += src/picker.h \
            src/settings.h \		   		   
            src/utils.h
 SOURCES += src/picker.cpp \		   
-           src/eventmonitor.cpp \		   
            src/colormenu.cpp \		   
            src/clipboard.cpp \		   
            src/animation.cpp \		   

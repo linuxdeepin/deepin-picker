@@ -23,6 +23,8 @@
 
 #include <DApplication>
 #include <DMainWindow>
+#include <dregionmonitor.h>
+
 #include <QDBusConnection>
 #include <QApplication>
 #include <QScreen>
@@ -37,7 +39,6 @@
 #include "utils.h"
 #include "clipboard.h"
 #include "picker.h"
-#include "eventmonitor.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -91,48 +92,30 @@ int main(int argc, char *argv[])
         picker->StartPick("");
     }
 
-    EventMonitor eventMonitor;
+    DRegionMonitor eventMonitor;
 
-    QObject::connect(qApp, &DApplication::destroyed, [&] { if (eventMonitor.isRunning()) eventMonitor.terminate(); });
-
-    // Exit xrecord thread when copy color to system clipboard.
-    QObject::connect(picker.data(), &Picker::copyColor, &clipboard, [&] () {
-                                                                            if (eventMonitor.isRunning())
-                                                                            {
-                                                                                eventMonitor.terminate();
-                                                                                eventMonitor.wait();
-                                                                            }
-                                                            });
-
-    // Exit application when module trigger exit signal.
-    QObject::connect(picker.data(), &Picker::exit, &clipboard, [&] () {
-                                                           if (eventMonitor.isRunning())
-                                                           {
-                                                               eventMonitor.terminate();
-                                                               eventMonitor.wait();
-                                                           }
-                                                           QApplication::quit();
-                                                       });
     // Exit application when user press esc to cancel pick.
-    QObject::connect(&eventMonitor, &EventMonitor::pressEsc, &clipboard, [&] () {
-                                                                            if (eventMonitor.isRunning())
-                                                                            {
-                                                                                eventMonitor.terminate();
-                                                                                eventMonitor.wait();
-                                                                            }
-                                                                            QApplication::quit();
+    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&] (const QString &name) {
+                                                                            if (name == "Escape")
+                                                                                QApplication::quit();
                                                                         });
 
     // Trigger copyToClipboard slot when got copyColor signal.
     QObject::connect(picker.data(), &Picker::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
 
     // Binding handler to xrecord signal.
-    QObject::connect(&eventMonitor, &EventMonitor::mouseMove, picker.data(), &Picker::handleMouseMove, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &EventMonitor::leftButtonPress, picker.data(), &Picker::handleLeftButtonPress, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &EventMonitor::rightButtonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &DRegionMonitor::cursorMove, picker.data(), &Picker::handleMouseMove, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &DRegionMonitor::buttonPress, picker.data(), &Picker::handleLeftButtonPress, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &DRegionMonitor::buttonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
 
     // Start event monitor thread.
-    eventMonitor.start();
+    eventMonitor.setCoordinateType(DRegionMonitor::Original);
+    eventMonitor.registerRegion();
+
+    if (!eventMonitor.registered()) {
+        qWarning() << "Failed on register monitor";
+        return -1;
+    }
 
     if (isLaunchByDBus) {
         QDBusConnection dbus = QDBusConnection::sessionBus();
