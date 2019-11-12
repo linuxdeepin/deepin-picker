@@ -44,7 +44,7 @@ Picker::Picker(bool launchByDBus)
 {
     // Init app id.
     isLaunchByDBus = launchByDBus;
-    
+
     // Init window flags.
     setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -109,11 +109,11 @@ void Picker::updateScreenshot()
         qreal devicePixelRatio = qApp->devicePixelRatio();
         int size = screenshotSize / devicePixelRatio;
         screenshotPixmap = QApplication::primaryScreen()->grabWindow(
-            0,
-            cursorX - size / 2,
-            cursorY - size / 2,
-            size,
-            size).scaled(width * devicePixelRatio, height * devicePixelRatio);
+                               0,
+                               cursorX - size / 2,
+                               cursorY - size / 2,
+                               size,
+                               size).scaled(width * devicePixelRatio, height * devicePixelRatio);
 
         // Clip screenshot pixmap to circle.
         // NOTE: need copy pixmap here, otherwise we will got bad circle.
@@ -175,7 +175,7 @@ void Picker::handleLeftButtonPress(const QPoint &pos, int button)
         // Emit copyColor signal to copy color to system clipboard.
         cursorColor = getColorAtCursor(pos.x(), pos.y());
         copyColor(cursorColor, settings->getOption("color_type", "HEX").toString());
-        
+
         // Send colorPicked signal when call by DBus and no empty appid.
         if (isLaunchByDBus && appid != "") {
             colorPicked(appid, Utils::colorToHex(cursorColor));
@@ -185,7 +185,7 @@ void Picker::handleLeftButtonPress(const QPoint &pos, int button)
 
 void Picker::handleRightButtonRelease(const QPoint &pos, int button)
 {
-    if (button != DTK_WIDGET_NAMESPACE::DRegionMonitor::Button_Left)
+    if (button != DTK_WIDGET_NAMESPACE::DRegionMonitor::Button_Right)
         return;
 
     if (!displayCursorDot && isVisible()) {
@@ -236,7 +236,7 @@ void Picker::StartPick(QString id)
 {
     // Update app id.
     appid = id;
-    
+
     // Show window.
     show();
 
