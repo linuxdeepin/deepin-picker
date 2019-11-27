@@ -15,5 +15,6 @@ Description: Color picker tool for deepin
 Package: deepin-picker-cli
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: deepin-picker(<<5.0.5)
 Description: Color picker tool for deepin
  A color picker tool for deepin.
