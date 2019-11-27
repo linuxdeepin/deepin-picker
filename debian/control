@@ -11,3 +11,9 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Color picker tool for deepin
  A color picker tool for deepin.
+
+Package: deepin-picker-cli
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, deepin-picker( =${binary:Version})
+Description: Color picker tool for deepin
+ A color picker tool for deepin.
