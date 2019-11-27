@@ -8,12 +8,12 @@ Homepage: http://www.deepin.org
 
 Package: deepin-picker
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, deepin-picker-cli( =${binary:Version})
 Description: Color picker tool for deepin
  A color picker tool for deepin.
 
 Package: deepin-picker-cli
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, deepin-picker( =${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Color picker tool for deepin
  A color picker tool for deepin.
