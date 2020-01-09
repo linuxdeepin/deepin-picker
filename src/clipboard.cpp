@@ -79,7 +79,7 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
         QString(tr("Copy color %1 to clipboard")).arg(colorString), // body
         actions,
         hints,
-        0);
+        5000);
 
     // Copy to clipbard.
     QClipboard *clipboard = QApplication::clipboard();

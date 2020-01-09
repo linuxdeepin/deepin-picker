@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #ifndef PICKER_H
 #define PICKER_H
@@ -34,33 +34,33 @@
 class Picker : public QWidget
 {
     Q_OBJECT
-    
+
     Q_CLASSINFO("D-Bus Interface", "com.deepin.Picker")
-    
-    public:
+
+public:
     Picker(bool launchByDBus);
-	~Picker(); 
-             
+    ~Picker();
+
     QColor getColorAtCursor(int x, int y);
-                                         
+
 signals:
     void copyColor(QColor color, QString colorType);
     void exit();
-               
+
     Q_SCRIPTABLE void colorPicked(QString appid, QString color);
-                 
+
 public slots:
     void handleLeftButtonPress(const QPoint &pos, int button);
     void handleMouseMove();
     void handleRightButtonRelease(const QPoint &pos, int button);
     void popupColorMenu();
     void updateScreenshot();
-    
+
     Q_SCRIPTABLE void StartPick(QString appid);
-    
+
 protected:
     void paintEvent(QPaintEvent *);
-    
+
 private:
     Animation *animation;
     ColorMenu *menu;
@@ -69,6 +69,7 @@ private:
     QTimer *updateScreenshotTimer;
     QColor cursorColor;
     QPixmap shadowPixmap;
+    QPixmap scaledPixmap;
     bool displayCursorDot;
     int blockHeight;
     int blockWidth;
@@ -81,6 +82,6 @@ private:
     int windowWidth;
     bool isLaunchByDBus;
     QString appid;
-};	
+};
 
 #endif
