@@ -52,16 +52,19 @@ Picker::Picker(bool launchByDBus)
     installEventFilter(this);
 
     // Init attributes.
+    qreal t_ratio = this->devicePixelRatioF();
+    qDebug() << "t_ratio" << t_ratio;
     blockHeight = 20;
     blockWidth = 20;
     displayCursorDot = false;
-    height = 220;
+    height = 220 * t_ratio;
     screenshotSize = 11;
-    width = 220;
-    windowHeight = 236;
-    windowWidth = 236;
+    width = 220 * t_ratio;
+    windowHeight = 236 * t_ratio;
+    windowWidth = 236 * t_ratio;
 
     shadowPixmap = QPixmap(Utils::getQrcPath("shadow.png"));
+    scaledPixmap = shadowPixmap.scaled(shadowPixmap.width() * t_ratio, shadowPixmap.height() * t_ratio);
 
     // Init update screenshot timer.
     updateScreenshotTimer = new QTimer(this);
@@ -70,6 +73,8 @@ Picker::Picker(bool launchByDBus)
 
     // Init window size and position.
     screenPixmap = QApplication::primaryScreen()->grabWindow(0);
+    QSize t_size(windowWidth, windowHeight);
+    qDebug() << "t_size" << scaledPixmap.size();
     resize(screenPixmap.size());
     move(0, 0);
 }
@@ -117,7 +122,7 @@ void Picker::updateScreenshot()
 
         // Clip screenshot pixmap to circle.
         // NOTE: need copy pixmap here, otherwise we will got bad circle.
-        QPixmap cursorPixmap = shadowPixmap;
+        QPixmap cursorPixmap = scaledPixmap;
         QPainter painter(&cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
 

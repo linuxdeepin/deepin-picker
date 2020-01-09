@@ -47,17 +47,18 @@ int main(int argc, char *argv[])
     // Load DTK xcb plugin.
     DApplication::loadDXcbPlugin();
 
+
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP(
-        "MainWindow",
-        "Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes "
-        "are obtained on click and auto saved to the clipboard.");
+                                      "MainWindow",
+                                      "Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes "
+                                      "are obtained on click and auto saved to the clipboard.");
 
     const QString acknowledgementLink = "https://www.deepin.org/acknowledgments/deepin-picker";
 
     // Init dtk application's attrubites.
     DApplication app(argc, argv);
-
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
     if (!DWindowManagerHelper::instance()->hasComposite()) {
         Utils::warnNoComposite();
         return 0;
@@ -95,10 +96,10 @@ int main(int argc, char *argv[])
     DRegionMonitor eventMonitor;
 
     // Exit application when user press esc to cancel pick.
-    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&] (const QString &name) {
-                                                                            if (name == "Escape")
-                                                                                QApplication::quit();
-                                                                        });
+    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&] (const QString & name) {
+        if (name == "Escape")
+            QApplication::quit();
+    });
 
     // Trigger copyToClipboard slot when got copyColor signal.
     QObject::connect(picker.data(), &Picker::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
@@ -106,7 +107,7 @@ int main(int argc, char *argv[])
     // Binding handler to xrecord signal.
     QObject::connect(&eventMonitor, &DRegionMonitor::cursorMove, picker.data(), &Picker::handleMouseMove, Qt::QueuedConnection);
     QObject::connect(&eventMonitor, &DRegionMonitor::buttonPress, picker.data(), &Picker::handleLeftButtonPress, Qt::QueuedConnection);
-    // QObject::connect(&eventMonitor, &DRegionMonitor::buttonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
+    QObject::connect(&eventMonitor, &DRegionMonitor::buttonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
 
     // Start event monitor thread.
     eventMonitor.setCoordinateType(DRegionMonitor::Original);
