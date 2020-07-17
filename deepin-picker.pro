@@ -11,14 +11,16 @@ PKGCONFIG += xcb xcb-util dtkwidget
 RESOURCES = deepin-picker.qrc
 
 # Input
-HEADERS += src/picker.h \		   		   
+HEADERS += src/picker.h \
+    src/desktopinfo.h \
            src/colormenu.h \		   		   
            src/clipboard.h \		   		   
            src/animation.h \		   		   
            src/dbusnotify.h \		   		   
            src/settings.h \		   		   
            src/utils.h
-SOURCES += src/picker.cpp \		   
+SOURCES += src/picker.cpp \
+    src/desktopinfo.cpp \
            src/colormenu.cpp \		   
            src/clipboard.cpp \		   
            src/animation.cpp \		   

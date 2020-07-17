@@ -39,6 +39,8 @@
 #include <QDebug>
 
 #include <dregionmonitor.h>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 Picker::Picker(bool launchByDBus)
 {
@@ -72,7 +74,11 @@ Picker::Picker(bool launchByDBus)
     connect(updateScreenshotTimer, SIGNAL(timeout()), this, SLOT(updateScreenshot()));
 
     // Init window size and position.
-    screenPixmap = QApplication::primaryScreen()->grabWindow(0);
+    if (m_info.waylandDectected()) {
+        screenPixmap = getWaylandPlatformPixmap();
+    } else {
+        screenPixmap = QApplication::primaryScreen()->grabWindow(0);
+    }
     QSize t_size(windowWidth, windowHeight);
     qDebug() << "t_size" << scaledPixmap.size();
     resize(screenPixmap.size());
@@ -88,6 +94,21 @@ Picker::~Picker()
 
 void Picker::paintEvent(QPaintEvent *)
 {
+}
+
+QPixmap Picker::getWaylandPlatformPixmap()
+{
+    QPixmap res;
+    QDBusInterface kwinInterface(QStringLiteral("org.kde.KWin"),
+                                 QStringLiteral("/Screenshot"),
+                                 QStringLiteral("org.kde.kwin.Screenshot"));
+    QDBusReply<QString> reply = kwinInterface.call(QStringLiteral("screenshotFullscreen"));
+    res = QPixmap(reply.value());
+    if (!res.isNull()) {
+        QFile dbusResult(reply.value());
+        dbusResult.remove();
+    }
+    return res;
 }
 
 void Picker::handleMouseMove()
@@ -110,15 +131,14 @@ void Picker::updateScreenshot()
         int offsetX = (windowWidth - width) / 2;
         int offsetY = (windowHeight - height) / 2;
 
-        // Get image under cursor.
         qreal devicePixelRatio = qApp->devicePixelRatio();
         int size = screenshotSize / devicePixelRatio;
-        screenshotPixmap = QApplication::primaryScreen()->grabWindow(
-                               0,
-                               cursorX - size / 2,
-                               cursorY - size / 2,
-                               size,
-                               size).scaled(width * devicePixelRatio, height * devicePixelRatio);
+
+        // Get image under cursor.
+        screenshotPixmap = screenPixmap.copy(cursorX - size / 2,
+                                             cursorY - size / 2,
+                                             size,
+                                             size).scaled(width * devicePixelRatio, height * devicePixelRatio);
 
         // Clip screenshot pixmap to circle.
         // NOTE: need copy pixmap here, otherwise we will got bad circle.
@@ -225,7 +245,6 @@ void Picker::handleRightButtonRelease(const QPoint &pos, int button)
 
 QColor Picker::getColorAtCursor(int x, int y)
 {
-    screenPixmap = QApplication::primaryScreen()->grabWindow(0);
     return QColor(screenPixmap.copy(x, y, 1, 1).toImage().pixel(0, 0));
 }
 

@@ -31,6 +31,8 @@
 #include <QAction>
 #include <QTimer>
 
+#include "desktopinfo.h"
+
 class Picker : public QWidget
 {
     Q_OBJECT
@@ -82,6 +84,9 @@ private:
     int windowWidth;
     bool isLaunchByDBus;
     QString appid;
+    DesktopInfo m_info;
+
+    QPixmap getWaylandPlatformPixmap();
 };
 
 #endif
