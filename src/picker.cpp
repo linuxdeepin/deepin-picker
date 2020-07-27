@@ -48,14 +48,13 @@ Picker::Picker(bool launchByDBus)
     isLaunchByDBus = launchByDBus;
 
     // Init window flags.
-    setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground, true);
+    setWindowFlags(windowFlags() | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+    setAttribute(Qt::WA_TranslucentBackground, false);
     setMouseTracking(true);
     installEventFilter(this);
 
     // Init attributes.
     qreal t_ratio = this->devicePixelRatioF();
-    qDebug() << "t_ratio" << t_ratio;
     blockHeight = 20;
     blockWidth = 20;
     displayCursorDot = false;
@@ -79,8 +78,8 @@ Picker::Picker(bool launchByDBus)
     } else {
         screenPixmap = QApplication::primaryScreen()->grabWindow(0);
     }
-    QSize t_size(windowWidth, windowHeight);
-    qDebug() << "t_size" << scaledPixmap.size();
+
+    this->setPixmap(screenPixmap);
     resize(screenPixmap.size());
     move(0, 0);
 }
@@ -90,10 +89,6 @@ Picker::~Picker()
     animation->deleteLater();
     menu->deleteLater();
     updateScreenshotTimer->deleteLater();
-}
-
-void Picker::paintEvent(QPaintEvent *)
-{
 }
 
 QPixmap Picker::getWaylandPlatformPixmap()
@@ -179,7 +174,11 @@ void Picker::updateScreenshot()
         painter.drawRect(QRect(width / 2 - blockWidth / 2 + 1 + offsetX, height / 2 - blockHeight / 2 + 1 + offsetY, blockWidth - 2, blockHeight - 2));
 
         // Set screenshot as cursor.
-        QApplication::setOverrideCursor(QCursor(cursorPixmap));
+        if (QApplication::overrideCursor() == nullptr) {
+            QApplication::setOverrideCursor(QCursor(cursorPixmap));
+        } else {
+            QApplication::changeOverrideCursor(QCursor(cursorPixmap));
+        }
     }
 }
 
@@ -262,7 +261,7 @@ void Picker::StartPick(QString id)
     appid = id;
 
     // Show window.
-    show();
+    showFullScreen();
 
     // Update screenshot when start.
     updateScreenshot();

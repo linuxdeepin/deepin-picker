@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #include "animation.h"
 #include "utils.h"
@@ -31,8 +31,9 @@
 Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent) : QWidget(parent)
 {
     // Init window flags to make window transparent and get correctly behavior.
-    setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground, true);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+//    setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
+//    setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
 
@@ -48,12 +49,12 @@ Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent
     renderTicker = 0;
     screenshotPixmap = pixmap;
     width = 220;
-    
+
     // Move and resize window.
     move(x - width / 2, y - height / 2);
     resize(width, height);
-    
-    // Start animation when module init. 
+
+    // Start animation when module init.
     renderTimer = new QTimer();
     connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderAnimation()));
     renderTimer->start(animationDuration);
@@ -70,14 +71,14 @@ void Animation::paintEvent(QPaintEvent *)
     qreal devicePixelRatio = qApp->devicePixelRatio();
     int radius = screenshotPixmap.width() / 2 * (1 - Utils::easeInOut(renderTicker * 1.0 / animationFrames));
     radius = radius / devicePixelRatio;
-    
+
     int width = rect().width();
     int height = rect().height();
 
     // Init painter.
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    
+
     // Make opacity change along with ticker.
     painter.setOpacity(Utils::easeInOut(renderTicker * 1.0 / animationFrames));
 
@@ -97,7 +98,7 @@ void Animation::renderAnimation()
     } else {
         renderTimer->stop();
         hide();                 // hide window when animation finish
-        
+
         emit finish();
     }
 }

@@ -30,10 +30,11 @@
 #include "animation.h"
 #include <QAction>
 #include <QTimer>
+#include <QLabel>
 
 #include "desktopinfo.h"
 
-class Picker : public QWidget
+class Picker : public QLabel
 {
     Q_OBJECT
 
@@ -59,9 +60,6 @@ public slots:
     void updateScreenshot();
 
     Q_SCRIPTABLE void StartPick(QString appid);
-
-protected:
-    void paintEvent(QPaintEvent *);
 
 private:
     Animation *animation;
