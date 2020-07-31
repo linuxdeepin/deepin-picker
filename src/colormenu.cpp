@@ -36,8 +36,9 @@
 ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QWidget(parent)
 {
     // Init window flags.
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    setAttribute(Qt::WA_TranslucentBackground, true);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+//    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+//    setAttribute(Qt::WA_TranslucentBackground, true);
     setMouseTracking(true);
     installEventFilter(this);
 
