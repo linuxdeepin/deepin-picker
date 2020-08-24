@@ -45,8 +45,13 @@ DWIDGET_USE_NAMESPACE
 int main(int argc, char *argv[])
 {
     // Load DTK xcb plugin.
-    DApplication::loadDXcbPlugin();
-
+    auto e = QProcessEnvironment::systemEnvironment();
+    QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
+    QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
+    //判断wayland
+    if (XDG_SESSION_TYPE != QLatin1String("wayland") && !WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+        DApplication::loadDXcbPlugin();
+    }
 
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP(
@@ -96,7 +101,7 @@ int main(int argc, char *argv[])
     DRegionMonitor eventMonitor;
 
     // Exit application when user press esc to cancel pick.
-    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&] (const QString & name) {
+    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&](const QString & name) {
         if (name == "Escape")
             QApplication::quit();
     });
