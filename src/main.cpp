@@ -49,9 +49,11 @@ int main(int argc, char *argv[])
     QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
     //判断wayland
-    if (XDG_SESSION_TYPE != QLatin1String("wayland") && !WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
-        DApplication::loadDXcbPlugin();
-    }
+    //    if (XDG_SESSION_TYPE != QLatin1String("wayland") && !WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+    DApplication::loadDXcbPlugin();
+    //    } else {
+    //        qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
+    //    }
 
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP(
