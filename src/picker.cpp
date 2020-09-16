@@ -37,6 +37,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDebug>
+#include <QPainterPath>
 
 #include <dregionmonitor.h>
 #include <QDBusInterface>
