@@ -27,6 +27,7 @@
 #include <QColor>
 #include <QPainter>
 #include <QDebug>
+#include <QPainterPath>
 
 Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent) : QWidget(parent)
 {
