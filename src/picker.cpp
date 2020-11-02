@@ -27,6 +27,7 @@
 #include "utils.h"
 #include "colormenu.h"
 #include <QPainter>
+#include <QPainterPath>
 #include <QBitmap>
 #include <QPixmap>
 #include <QMenu>
