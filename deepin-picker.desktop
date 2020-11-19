@@ -1,5 +1,5 @@
 [Desktop Entry]
-Categories=Graphics;Picker;
+Categories=Graphics;
 Comment=Color picker
 Exec=deepin-picker
 GenericName=Picker
