@@ -50,10 +50,14 @@ int main(int argc, char *argv[])
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
     //判断wayland
     //    if (XDG_SESSION_TYPE != QLatin1String("wayland") && !WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
-    DApplication::loadDXcbPlugin();
+//    DApplication::loadDXcbPlugin();
     //    } else {
     //        qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
     //    }
+
+    if (XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+        qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
+    }
 
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP(

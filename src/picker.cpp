@@ -59,14 +59,18 @@ Picker::Picker(bool launchByDBus)
     blockHeight = 20;
     blockWidth = 20;
     displayCursorDot = false;
-    height = 220 * t_ratio;
+    height = 220/* * t_ratio*/;
     screenshotSize = 11;
-    width = 220 * t_ratio;
-    windowHeight = 236 * t_ratio;
-    windowWidth = 236 * t_ratio;
+    width = 220/* * t_ratio*/;
+    windowHeight = 236/* * t_ratio*/;
+    windowWidth = 236/* * t_ratio*/;
 
     shadowPixmap = QPixmap(Utils::getQrcPath("shadow.png"));
-    scaledPixmap = shadowPixmap.scaled(shadowPixmap.width() * t_ratio, shadowPixmap.height() * t_ratio);
+    if (m_info.waylandDectected()) {
+        scaledPixmap = shadowPixmap.scaled(windowWidth, windowHeight);
+    } else {
+        scaledPixmap = shadowPixmap.scaled(windowWidth / t_ratio, windowHeight / t_ratio);
+    }
 
     // Init update screenshot timer.
     updateScreenshotTimer = new QTimer(this);
@@ -90,6 +94,17 @@ Picker::~Picker()
     animation->deleteLater();
     menu->deleteLater();
     updateScreenshotTimer->deleteLater();
+}
+
+void Picker::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    if (!m_info.waylandDectected())
+        painter.scale(1 / this->devicePixelRatioF(), 1 / this->devicePixelRatioF());
+    painter.drawPixmap(rect(), screenPixmap);
+    painter.end();
 }
 
 QPixmap Picker::getWaylandPlatformPixmap()
@@ -119,28 +134,37 @@ void Picker::handleMouseMove()
 void Picker::updateScreenshot()
 {
     if (!displayCursorDot && isVisible()) {
+        qreal devicePixelRatio = qApp->devicePixelRatio();
         // Get cursor coordinate.
-        cursorX = QCursor::pos().x();
-        cursorY = QCursor::pos().y();
+        cursorX = QCursor::pos().x() * devicePixelRatio;
+        cursorY = QCursor::pos().y() * devicePixelRatio;
 
         // Need add offset to make drop shadow's position correctly.
         int offsetX = (windowWidth - width) / 2;
         int offsetY = (windowHeight - height) / 2;
 
-        qreal devicePixelRatio = qApp->devicePixelRatio();
-        int size = screenshotSize / devicePixelRatio;
+        int size = screenshotSize/* / devicePixelRatio*/;
 
         // Get image under cursor.
         screenshotPixmap = screenPixmap.copy(cursorX - size / 2,
                                              cursorY - size / 2,
                                              size,
-                                             size).scaled(width * devicePixelRatio, height * devicePixelRatio);
+                                             size);
+        if (!m_info.waylandDectected()) {
+            screenshotPixmap = screenshotPixmap.scaled(width * devicePixelRatio, height * devicePixelRatio);
+        } else {
+            screenshotPixmap = screenshotPixmap.scaled(width, height);
+        }
+
 
         // Clip screenshot pixmap to circle.
         // NOTE: need copy pixmap here, otherwise we will got bad circle.
         QPixmap cursorPixmap = scaledPixmap;
         QPainter painter(&cursorPixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
+        if (!m_info.waylandDectected()) {
+            painter.scale(1 / devicePixelRatio, 1 / devicePixelRatio);
+        }
 
         painter.save();
         QPainterPath circlePath;

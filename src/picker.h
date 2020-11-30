@@ -46,6 +46,9 @@ public:
 
     QColor getColorAtCursor(int x, int y);
 
+protected:
+    void paintEvent(QPaintEvent *);
+
 signals:
     void copyColor(QColor color, QString colorType);
     void exit();
