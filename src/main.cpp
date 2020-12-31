@@ -23,7 +23,7 @@
 
 #include <DApplication>
 #include <DMainWindow>
-#include <dregionmonitor.h>
+#include <DRegionMonitor>
 
 #include <QDBusConnection>
 #include <QApplication>
@@ -105,6 +105,8 @@ int main(int argc, char *argv[])
     }
 
     DRegionMonitor eventMonitor;
+    //设置捕获区域
+    eventMonitor.setWatchedRegion(QRegion(INT_MIN, INT_MIN, INT_MAX * 2, INT_MAX * 2));
 
     // Exit application when user press esc to cancel pick.
     QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&](const QString & name) {
