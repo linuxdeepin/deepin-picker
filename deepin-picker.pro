@@ -63,8 +63,6 @@ manual.files = manual/*
 dbus_service.files = $$PWD/com.deepin.Picker.service
 dbus_service.path = $$PREFIX/share/dbus-1/services
 
-INSTALLS += target icon desktop manual dbus_service
-
 #isEmpty(TRANSLATIONS) {
 #     include(translations.pri)
 #}
@@ -100,18 +98,20 @@ TRANSLATIONS += $$PWD/translations/$${TARGET}.ts \
 translations.path =  $$PREFIX/share/deepin-picker/translations
 translations.files = translations/*.qm
 
-INSTALLS += translations
+INSTALLS = translations target icon desktop manual dbus_service
 
-CONFIG *= update_translations release_translations
+CONFIG *= release_translations
 
-CONFIG(update_translations) {
-    isEmpty(lupdate):lupdate=lupdate
-    system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
-}
 CONFIG(release_translations) {
     isEmpty(lrelease):lrelease=lrelease
     system($$lrelease $$_PRO_FILE_)
 }
+
+#CONFIG(update_translations) {
+#    isEmpty(lupdate):lupdate=lupdate
+#    system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
+#}
+
 
 DSR_LANG_PATH += $$DSRDIR/translations
 DEFINES += "DSR_LANG_PATH=\\\"$$DSR_LANG_PATH\\\""
