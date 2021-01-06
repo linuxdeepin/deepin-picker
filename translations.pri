@@ -1,4 +1,4 @@
-TRANSLATIONS += \
+TRANSLATIONS +=  translations/deepin-picker_ar.ts \
     translations/deepin-picker_ar.ts \
     translations/deepin-picker_ast.ts \
     translations/deepin-picker_cs.ts \
