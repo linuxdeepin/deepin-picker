@@ -7,9 +7,9 @@ TARGET = deepin-picker
 
 CONFIG += link_pkgconfig
 CONFIG += c++11 
-PKGCONFIG += xcb xcb-util dtkwidget dtkgui
+PKGCONFIG += dtkwidget dtkgui
 RESOURCES = deepin-picker.qrc
-
+# xcb xcb-util
 # Input
 HEADERS += src/picker.h \
     src/desktopinfo.h \
@@ -32,13 +32,9 @@ SOURCES += src/picker.cpp \
 QT += core
 QT += widgets
 QT += gui
-QT += network
-QT += x11extras
 QT += dbus
-QT += svg
 
 QMAKE_CXXFLAGS += -g
-LIBS += -lX11 -lXext -lXtst
 
 isEmpty(PREFIX){
     PREFIX = /usr
