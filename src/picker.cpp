@@ -81,7 +81,8 @@ Picker::Picker(bool launchByDBus)
     if (m_info.waylandDectected()) {
         screenPixmap = getWaylandPlatformPixmap();
     } else {
-        screenPixmap = QApplication::primaryScreen()->grabWindow(0);
+        //screenPixmap = /*QApplication::primaryScreen()->grabWindow(0)*/qApp->desktop()->grab();
+        screenPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
     }
 
     this->setPixmap(screenPixmap);
@@ -105,6 +106,8 @@ void Picker::paintEvent(QPaintEvent *)
         painter.scale(1 / this->devicePixelRatioF(), 1 / this->devicePixelRatioF());
     painter.drawPixmap(rect(), screenPixmap);
     painter.end();
+
+    qDebug() << "desktop size = " << qApp->desktop()->size();
 }
 
 QPixmap Picker::getWaylandPlatformPixmap()
