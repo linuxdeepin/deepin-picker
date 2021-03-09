@@ -12,6 +12,7 @@ RESOURCES = deepin-picker.qrc
 # xcb xcb-util
 # Input
 HEADERS += src/picker.h \
+    src/cpickermanager.h \
     src/desktopinfo.h \
            src/colormenu.h \		   		   
            src/clipboard.h \		   		   
@@ -20,6 +21,7 @@ HEADERS += src/picker.h \
            src/settings.h \		   		   
            src/utils.h
 SOURCES += src/picker.cpp \
+    src/cpickermanager.cpp \
     src/desktopinfo.cpp \
            src/colormenu.cpp \		   
            src/clipboard.cpp \		   

@@ -39,6 +39,7 @@
 #include "utils.h"
 #include "clipboard.h"
 #include "picker.h"
+#include "cpickermanager.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -48,12 +49,6 @@ int main(int argc, char *argv[])
     auto e = QProcessEnvironment::systemEnvironment();
     QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
-    //判断wayland
-    //    if (XDG_SESSION_TYPE != QLatin1String("wayland") && !WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
-//    DApplication::loadDXcbPlugin();
-    //    } else {
-    //        qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
-    //    }
 
     if (XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
         qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
@@ -99,37 +94,13 @@ int main(int argc, char *argv[])
 
     // Init modules.
     Clipboard clipboard;
-    QPointer<Picker> picker = new Picker(isLaunchByDBus);
+    QPointer<CPickerManager> picker = new CPickerManager;
+    picker->setLanchFlag(isLaunchByDBus ? CPickerManager::ELanchedByOtherApp : CPickerManager::ELanchedBySelf);
     if (!isLaunchByDBus) {
         picker->StartPick("");
     }
+    QObject::connect(picker.data(), &CPickerManager::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
 
-    DRegionMonitor eventMonitor;
-    //设置捕获区域
-    eventMonitor.setWatchedRegion(QRegion(INT_MIN, INT_MIN, INT_MAX * 2, INT_MAX * 2));
-
-    // Exit application when user press esc to cancel pick.
-    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&](const QString & name) {
-        if (name == "Escape")
-            QApplication::quit();
-    });
-
-    // Trigger copyToClipboard slot when got copyColor signal.
-    QObject::connect(picker.data(), &Picker::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
-
-    // Binding handler to xrecord signal.
-    QObject::connect(&eventMonitor, &DRegionMonitor::cursorMove, picker.data(), &Picker::handleMouseMove, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &DRegionMonitor::buttonPress, picker.data(), &Picker::handleLeftButtonPress, Qt::QueuedConnection);
-//    QObject::connect(&eventMonitor, &DRegionMonitor::buttonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
-
-    // Start event monitor thread.
-    eventMonitor.setCoordinateType(DRegionMonitor::Original);
-    eventMonitor.registerRegion();
-
-    if (!eventMonitor.registered()) {
-        qWarning() << "Failed on register monitor";
-        return -1;
-    }
 
     if (isLaunchByDBus) {
         QDBusConnection dbus = QDBusConnection::sessionBus();
