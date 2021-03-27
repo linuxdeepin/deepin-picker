@@ -65,10 +65,12 @@ int main(int argc, char *argv[])
     // Init dtk application's attrubites.
     DApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
-    if (!DWindowManagerHelper::instance()->hasComposite()) {
-        Utils::warnNoComposite();
-        return 0;
-    }
+
+    // 判断窗口特效是否开启
+//    if (!DWindowManagerHelper::instance()->hasComposite()) {
+//        Utils::warnNoComposite();
+//        return 0;
+//    }
 
     app.loadTranslator();
 
