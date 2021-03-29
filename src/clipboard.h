@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #ifndef CLIPBOARD_H
 #define CLIPBOARD_H
@@ -30,13 +30,13 @@
 class Clipboard : public QObject
 {
     Q_OBJECT
-    
+
 public:
-    Clipboard(QObject *parent=0);
-	~Clipboard(); 
-    
+    explicit Clipboard(QObject *parent = nullptr);
+    ~Clipboard();
+
 public slots:
     void copyToClipboard(QColor color, QString colorString);
-};	
+};
 
 #endif

@@ -11,7 +11,6 @@
 #include <QPainterPath>
 #include <QProcessEnvironment>
 
-
 #include "settings.h"
 #include "utils.h"
 
@@ -120,17 +119,17 @@ void CPickerManager::setLanchFlag(CPickerManager::ELanchType tp, const QString &
         _appid = appName;
 }
 
-QString CPickerManager::caller()
-{
-    return _appid;
-}
+//QString CPickerManager::caller()
+//{
+//    return _appid;
+//}
 
-QColor CPickerManager::currentColor() const
-{
-    return _curColor;
-}
+//QColor CPickerManager::currentColor() const
+//{
+//    return _curColor;
+//}
 
-void CPickerManager::StartPick(QString id)
+void CPickerManager::StartPick(const QString &id)
 {
     _appid = id;
 }
@@ -189,7 +188,6 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
     qreal scalFactor = _scaleFactor;
 
     const QSize const_focusSize = QSize(200, 200) * qApp->devicePixelRatio() / scalFactor;
-
     //必须保证聚焦区域的宽高都是奇数(这样才能均分像素点，保证中心焦点像素和显示像素重合)
     QSizeF focusSize = QSizeF(const_focusSize.width() % 2 == 0 ? (const_focusSize.width() + 1) : const_focusSize.width(),
                               const_focusSize.height() % 2 == 0 ? (const_focusSize.height() + 1) : const_focusSize.height());
@@ -234,7 +232,6 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
         p.setWidth(6 * qApp->devicePixelRatio());
         painter.setPen(p);
         painter.drawEllipse(vaildRect);
-
 
         //3.绘制中心像素点;放大了的焦点图像的像素大小对应也放大了scalFactor倍
         qreal logicPixelWidth = 1  * scalFactor;
@@ -322,9 +319,9 @@ QPixmap CPickerManager::getDesktopPixmap()
         }
         result = res;
     } else {
-        QPixmap pix(getDeskTopRect().size());
-        pix.fill(Qt::transparent);
-        QPainter painter(&pix);
+        QPixmap pixs(getDeskTopRect().size());
+        pixs.fill(Qt::transparent);
+        QPainter painter(&pixs);
         auto screens = QApplication::screens();
         for (auto screen : screens) {
             auto pix = screen->grabWindow(0);
@@ -332,7 +329,7 @@ QPixmap CPickerManager::getDesktopPixmap()
             painter.drawPixmap(geometry, pix, pix.rect());
         }
         painter.end();
-        result = pix;
+        result = pixs;
     }
 
     return result;

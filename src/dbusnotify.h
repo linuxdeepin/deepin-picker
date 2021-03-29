@@ -42,32 +42,32 @@
 class DBusNotify: public QDBusAbstractInterface
 {
     Q_OBJECT
-    Q_SLOT void __propertyChanged__(const QDBusMessage& msg)
+    Q_SLOT void __propertyChanged__(const QDBusMessage &msg)
     {
         QList<QVariant> arguments = msg.arguments();
         if (3 != arguments.count())
             return;
         QString interfaceName = msg.arguments().at(0).toString();
-        if (interfaceName !="org.freedesktop.Notifications")
+        if (interfaceName != "org.freedesktop.Notifications")
             return;
         QVariantMap changedProps = qdbus_cast<QVariantMap>(arguments.at(1).value<QDBusArgument>());
         QStringList keys = changedProps.keys();
-        foreach(const QString &prop, keys) {
-        const QMetaObject* self = metaObject();
-            for (int i=self->propertyOffset(); i < self->propertyCount(); ++i) {
+        foreach (const QString &prop, keys) {
+            const QMetaObject *self = metaObject();
+            for (int i = self->propertyOffset(); i < self->propertyCount(); ++i) {
                 QMetaProperty p = self->property(i);
                 if (p.name() == prop) {
-                Q_EMIT p.notifySignal().invoke(this);
+                    Q_EMIT p.notifySignal().invoke(this);
                 }
             }
         }
-   }
+    }
 public:
     static inline const char *staticInterfaceName()
     { return "org.freedesktop.Notifications"; }
 
 public:
-    DBusNotify(QObject *parent = 0);
+    explicit DBusNotify(QObject *parent = nullptr);
 
     ~DBusNotify();
 
@@ -135,8 +135,8 @@ Q_SIGNALS: // SIGNALS
 };
 
 namespace org {
-  namespace freedesktop {
-    typedef ::DBusNotify Notifications;
-  }
+namespace freedesktop {
+typedef ::DBusNotify Notifications;
+}
 }
 #endif

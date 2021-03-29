@@ -31,7 +31,7 @@ class Settings : public QObject
     Q_OBJECT
 
 public:
-    Settings(QObject *parent = 0);
+    explicit Settings(QObject *parent = nullptr);
     ~Settings();
 
     QString configPath();
@@ -39,7 +39,7 @@ public:
     void setOption(const QString &key, const QVariant &value);
 
 private:
-    QSettings* settings;
+    QSettings *settings;
     QString groupName;
 };
 

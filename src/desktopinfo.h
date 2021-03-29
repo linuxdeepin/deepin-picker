@@ -14,8 +14,8 @@ public:
         OTHER
     };
 
-    bool waylandDectected();
-    WM windowManager();
+//    bool waylandDectected();
+//    WM windowManager();
 
 private:
     QString XDG_CURRENT_DESKTOP;

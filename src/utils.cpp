@@ -41,10 +41,10 @@ QString Utils::getQrcPath(QString imageName)
     return QString(":/image/%1").arg(imageName);
 }
 
-QString Utils::getQssPath(QString qssName)
-{
-    return QString(":/qss/%1").arg(qssName);
-}
+//QString Utils::getQssPath(QString qssName)
+//{
+//    return QString(":/qss/%1").arg(qssName);
+//}
 
 QString Utils::colorToHex(QColor color)
 {
@@ -86,31 +86,31 @@ qreal Utils::easeInOut(qreal x)
     return (1 - qCos(M_PI * x)) / 2;
 }
 
-qreal Utils::easeInQuad(qreal x)
-{
-    return qPow(x, 2);
-}
+//qreal Utils::easeInQuad(qreal x)
+//{
+//    return qPow(x, 2);
+//}
 
-qreal Utils::easeOutQuad(qreal x)
-{
-    return -1 * qPow(x - 1, 2) + 1;
-}
+//qreal Utils::easeOutQuad(qreal x)
+//{
+//    return -1 * qPow(x - 1, 2) + 1;
+//}
 
-qreal Utils::easeInQuint(qreal x)
-{
-    return qPow(x, 5);
-}
+//qreal Utils::easeInQuint(qreal x)
+//{
+//    return qPow(x, 5);
+//}
 
-qreal Utils::easeOutQuint(qreal x)
-{
-    return qPow(x - 1, 5) + 1;
-}
+//qreal Utils::easeOutQuint(qreal x)
+//{
+//    return qPow(x - 1, 5) + 1;
+//}
 
-void Utils::warnNoComposite()
-{
-    QDBusInterface iface(WarningDialogService,
-                         WarningDialogPath,
-                         WarningDialogService);
-    iface.call("RaiseWindow");
-}
+//void Utils::warnNoComposite()
+//{
+//    QDBusInterface iface(WarningDialogService,
+//                         WarningDialogPath,
+//                         WarningDialogService);
+//    iface.call("RaiseWindow");
+//}
 

@@ -82,15 +82,15 @@ public:
     enum ELanchType {ELanchedBySelf, ELanchedByOtherApp};
     void setLanchFlag(ELanchType tp, const QString &appName = "");
 
-    /**
-     * @brief caller 调用取色器的程序
-     */
-    QString caller();
+//    /**
+//     * @brief caller 调用取色器的程序
+//     */
+//    QString caller();
 
-    /**
-     * @brief currentColor 当前的颜色
-     */
-    QColor currentColor() const;
+//    /**
+//     * @brief currentColor 当前的颜色
+//     */
+//    QColor currentColor() const;
 
 signals:
     /**
@@ -114,7 +114,7 @@ public slots:
      * 以进行取色后颜色的发送返回交互(colorPicked将使用这个名称)[通过DBUS交互]
      * @param appName 表示调用程序的程序名称
      */
-    Q_SCRIPTABLE void StartPick(QString appName);
+    Q_SCRIPTABLE void StartPick(const QString &appName);
 
 public slots:
     /**
