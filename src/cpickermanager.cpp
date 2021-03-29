@@ -155,10 +155,10 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
         QApplication::setOverrideCursor(Qt::ArrowCursor);
 
         // Rest color type to hex if config file not exist.
-        Settings *settings = new Settings();
+        Settings settings;
 
         // Emit copyColor signal to copy color to system clipboard.
-        copyColor(_curColor, settings->getOption("color_type", "HEX").toString());
+        copyColor(_curColor, settings.getOption("color_type", "HEX").toString());
 
         // Send colorPicked signal when call by DBus and no empty appid.
         if (_appid != "") {
