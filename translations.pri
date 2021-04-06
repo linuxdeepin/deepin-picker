@@ -1,8 +1,10 @@
 TRANSLATIONS +=  translations/deepin-picker_ar.ts \
     translations/deepin-picker_ar.ts \
     translations/deepin-picker_ast.ts \
+    translations/deepin-picker_bo.ts \
     translations/deepin-picker_cs.ts \
     translations/deepin-picker_de.ts \
+    translations/deepin-picker_en.ts \
     translations/deepin-picker_en_US.ts \
     translations/deepin-picker_es_419.ts \
     translations/deepin-picker_es.ts \
@@ -18,5 +20,8 @@ TRANSLATIONS +=  translations/deepin-picker_ar.ts \
     translations/deepin-picker_sl.ts \
     translations/deepin-picker_tr.ts \
     translations/deepin-picker.ts \
+    translations/deepin-picker_ug.ts \
     translations/deepin-picker_uk.ts \
-    translations/deepin-picker_zh_CN.ts
+    translations/deepin-picker_zh_CN.ts \
+    translations/deepin-picker_zh_TW.ts \
+    translations/deepin-picker_zh_HK.ts
