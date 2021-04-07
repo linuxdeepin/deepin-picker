@@ -106,6 +106,7 @@ CPickerManager::CPickerManager(): QObject(nullptr)
         qWarning() << "Failed on register monitor";
         QApplication::quit();
     }
+    ensureDeskTopPixmap();
 }
 
 CPickerManager::~CPickerManager()
@@ -146,6 +147,7 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
     int button = flag;
     if (button != DRegionMonitor::Button_Left)
         return;
+    onMouseMove(p);
 
     //if (!displayCursorDot && isVisible())
     {
