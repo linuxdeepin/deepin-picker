@@ -194,7 +194,7 @@ void CPickerManager::initShotScreenWidgets()
         CScreenshotWidget *pWidget = new CScreenshotWidget(this);
         pWidget->setPixmap(pix);
         pWidget->setGeometry(screen->geometry());
-        _widgets.append(pWidget);
+        _widgets[screen] = pWidget;
         pWidget->show();
     }
 }
@@ -278,11 +278,14 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
 //                                              (cursorPix.height() - colorNameSz.height()) / 2 + colorNameSz.height() + 6), colorNameSz);
 //        painter.drawText(colorNameRect, text);
 
-        if (QApplication::overrideCursor() == nullptr) {
-            QApplication::setOverrideCursor(QCursor(cursorPix));
-        } else {
-            QApplication::changeOverrideCursor(QCursor(cursorPix));
-        }
+        //设置当前窗口鼠标样式
+        if (QApplication::screenAt(posInPixmap) != nullptr && _widgets.contains(QApplication::screenAt(posInPixmap)))
+            _widgets[QApplication::screenAt(posInPixmap)]->setCursor(QCursor(cursorPix));
+//        if (QApplication::overrideCursor() == nullptr) {
+//            QApplication::setOverrideCursor(QCursor(cursorPix));
+//        } else {
+//            QApplication::changeOverrideCursor(QCursor(cursorPix));
+//        }
     }
 }
 
