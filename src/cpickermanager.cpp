@@ -10,6 +10,7 @@
 #include <QDBusReply>
 #include <QPainterPath>
 #include <QProcessEnvironment>
+#include <QTimer>
 
 #include "settings.h"
 #include "utils.h"
@@ -107,6 +108,10 @@ CPickerManager::CPickerManager(): QObject(nullptr)
         QApplication::quit();
     }
     ensureDeskTopPixmap();
+
+    _updateScreenshotTimer = new QTimer(this);
+    _updateScreenshotTimer->setSingleShot(true);
+    connect(_updateScreenshotTimer, SIGNAL(timeout()), this, SLOT(handleMouseMove()));
 }
 
 CPickerManager::~CPickerManager()
@@ -137,8 +142,11 @@ void CPickerManager::StartPick(const QString &id)
 
 void CPickerManager::onMouseMove(const QPoint &pos)
 {
-    ensureDeskTopPixmap();
-    updateCursor(_desktopPixmap, pos);
+    if (_updateScreenshotTimer->isActive()) {
+        _updateScreenshotTimer->stop();
+    }
+    _pos = pos;
+    _updateScreenshotTimer->start(5);
 }
 
 void CPickerManager::onMousePress(const QPoint &p, const int flag)
@@ -167,6 +175,12 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
             colorPicked(_appid, Utils::colorToHex(_curColor));
         }
     }
+}
+
+void CPickerManager::handleMouseMove()
+{
+    ensureDeskTopPixmap();
+    updateCursor(_desktopPixmap, _pos);
 }
 
 void CPickerManager::initShotScreenWidgets()
@@ -228,6 +242,8 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
         clipPath.addEllipse(vaildRect);
         painter.setClipPath(clipPath);
         painter.drawPixmap(vaildRect.toRect(), focusPixmap, focusPixmapVaildRect);
+
+        painter.setRenderHint(QPainter::Antialiasing, false);
 
         //2.绘制圆形的外边线
         QPen p(QColor(255, 255, 255, 87));

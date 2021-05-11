@@ -55,7 +55,7 @@ private:
     CPickerManager *_parentManager = nullptr;
 };
 
-
+class QTimer;
 /**
  * @brief CPickerManager 管理当前的截图
  * 1.根据当前屏幕的个数创建对应个数的CScreenshotWidget实例，同时设置每个CScreenshotWidget窗口的显示图像
@@ -127,6 +127,8 @@ public slots:
      */
     void onMousePress(const QPoint &p, const int flag);
 
+    void handleMouseMove();
+
 private:
     /**
      * @brief initShotScreenWidgets 初始化显示界面
@@ -168,6 +170,8 @@ private:
     QColor                     _curColor;
     bool                       _desktopPixmapDirty = true;
     QPixmap                    _desktopPixmap;
+    QTimer                    *_updateScreenshotTimer = nullptr;
+    QPoint                     _pos;
     friend class CScreenshotWidget;
 };
 #endif // CPICKERMANAGER_H
