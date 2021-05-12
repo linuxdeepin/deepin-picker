@@ -205,14 +205,14 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
 
     const QSize const_focusSize = QSize(200, 200) * qApp->devicePixelRatio() / scalFactor;
     //必须保证聚焦区域的宽高都是奇数(这样才能均分像素点，保证中心焦点像素和显示像素重合)
-    QSizeF focusSize = QSizeF(const_focusSize.width() % 2 == 0 ? (const_focusSize.width() + 1) : const_focusSize.width(),
-                              const_focusSize.height() % 2 == 0 ? (const_focusSize.height() + 1) : const_focusSize.height());
+    QSize focusSize = QSize(const_focusSize.width() % 2 == 0 ? (const_focusSize.width() + 1) : const_focusSize.width(),
+                            const_focusSize.height() % 2 == 0 ? (const_focusSize.height() + 1) : const_focusSize.height());
     QRectF focusRect = QRectF(posInPixmap, focusSize).translated(-focusSize.width() / 2, -focusSize.height() / 2);
 
     QPixmap focusPixmap = pixMap.copy(focusRect.toRect());
 
     //获取焦点区域图形
-    focusPixmap = focusPixmap.scaled(focusPixmap.size() * scalFactor);
+    focusPixmap = focusPixmap.scaled(focusSize * scalFactor);
 
     QRect focusPixmapVaildRect = focusPixmap.rect();
     {
@@ -279,13 +279,11 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
 //        painter.drawText(colorNameRect, text);
 
         //设置当前窗口鼠标样式
-        if (QApplication::screenAt(posInPixmap) != nullptr && _widgets.contains(QApplication::screenAt(posInPixmap)))
-            _widgets[QApplication::screenAt(posInPixmap)]->setCursor(QCursor(cursorPix));
-//        if (QApplication::overrideCursor() == nullptr) {
-//            QApplication::setOverrideCursor(QCursor(cursorPix));
-//        } else {
-//            QApplication::changeOverrideCursor(QCursor(cursorPix));
-//        }
+        if (QApplication::overrideCursor() == nullptr) {
+            QApplication::setOverrideCursor(QCursor(cursorPix));
+        } else {
+            QApplication::changeOverrideCursor(QCursor(cursorPix));
+        }
     }
 }
 
