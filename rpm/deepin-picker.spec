@@ -47,8 +47,7 @@ popd
 %doc README.md
 %license LICENSE
 %{_bindir}/%{name}
-%{_datadir}/%{name}/
-%{_datadir}/applications/%{name}.desktop
+%{_datadir}/%{name}
 %{_datadir}/dbus-1/services/com.deepin.Picker.service
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_datadir}/%{name}/translations/*.qm
