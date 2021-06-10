@@ -155,7 +155,9 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
     int button = flag;
     if (button != DRegionMonitor::Button_Left)
         return;
-    onMouseMove(p);
+    //立即更新坐标
+    _pos = p;
+    handleMouseMove();
 
     //if (!displayCursorDot && isVisible())
     {
