@@ -45,6 +45,10 @@ DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
+        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
+    }
+
     // Load DTK xcb plugin.
     auto e = QProcessEnvironment::systemEnvironment();
     QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
