@@ -190,7 +190,7 @@ void CPickerManager::initShotScreenWidgets()
     ensureDeskTopPixmap();
 
     auto screens = QApplication::screens();
-    for (auto screen : screens) {
+    foreach (auto screen, screens) {
         auto pix = getScreenShotPixmap(screen);
         //auto geometry = QRect(screen->geometry().topLeft(), screen->geometry().size() * screen->devicePixelRatio());
         CScreenshotWidget *pWidget = new CScreenshotWidget(this);
@@ -315,7 +315,7 @@ QRect getDeskTopRect()
 {
     QRect deskTopRect(0, 0, 0, 0);
     auto screens = QApplication::screens();
-    for (auto screen : screens) {
+    foreach (auto screen, screens) {
 
         auto geometry = QRect(screen->geometry().topLeft(), screen->geometry().size() *
                               screen->devicePixelRatio());
@@ -344,7 +344,7 @@ QPixmap CPickerManager::getDesktopPixmap()
         pixs.fill(Qt::transparent);
         QPainter painter(&pixs);
         auto screens = QApplication::screens();
-        for (auto screen : screens) {
+        foreach (auto screen, screens) {
             auto pix = screen->grabWindow(0);
             auto geometry = QRect(screen->geometry().topLeft(), screen->geometry().size() * screen->devicePixelRatio());
             painter.drawPixmap(geometry, pix, pix.rect());
