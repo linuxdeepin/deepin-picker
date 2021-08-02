@@ -198,6 +198,7 @@ void CPickerManager::initShotScreenWidgets()
         pWidget->setGeometry(screen->geometry());
         _widgets[screen] = pWidget;
         pWidget->show();
+        pWidget->raise();
     }
 }
 

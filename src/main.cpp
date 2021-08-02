@@ -114,6 +114,5 @@ int main(int argc, char *argv[])
             dbus.registerObject("/com/deepin/Picker", picker.data(), QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
         }
     }
-
     return app.exec();
 }
