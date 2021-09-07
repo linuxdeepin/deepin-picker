@@ -199,6 +199,12 @@ void CPickerManager::initShotScreenWidgets()
         _widgets[screen] = pWidget;
         pWidget->show();
         pWidget->raise();
+
+        pWidget->activateWindow();
+        pWidget->setFocus();
+
+        ensureDeskTopPixmap();
+        updateCursor(_desktopPixmap, QCursor::pos(screen));
     }
 }
 
