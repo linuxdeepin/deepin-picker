@@ -38,9 +38,15 @@ QPixmap CScreenshotWidget::pixMap()
 
 void CScreenshotWidget::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
     QPainter painter(this);
     painter.drawPixmap(rect(), pixMap(), pixMap().rect());
+    QPoint centerPos = mapFromGlobal(QCursor::pos());
+    if (rect().contains(centerPos)) {
+        if (!_parentManager->_cursorPix.isNull())
+            painter.drawPixmap(QRect(centerPos - QPoint(_parentManager->_cursorPix.width() / 2, _parentManager->_cursorPix.height() / 2),
+                                     _parentManager->_cursorPix.size()), _parentManager->_cursorPix, _parentManager->_cursorPix.rect());
+    }
 }
 
 void CScreenshotWidget::keyPressEvent(QKeyEvent *event)
@@ -112,6 +118,11 @@ CPickerManager::CPickerManager(): QObject(nullptr)
     _updateScreenshotTimer = new QTimer(this);
     _updateScreenshotTimer->setSingleShot(true);
     connect(_updateScreenshotTimer, SIGNAL(timeout()), this, SLOT(handleMouseMove()));
+
+
+    QPixmap pix(16, 16);
+    pix.fill(Qt::transparent);
+    qApp->setOverrideCursor(QCursor(pix));
 }
 
 CPickerManager::~CPickerManager()
@@ -288,11 +299,9 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
 //        painter.drawText(colorNameRect, text);
 
         //设置当前窗口鼠标样式
-        if (QApplication::overrideCursor() == nullptr) {
-            QApplication::setOverrideCursor(QCursor(cursorPix));
-        } else {
-            QApplication::changeOverrideCursor(QCursor(cursorPix));
-        }
+        _cursorPix = cursorPix;
+        this->autoUpdate();
+
     }
 }
 
@@ -375,4 +384,27 @@ bool CPickerManager::isSpcialPlatform()
 
     return XDG_SESSION_TYPE == QLatin1String("wayland") ||
            WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive);
+}
+
+void CPickerManager::autoUpdate()
+{
+    if (nullptr == qApp->screenAt(QCursor::pos()))
+        return;
+
+    static QWidget *lastWidget = nullptr;
+    static QRect lastRect;
+    auto currentWidget = _widgets.value(qApp->screenAt(QCursor::pos()));
+
+    if (lastWidget != nullptr) {
+        lastWidget->update(lastRect);
+    }
+
+    if (currentWidget != nullptr) {
+        QRect currentRect = QRect(currentWidget->mapFromGlobal(QCursor::pos()) - QPoint(_cursorPix.width() / 2, _cursorPix.height() / 2), QSize(_cursorPix.size()));
+        if (lastWidget != currentWidget)
+            currentWidget->update(lastRect);
+        currentWidget->update(currentRect);
+        lastWidget = currentWidget;
+        lastRect = currentRect;
+    }
 }

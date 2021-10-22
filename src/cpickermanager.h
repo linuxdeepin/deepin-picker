@@ -164,6 +164,8 @@ private:
      */
     static bool    isSpcialPlatform();
 
+    void autoUpdate();
+
 private:
     ELanchType                 _isLaunchByDBus = ELanchedBySelf;
     QString                    _appid;
@@ -175,6 +177,8 @@ private:
     QPixmap                    _desktopPixmap;
     QTimer                    *_updateScreenshotTimer = nullptr;
     QPoint                     _pos;
+
+    QPixmap                    _cursorPix;
     friend class CScreenshotWidget;
 };
 #endif // CPICKERMANAGER_H
