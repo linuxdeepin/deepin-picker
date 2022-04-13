@@ -13,7 +13,7 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details. 
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -162,7 +162,7 @@ private:
      * @brief isSpcialPlatform 是否当前是特殊平台
      * (特殊平台下需要进行不同的获取桌面图像的方式如wayland，以后考虑枚举方式)
      */
-    static bool    isSpcialPlatform();
+    static bool    isWaylandPlatform();
 
     void autoUpdate();
 

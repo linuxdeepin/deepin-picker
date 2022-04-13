@@ -80,7 +80,7 @@ CPickerManager::CPickerManager(): QObject(nullptr)
     const int windowWidth = 236;
     qreal radio = qApp->devicePixelRatio();
     _shadowPixmap = QPixmap(Utils::getQrcPath("shadow.png"));
-    if (isSpcialPlatform()) {
+    if (isWaylandPlatform()) {
         _shadowPixmap = _shadowPixmap.scaled(windowWidth, windowHeight);
     } else {
         _shadowPixmap = _shadowPixmap.scaled(windowWidth / radio, windowHeight / radio, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -164,8 +164,18 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
 {
     Q_UNUSED(p)
     int button = flag;
-    if (button != DRegionMonitor::Button_Left)
-        return;
+
+    if (isWaylandPlatform()) {
+        //wayland触摸屏下的点击是DRegionMonitor::Button_Middle，鼠标左键点击DRegionMonitor::Button_Left。无法区分是鼠标左键还是触摸屏，故支持中键点击
+        //最佳方案是TDK将触摸屏点击修改成左键点击。。。。。。。
+        if (button != DRegionMonitor::Button_Left && button != DRegionMonitor::Button_Middle) {
+            return;
+        }
+    } else {
+        if (button != DRegionMonitor::Button_Left)
+            return;
+    }
+
     //立即更新坐标
     _pos = p;
     handleMouseMove();
@@ -317,7 +327,7 @@ void CPickerManager::ensureDeskTopPixmap()
 QPixmap CPickerManager::getScreenShotPixmap(QScreen *pScreen)
 {
     QPixmap result;
-    bool iswayLand = isSpcialPlatform();
+    bool iswayLand = isWaylandPlatform();
     if (iswayLand) {
         auto geometry = QRect(pScreen->geometry().topLeft(), pScreen->geometry().size() * pScreen->devicePixelRatio());
         result = _desktopPixmap.copy(geometry);
@@ -342,7 +352,7 @@ QRect getDeskTopRect()
 QPixmap CPickerManager::getDesktopPixmap()
 {
     QPixmap result;
-    bool iswayLand = isSpcialPlatform();
+    bool iswayLand = isWaylandPlatform();
     if (iswayLand) {
         QPixmap res;
         QDBusInterface kwinInterface(QStringLiteral("org.kde.KWin"),
@@ -372,7 +382,7 @@ QPixmap CPickerManager::getDesktopPixmap()
     return result;
 }
 
-bool CPickerManager::isSpcialPlatform()
+bool CPickerManager::isWaylandPlatform()
 {
     static auto e = QProcessEnvironment::systemEnvironment();
     static auto XDG_CURRENT_DESKTOP = e.value(QStringLiteral("XDG_CURRENT_DESKTOP"));
