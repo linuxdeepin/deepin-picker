@@ -209,8 +209,18 @@ void CPickerManager::handleMouseMove()
 void CPickerManager::initShotScreenWidgets()
 {
     ensureDeskTopPixmap();
-
     auto screens = QApplication::screens();
+    //去出复制屏
+    int i = 0;
+    while (i < screens.size()) {
+        for (int j = screens.size() - 1; j > i; j--) {
+            if (screens.at(i)->geometry().topLeft() == screens.at(j)->geometry().topLeft()) {
+                screens.removeAt(j);
+            }
+        }
+        i++;
+    }
+
     foreach (auto screen, screens) {
         auto pix = getScreenShotPixmap(screen);
         //auto geometry = QRect(screen->geometry().topLeft(), screen->geometry().size() * screen->devicePixelRatio());
