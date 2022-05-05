@@ -237,6 +237,17 @@ void CPickerManager::initShotScreenWidgets()
         ensureDeskTopPixmap();
         updateCursor(_desktopPixmap, QCursor::pos(screen));
     }
+
+    // 解决 wayland 下调出取色器后点击 Esc 无法退出取色器
+    if (isWaylandPlatform()) {
+        // 延迟 200ms 后取得当前背景窗口的焦点，用以捕获 Esc 按键退出
+        QTimer::singleShot(200, this, [ = ]() {
+            auto currentWidget = _widgets.value(qApp->screenAt(QCursor::pos()));
+            if (nullptr != currentWidget) {
+                currentWidget->activateWindow();
+            }
+        });
+    }
 }
 
 void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixmap)
