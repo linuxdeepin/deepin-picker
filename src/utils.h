@@ -32,7 +32,7 @@ class Utils : public QObject
 
 public:
     static QString getQrcPath(QString imageName);
-    static QString getQssPath(QString qssName);
+//    static QString getQssPath(QString qssName);
     static void passInputEvent(int wid);
     static QString colorToHex(QColor color);
     static QString colorToCMYK(QColor color);
@@ -42,9 +42,9 @@ public:
     static QString colorToFloatRGB(QColor color);
     static QString colorToFloatRGBA(QColor color);
     static qreal easeInOut(qreal x);
-    static qreal easeInQuad(qreal x);
-    static qreal easeInQuint(qreal x);
-    static qreal easeOutQuad(qreal x);
-    static qreal easeOutQuint(qreal x);
-    static void warnNoComposite();
+//    static qreal easeInQuad(qreal x);
+//    static qreal easeInQuint(qreal x);
+//    static qreal easeOutQuad(qreal x);
+//    static qreal easeOutQuint(qreal x);
+//    static void warnNoComposite();
 };

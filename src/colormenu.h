@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 #ifndef COLORMENU_H
 #define COLORMENU_H
@@ -33,15 +33,15 @@
 class ColorMenu : public QWidget
 {
     Q_OBJECT
-    
+
 public:
-    ColorMenu(int x, int y, int size, QColor color, QWidget *parent=0);
-	~ColorMenu(); 
-    
+    ColorMenu(int x, int y, int size, QColor color, QWidget *parent = 0);
+    ~ColorMenu();
+
 signals:
     void copyColor(QColor color, QString colorType);
     void exit();
-                                                     
+
 public slots:
     void copyFloatRGBAColor();
     void copyFloatRGBColor();
@@ -50,11 +50,11 @@ public slots:
     void copyHsvColor();
     void copyRGBAColor();
     void copyRGBColor();
-    void showMenu();
-    
+//    void showMenu();
+
 protected:
     void paintEvent(QPaintEvent *);
-    
+
 private:
     QAction *hexAction;
     QAction *rgbAction;
@@ -73,6 +73,6 @@ private:
     int windowSize;
     int windowX;
     int windowY;
-};	
+};
 
 #endif

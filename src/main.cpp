@@ -23,7 +23,7 @@
 
 #include <DApplication>
 #include <DMainWindow>
-#include <dregionmonitor.h>
+#include <DRegionMonitor>
 
 #include <QDBusConnection>
 #include <QApplication>
@@ -39,21 +39,24 @@
 #include "utils.h"
 #include "clipboard.h"
 #include "picker.h"
+#include "cpickermanager.h"
 
 DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
+        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
+    }
+
     // Load DTK xcb plugin.
     auto e = QProcessEnvironment::systemEnvironment();
     QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
-    //判断wayland
-    //    if (XDG_SESSION_TYPE != QLatin1String("wayland") && !WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
-    DApplication::loadDXcbPlugin();
-    //    } else {
-    //        qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
-    //    }
+
+    if (XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+        qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
+    }
 
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP(
@@ -66,10 +69,12 @@ int main(int argc, char *argv[])
     // Init dtk application's attrubites.
     DApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
-    if (!DWindowManagerHelper::instance()->hasComposite()) {
-        Utils::warnNoComposite();
-        return 0;
-    }
+
+    // 判断窗口特效是否开启
+//    if (!DWindowManagerHelper::instance()->hasComposite()) {
+//        Utils::warnNoComposite();
+//        return 0;
+//    }
 
     app.loadTranslator();
 
@@ -95,35 +100,13 @@ int main(int argc, char *argv[])
 
     // Init modules.
     Clipboard clipboard;
-    QPointer<Picker> picker = new Picker(isLaunchByDBus);
+    QPointer<CPickerManager> picker = new CPickerManager;
+    picker->setLanchFlag(isLaunchByDBus ? CPickerManager::ELanchedByOtherApp : CPickerManager::ELanchedBySelf);
     if (!isLaunchByDBus) {
         picker->StartPick("");
     }
+    QObject::connect(picker.data(), &CPickerManager::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
 
-    DRegionMonitor eventMonitor;
-
-    // Exit application when user press esc to cancel pick.
-    QObject::connect(&eventMonitor, &DRegionMonitor::keyPress, &clipboard, [&](const QString & name) {
-        if (name == "Escape")
-            QApplication::quit();
-    });
-
-    // Trigger copyToClipboard slot when got copyColor signal.
-    QObject::connect(picker.data(), &Picker::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
-
-    // Binding handler to xrecord signal.
-    QObject::connect(&eventMonitor, &DRegionMonitor::cursorMove, picker.data(), &Picker::handleMouseMove, Qt::QueuedConnection);
-    QObject::connect(&eventMonitor, &DRegionMonitor::buttonPress, picker.data(), &Picker::handleLeftButtonPress, Qt::QueuedConnection);
-//    QObject::connect(&eventMonitor, &DRegionMonitor::buttonRelease, picker.data(), &Picker::handleRightButtonRelease, Qt::QueuedConnection);
-
-    // Start event monitor thread.
-    eventMonitor.setCoordinateType(DRegionMonitor::Original);
-    eventMonitor.registerRegion();
-
-    if (!eventMonitor.registered()) {
-        qWarning() << "Failed on register monitor";
-        return -1;
-    }
 
     if (isLaunchByDBus) {
         QDBusConnection dbus = QDBusConnection::sessionBus();
@@ -131,6 +114,5 @@ int main(int argc, char *argv[])
             dbus.registerObject("/com/deepin/Picker", picker.data(), QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
         }
     }
-
     return app.exec();
 }

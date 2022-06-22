@@ -7,11 +7,12 @@ TARGET = deepin-picker
 
 CONFIG += link_pkgconfig
 CONFIG += c++11 
-PKGCONFIG += xcb xcb-util dtkwidget 
+PKGCONFIG += dtkwidget dtkgui
 RESOURCES = deepin-picker.qrc
-
+# xcb xcb-util
 # Input
 HEADERS += src/picker.h \
+    src/cpickermanager.h \
     src/desktopinfo.h \
            src/colormenu.h \		   		   
            src/clipboard.h \		   		   
@@ -20,6 +21,7 @@ HEADERS += src/picker.h \
            src/settings.h \		   		   
            src/utils.h
 SOURCES += src/picker.cpp \
+    src/cpickermanager.cpp \
     src/desktopinfo.cpp \
            src/colormenu.cpp \		   
            src/clipboard.cpp \		   
@@ -32,13 +34,9 @@ SOURCES += src/picker.cpp \
 QT += core
 QT += widgets
 QT += gui
-QT += network
-QT += x11extras
 QT += dbus
-QT += svg
 
 QMAKE_CXXFLAGS += -g
-LIBS += -lX11 -lXext -lXtst
 
 isEmpty(PREFIX){
     PREFIX = /usr

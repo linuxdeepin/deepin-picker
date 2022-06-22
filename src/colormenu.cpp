@@ -171,10 +171,10 @@ void ColorMenu::paintEvent(QPaintEvent *)
     painter.drawRect(QRect(x + 2, 2, windowSize - 4, windowSize - 4));
 }
 
-void ColorMenu::showMenu()
-{
-    colorMenu->exec(QPoint(windowX - windowSize / 2 + menuOffsetX, windowY - windowSize / 2 + menuOffsetY));
-}
+//void ColorMenu::showMenu()
+//{
+//    colorMenu->exec(QPoint(windowX - windowSize / 2 + menuOffsetX, windowY - windowSize / 2 + menuOffsetY));
+//}
 
 void ColorMenu::copyRGBColor()
 {

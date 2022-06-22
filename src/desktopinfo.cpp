@@ -13,20 +13,20 @@ DesktopInfo::DesktopInfo()
     DESKTOP_SESSION = e.value(QStringLiteral("DESKTOP_SESSION"));
 }
 
-bool DesktopInfo::waylandDectected()
-{
-    return XDG_SESSION_TYPE == QLatin1String("wayland") ||
-           WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive);
-}
+//bool DesktopInfo::waylandDectected()
+//{
+//    return XDG_SESSION_TYPE == QLatin1String("wayland") ||
+//           WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive);
+//}
 
-DesktopInfo::WM DesktopInfo::windowManager()
-{
-    DesktopInfo::WM res = DesktopInfo::OTHER;
-    if (XDG_CURRENT_DESKTOP.contains(QLatin1String("GNOME"), Qt::CaseInsensitive) ||
-            !GNOME_DESKTOP_SESSION_ID.isEmpty()) {
-        res = DesktopInfo::GNOME;
-    } else if (!KDE_FULL_SESSION.isEmpty() || DESKTOP_SESSION == QLatin1String("kde-plasma")) {
-        res = DesktopInfo::KDE;
-    }
-    return res;
-}
+//DesktopInfo::WM DesktopInfo::windowManager()
+//{
+//    DesktopInfo::WM res = DesktopInfo::OTHER;
+//    if (XDG_CURRENT_DESKTOP.contains(QLatin1String("GNOME"), Qt::CaseInsensitive) ||
+//            !GNOME_DESKTOP_SESSION_ID.isEmpty()) {
+//        res = DesktopInfo::GNOME;
+//    } else if (!KDE_FULL_SESSION.isEmpty() || DESKTOP_SESSION == QLatin1String("kde-plasma")) {
+//        res = DesktopInfo::KDE;
+//    }
+//    return res;
+//}

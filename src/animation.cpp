@@ -57,7 +57,7 @@ Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent
 
     // Start animation when module init.
     renderTimer = new QTimer();
-    connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderAnimation()));
+    connect(renderTimer, &QTimer::timeout, this, &Animation::renderAnimation);
     renderTimer->start(animationDuration);
 }
 

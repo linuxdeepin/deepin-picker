@@ -61,8 +61,8 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
         colorString = Utils::colorToHSV(color);
     }
 
-    Settings *settings = new Settings();
-    settings->setOption("color_type", colorType);
+    Settings settings;
+    settings.setOption("color_type", colorType);
 
     // Popup notify.
     DBusNotify *notifyDBus = new DBusNotify(this);
