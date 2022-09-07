@@ -11,7 +11,7 @@ PKGCONFIG += dtkwidget dtkgui
 RESOURCES = deepin-picker.qrc
 # xcb xcb-util
 # Input
-HEADERS += src/picker.h \
+HEADERS += \
     src/cpickermanager.h \
     src/desktopinfo.h \
            src/colormenu.h \		   		   
@@ -20,7 +20,7 @@ HEADERS += src/picker.h \
            src/dbusnotify.h \		   		   
            src/settings.h \		   		   
            src/utils.h
-SOURCES += src/picker.cpp \
+SOURCES += \
     src/cpickermanager.cpp \
     src/desktopinfo.cpp \
            src/colormenu.cpp \		   

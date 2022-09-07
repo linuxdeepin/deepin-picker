@@ -38,7 +38,6 @@
 #include <iostream>
 #include "utils.h"
 #include "clipboard.h"
-#include "picker.h"
 #include "cpickermanager.h"
 
 DWIDGET_USE_NAMESPACE
