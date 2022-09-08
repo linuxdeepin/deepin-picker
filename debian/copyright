@@ -3,7 +3,7 @@ Upstream-Name: deepin-picker
 
 # ci
 Files: .github/*
-Copyright: UnionTech Software Technology Co., Ltd.
+Copyright: None
 License: CC0-1.0
 
 # gitignore
