@@ -66,6 +66,8 @@ void Clipboard::copyToClipboard(QColor color, QString colorType)
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(colorString);
 
-    // Quit application.
-    QApplication::quit();
+    // Quit application. Delay exit by 100ms so that the color value can be stored in the clipboard normally
+    QTimer::singleShot(100, this,[=](){
+        QApplication::quit();
+    });
 }
