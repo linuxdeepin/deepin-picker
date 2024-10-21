@@ -22,6 +22,11 @@
 
 DWIDGET_USE_NAMESPACE
 
+bool isTreeland()
+{
+    return qEnvironmentVariable("DDE_CURRENT_COMPOSITOR") == QStringLiteral("TreeLand");
+}
+
 int main(int argc, char *argv[])
 {
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
@@ -33,15 +38,15 @@ int main(int argc, char *argv[])
     QString XDG_SESSION_TYPE = e.value(QStringLiteral("XDG_SESSION_TYPE"));
     QString WAYLAND_DISPLAY = e.value(QStringLiteral("WAYLAND_DISPLAY"));
 
-    if (XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) {
+    if ((XDG_SESSION_TYPE == QLatin1String("wayland") || WAYLAND_DISPLAY.contains(QLatin1String("wayland"), Qt::CaseInsensitive)) && !isTreeland()) {
         qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
     }
 
     // Init attributes.
     const char *descriptionText = QT_TRANSLATE_NOOP(
-                                      "MainWindow",
-                                      "Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes "
-                                      "are obtained on click and auto saved to the clipboard.");
+            "MainWindow",
+            "Deepin Picker is a quick and easy screen color picking tool. RGB and HEX codes "
+            "are obtained on click and auto saved to the clipboard.");
 
     const QString acknowledgementLink = "https://www.deepin.org/acknowledgments/deepin-picker";
 
@@ -50,10 +55,10 @@ int main(int argc, char *argv[])
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     // 判断窗口特效是否开启
-//    if (!DWindowManagerHelper::instance()->hasComposite()) {
-//        Utils::warnNoComposite();
-//        return 0;
-//    }
+    //    if (!DWindowManagerHelper::instance()->hasComposite()) {
+    //        Utils::warnNoComposite();
+    //        return 0;
+    //    }
 
     app.loadTranslator();
 
@@ -85,7 +90,6 @@ int main(int argc, char *argv[])
         picker->StartPick("");
     }
     QObject::connect(picker.data(), &CPickerManager::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
-
 
     if (isLaunchByDBus) {
         QDBusConnection dbus = QDBusConnection::sessionBus();
