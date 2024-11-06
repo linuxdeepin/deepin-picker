@@ -1,3 +1,9 @@
+deepin-picker (6.0.3) unstable; urgency=medium
+
+  *rmove kwayland-shell 
+
+ -- Liu zheng <liuzheng@uniontech.com>  Wed, 06 Nov 2024 15:38:45 +0800
+
 deepin-picker (6.0.2) unstable; urgency=medium
 
   * adapt treeland 
