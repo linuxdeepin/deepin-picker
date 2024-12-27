@@ -5,11 +5,25 @@
 TEMPLATE = app
 TARGET = deepin-picker
 
+# 合并 Qt 模块配置
+versionAtLeast(QT_VERSION, 6.0.0) {
+    # Qt6 specific configurations
+    QT += core widgets gui dbus
+
+    PKGCONFIG += dtk6widget dtk6gui xcb xcb-util
+    QMAKE_LRELEASE = /usr/lib/qt6/bin/lrelease
+} else {
+    # Qt5 specific configurations
+    QT += core widgets gui dbus
+    PKGCONFIG += dtkwidget dtkcore dtkgui xcb xcb-util
+    QMAKE_LRELEASE = lrelease
+}
+
 CONFIG += link_pkgconfig
 CONFIG += c++11 
-PKGCONFIG += dtkwidget dtkgui
+
 RESOURCES = deepin-picker.qrc
-# xcb xcb-util
+
 # Input
 HEADERS += \
     src/cpickermanager.h \
@@ -31,10 +45,11 @@ SOURCES += \
            src/utils.cpp \		   
 		   src/main.cpp		   
 		   
-QT += core
-QT += widgets
-QT += gui
-QT += dbus
+# 移除不必要的注释
+# QT += core
+# QT += widgets
+# QT += gui
+# QT += dbus
 
 QMAKE_CXXFLAGS += -g
 
@@ -74,13 +89,29 @@ translations.files = $$TRANSLATIONS_COMPILED
 INSTALLS += translations
 CONFIG *= update_translations release_translations
 
-CONFIG(update_translations) {
-    isEmpty(lupdate):lupdate=lupdate
-    system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
-}
-CONFIG(release_translations) {
-    isEmpty(lrelease):lrelease=lrelease
-    system($$lrelease $$_PRO_FILE_)
+QT6_LUPDATE = /usr/lib/qt6/bin/lupdate
+QT6_LRELEASE = /usr/lib/qt6/bin/lrelease
+DEFAULT_LUPDATE = lupdate
+DEFAULT_LRELEASE = lrelease
+
+versionAtLeast(QT_VERSION, 6.0.0) {
+    CONFIG(update_translations) {
+        isEmpty(lupdate):lupdate=$$QT6_LUPDATE
+        system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
+    }
+    CONFIG(release_translations) {
+        isEmpty(lrelease):lrelease=$$QT6_LRELEASE
+        system($$lrelease $$_PRO_FILE_)
+    }
+} else {
+    CONFIG(update_translations) {
+        isEmpty(lupdate):lupdate=$$DEFAULT_LUPDATE
+        system($$lupdate -no-obsolete -locations none $$_PRO_FILE_)
+    }
+    CONFIG(release_translations) {
+        isEmpty(lrelease):lrelease=$$DEFAULT_LRELEASE
+        system($$lrelease $$_PRO_FILE_)
+    }
 }
 
 DSR_LANG_PATH += $$DSRDIR/translations
