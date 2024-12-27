@@ -5,12 +5,15 @@ Maintainer: Deepin Packages Builder <packages@deepin.com>
 Build-Depends: 
  debhelper (>= 9),
  pkg-config,
- qt5-qmake,
+ qt6-base-dev,
+ qt6-base-dev-tools,
+ qt6-base-private-dev,
  libxcb-util0-dev,
- libdtkgui-dev,
- libdtkwidget-dev,
- qttools5-dev-tools,
- libqt5svg5-dev,
+ libdtk6gui-dev,
+ libdtk6widget-dev,
+ qt6-tools-dev-tools,
+ qt6-tools-dev,
+ qt6-svg-dev,
  libxtst-dev
 Standards-Version: 3.9.8
 Homepage: http://www.deepin.org
