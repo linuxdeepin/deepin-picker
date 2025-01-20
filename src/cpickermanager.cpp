@@ -15,6 +15,7 @@
 #include <QPainterPath>
 #include <QProcessEnvironment>
 #include <QTimer>
+#include <QFile>
 
 #include "settings.h"
 #include "utils.h"

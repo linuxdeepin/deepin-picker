@@ -1,3 +1,9 @@
+deepin-picker (6.0.4) UNRELEASED; urgency=medium
+
+  * feat: adapt for Qt 6.8
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Mon, 20 Jan 2025 13:31:13 +0800
+
 deepin-picker (6.0.3) unstable; urgency=medium
 
   *rmove kwayland-shell 
