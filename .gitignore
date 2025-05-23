@@ -5,3 +5,5 @@ moc_*.cpp
 build/
 *.qm
 *pro.user
+.vscode
+.cursor

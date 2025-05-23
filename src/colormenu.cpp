@@ -16,6 +16,8 @@
 
 ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QWidget(parent)
 {
+    qDebug() << "Initializing color menu at position:" << x << y << "with size:" << size << "and color:" << color.name();
+    
     // Init window flags.
     setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
 //    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
@@ -47,6 +49,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     connect(colorMenu, &QMenu::aboutToHide, this, [&]() {
         QTimer::singleShot(200, this, [&]() {
             if (!clickMenuItem) {
+                qDebug() << "Menu closed without selection, exiting";
                 exit();
             }
         });
@@ -91,6 +94,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     // Set menu action check status with color type.
     Settings *settings = new Settings();
     QString colorType = settings->getOption("color_type", "HEX").toString();
+    qDebug() << "Loading saved color type preference:" << colorType;
 
     if (colorType == "HEX") {
         hexAction->setChecked(true);
@@ -115,6 +119,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
 
 ColorMenu::~ColorMenu()
 {
+    qDebug() << "Destroying color menu instance";
     delete hexAction;
     delete rgbAction;
     delete rgbFloatAction;
