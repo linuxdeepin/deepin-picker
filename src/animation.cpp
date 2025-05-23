@@ -12,6 +12,8 @@
 
 Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent) : QWidget(parent)
 {
+    qDebug() << "Initializing animation at position:" << x << y << "with color:" << color.name();
+    
     // Init window flags to make window transparent and get correctly behavior.
     setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
 //    setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool);
@@ -40,10 +42,12 @@ Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent
     renderTimer = new QTimer();
     connect(renderTimer, &QTimer::timeout, this, &Animation::renderAnimation);
     renderTimer->start(animationDuration);
+    qDebug() << "Animation timer started with duration:" << animationDuration << "ms";
 }
 
 Animation::~Animation()
 {
+    qDebug() << "Destroying animation instance";
     delete renderTimer;
 }
 
@@ -75,10 +79,11 @@ void Animation::renderAnimation()
 {
     if (renderTicker < animationFrames) {
         renderTicker++;
-
+        qDebug() << "Animation frame:" << renderTicker << "/" << animationFrames;
         repaint();
     } else {
         renderTimer->stop();
+        qInfo() << "Animation completed, hiding window";
         hide();                 // hide window when animation finish
 
         emit finish();

@@ -25,6 +25,7 @@ DGUI_USE_NAMESPACE
 CScreenshotWidget::CScreenshotWidget(CPickerManager *parent): QWidget(nullptr),
     _parentManager(parent)
 {
+    qDebug() << "Initializing screenshot widget";
     //为顶层窗口
     this->setWindowFlags(this->windowFlags() | Qt::Window | Qt::FramelessWindowHint
                          | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint);
@@ -58,6 +59,7 @@ void CScreenshotWidget::keyPressEvent(QKeyEvent *event)
 {
     //wayland下 DRegionMonitor::keyPress会失效，这里会响应
     if (event->matches(QKeySequence::Cancel)) {
+        qDebug() << "Escape key pressed, exiting application";
         QApplication::quit();
     }
     QWidget::keyPressEvent(event);
@@ -81,11 +83,13 @@ void CScreenshotWidget::wheelEvent(QWheelEvent *event)
 
 CPickerManager::CPickerManager(): QObject(nullptr)
 {
+    qDebug() << "Initializing color picker manager";
     const int windowHeight = 236;
     const int windowWidth = 236;
     qreal radio = qApp->devicePixelRatio();
     _shadowPixmap = QPixmap(Utils::getQrcPath("shadow.png"));
     if (isWaylandPlatform()) {
+        qDebug() << "Running on Wayland platform";
         _shadowPixmap = _shadowPixmap.scaled(windowWidth, windowHeight);
     } else {
         _shadowPixmap = _shadowPixmap.scaled(windowWidth / radio, windowHeight / radio, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -98,10 +102,11 @@ CPickerManager::CPickerManager(): QObject(nullptr)
     eventMonitor->setWatchedRegion(QRegion(INT_MIN, INT_MIN, INT_MAX * 2, INT_MAX * 2));
 
     QObject::connect(eventMonitor, &DRegionMonitor::keyPress, this, [ = ](const QString & name) {
-        if (name == "Escape")
+        if (name == "Escape") {
+            qDebug() << "Escape key detected from region monitor, exiting application";
             QApplication::quit();
+        }
     });
-
 
     // Binding handler to xrecord signal.
     QObject::connect(eventMonitor, &DRegionMonitor::cursorMove, this, [ = ](const QPoint & p) {
@@ -115,7 +120,7 @@ CPickerManager::CPickerManager(): QObject(nullptr)
     eventMonitor->registerRegion();
 
     if (!eventMonitor->registered()) {
-        qWarning() << "Failed on register monitor";
+        qWarning() << "Failed to register region monitor, exiting application";
         QApplication::quit();
     }
     ensureDeskTopPixmap();
@@ -124,7 +129,6 @@ CPickerManager::CPickerManager(): QObject(nullptr)
     _updateScreenshotTimer->setSingleShot(true);
     connect(_updateScreenshotTimer, SIGNAL(timeout()), this, SLOT(handleMouseMove()));
 
-
     QPixmap pix(16, 16);
     pix.fill(Qt::transparent);
     qApp->setOverrideCursor(QCursor(pix));
@@ -132,10 +136,12 @@ CPickerManager::CPickerManager(): QObject(nullptr)
 
 CPickerManager::~CPickerManager()
 {
+    qDebug() << "Destroying color picker manager";
 }
 
 void CPickerManager::setLanchFlag(CPickerManager::ELanchType tp, const QString &appName)
 {
+    qDebug() << "Setting launch flag:" << tp << "for application:" << appName;
     _isLaunchByDBus = tp;
     if (_isLaunchByDBus == ELanchedByOtherApp)
         _appid = appName;
@@ -153,6 +159,7 @@ void CPickerManager::setLanchFlag(CPickerManager::ELanchType tp, const QString &
 
 void CPickerManager::StartPick(const QString &id)
 {
+    qDebug() << "Starting color pick with ID:" << id;
     _appid = id;
 }
 
@@ -174,11 +181,14 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
         //wayland触摸屏下的点击是DRegionMonitor::Button_Middle，鼠标左键点击DRegionMonitor::Button_Left。无法区分是鼠标左键还是触摸屏，故支持中键点击
         //最佳方案是TDK将触摸屏点击修改成左键点击。。。。。。。
         if (button != DRegionMonitor::Button_Left && button != DRegionMonitor::Button_Middle) {
+            qDebug() << "Ignoring non-left/middle button press on Wayland";
             return;
         }
     } else {
-        if (button != DRegionMonitor::Button_Left)
+        if (button != DRegionMonitor::Button_Left) {
+            qDebug() << "Ignoring non-left button press";
             return;
+        }
     }
 
     //立即更新坐标
@@ -194,12 +204,15 @@ void CPickerManager::onMousePress(const QPoint &p, const int flag)
 
         // Rest color type to hex if config file not exist.
         Settings settings;
+        QString colorType = settings.getOption("color_type", "HEX").toString();
+        qDebug() << "Color picked:" << _curColor.name() << "in format:" << colorType;
 
         // Emit copyColor signal to copy color to system clipboard.
-        copyColor(_curColor, settings.getOption("color_type", "HEX").toString());
+        copyColor(_curColor, colorType);
 
         // Send colorPicked signal when call by DBus and no empty appid.
         if (_appid != "") {
+            qDebug() << "Sending color picked signal to application:" << _appid;
             colorPicked(_appid, Utils::colorToHex(_curColor));
         }
     }
@@ -213,6 +226,7 @@ void CPickerManager::handleMouseMove()
 
 void CPickerManager::initShotScreenWidgets()
 {
+    qDebug() << "Initializing screen shot widgets";
     ensureDeskTopPixmap();
     auto screens = QApplication::screens();
     //去出复制屏
@@ -220,6 +234,7 @@ void CPickerManager::initShotScreenWidgets()
     while (i < screens.size()) {
         for (int j = screens.size() - 1; j > i; j--) {
             if (screens.at(i)->geometry().topLeft() == screens.at(j)->geometry().topLeft()) {
+                qDebug() << "Removing duplicate screen at index:" << j;
                 screens.removeAt(j);
             }
         }
@@ -228,7 +243,6 @@ void CPickerManager::initShotScreenWidgets()
 
     foreach (auto screen, screens) {
         auto pix = getScreenShotPixmap(screen);
-        //auto geometry = QRect(screen->geometry().topLeft(), screen->geometry().size() * screen->devicePixelRatio());
         CScreenshotWidget *pWidget = new CScreenshotWidget(this);
         pWidget->setPixmap(pix);
         pWidget->setGeometry(screen->geometry());
@@ -245,6 +259,7 @@ void CPickerManager::initShotScreenWidgets()
 
     // 解决 wayland 下调出取色器后点击 Esc 无法退出取色器
     if (isWaylandPlatform()) {
+        qDebug() << "Setting up Wayland-specific window activation";
         // 延迟 200ms 后取得当前背景窗口的焦点，用以捕获 Esc 按键退出
         QTimer::singleShot(200, this, [ = ]() {
             auto currentWidget = _widgets.value(qApp->screenAt(QCursor::pos()));
@@ -324,27 +339,16 @@ void CPickerManager::updateCursor(const QPixmap &pixMap, const QPoint &posInPixm
 
         _curColor = focusPixmap.toImage().pixelColor(focusPixmap.rect().center());
 
-//        painter.setPen(QColor(255, 0, 0, 100));
-//        QFont f;
-//        painter.setFont(f);
-//        QString text = _curColor.name() + QString("w=%1lw=%2").arg(focusPixmap.width()).arg(logicPixelWidth);
-//        QSize colorNameSz   = QSize(QFontMetrics(f).width(text), QFontMetrics(f).height()) ;
-
-//        QRectF colorNameRect = QRectF(QPointF((cursorPix.width() - colorNameSz.width()) / 2,
-//                                              (cursorPix.height() - colorNameSz.height()) / 2 + colorNameSz.height() + 6), colorNameSz);
-//        painter.drawText(colorNameRect, text);
-
         //设置当前窗口鼠标样式
         _cursorPix = cursorPix;
         this->autoUpdate();
-
     }
 }
-
 
 void CPickerManager::ensureDeskTopPixmap()
 {
     if (_desktopPixmapDirty) {
+        qDebug() << "Updating desktop pixmap";
         _desktopPixmap = getDesktopPixmap();
         _desktopPixmapDirty = false;
     }
@@ -368,18 +372,19 @@ QRect getDeskTopRect()
     QRect deskTopRect(0, 0, 0, 0);
     auto screens = QApplication::screens();
     foreach (auto screen, screens) {
-
         auto geometry = QRect(screen->geometry().topLeft(), screen->geometry().size() *
                               screen->devicePixelRatio());
         deskTopRect = deskTopRect.united(geometry);
     }
     return deskTopRect;
 }
+
 QPixmap CPickerManager::getDesktopPixmap()
 {
     QPixmap result;
     bool iswayLand = isWaylandPlatform();
     if (iswayLand) {
+        qDebug() << "Getting desktop pixmap via KWin DBus interface";
         QPixmap res;
         QDBusInterface kwinInterface(QStringLiteral("org.kde.KWin"),
                                      QStringLiteral("/Screenshot"),
@@ -392,6 +397,7 @@ QPixmap CPickerManager::getDesktopPixmap()
         }
         result = res;
     } else {
+        qDebug() << "Getting desktop pixmap via screen grab";
         QPixmap pixs(getDeskTopRect().size());
         pixs.fill(Qt::transparent);
         QPainter painter(&pixs);
