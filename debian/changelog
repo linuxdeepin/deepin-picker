@@ -1,3 +1,9 @@
+deepin-picker (6.0.5) unstable; urgency=medium
+
+  * chore: update translations (#46)
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Mon, 23 Jun 2025 13:02:51 +0800
+
 deepin-picker (6.0.4) unstable; urgency=medium
 
   * feat: adapt for Qt 6.8
