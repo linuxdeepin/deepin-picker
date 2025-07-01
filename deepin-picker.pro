@@ -22,6 +22,14 @@ versionAtLeast(QT_VERSION, 6.0.0) {
 CONFIG += link_pkgconfig
 CONFIG += c++11 
 
+# 编译器标志 - 添加栈保护和安全选项
+QMAKE_CFLAGS += -g -Wall -fPIE -fstack-protector-strong -O2
+QMAKE_CXXFLAGS += -g -Wall -fPIE -Wno-error=deprecated-declarations -Wno-deprecated-declarations -fstack-protector-strong -O2
+QMAKE_LFLAGS += -g -Wall -Wl,--as-needed -pie -z noexecstack -z now
+
+# 添加 FORTIFY_SOURCE 保护
+DEFINES += _FORTIFY_SOURCE=2
+
 RESOURCES = deepin-picker.qrc
 
 # Input
@@ -50,8 +58,6 @@ SOURCES += \
 # QT += widgets
 # QT += gui
 # QT += dbus
-
-QMAKE_CXXFLAGS += -g
 
 isEmpty(PREFIX){
     PREFIX = /usr
