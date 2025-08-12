@@ -1,3 +1,9 @@
+deepin-picker (6.0.9) unstable; urgency=medium
+
+  * chore: update build configuration for Qt compatibility
+
+ -- wangrong <wangrong@uniontech.com>  Tue, 12 Aug 2025 21:40:54 +0800
+
 deepin-picker (6.0.8) unstable; urgency=medium
 
   * chore: Add new Lao translation file
