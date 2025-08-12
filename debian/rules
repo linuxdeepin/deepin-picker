@@ -1,22 +1,32 @@
 #!/usr/bin/make -f
 
-# 设置 Qt6 环境
-export QT_SELECT=qt6
-# 使用系统 PATH 中的 qmake6
-export QMAKE=qmake6
+# ----------------- Qt 版本自动检测逻辑 -----------------
+QMAKE_EXECUTABLE := $(shell command -v qmake6 2>/dev/null)
 
-include /usr/share/dpkg/default.mk
+ifeq ($(QMAKE_EXECUTABLE),)
+	# 未找到 Qt6 qmake, 回退到 Qt5
+	QMAKE := qmake
+	export QT_SELECT=5
+else
+	# 找到 Qt6 qmake, 使用 Qt6
+	QMAKE := qmake6
+	export QT_SELECT=6
+endif
+# ---------------------------------------------------------
 
-# 指定使用 qmake 构建系统
-export DH_OPTIONS := --buildsystem=qmake
+export FLAGS = "-g -Wdate-time -ffile-prefix-map=$(CURDIR)=."
+export DH_VERBOSE = 1
 
 %:
-	dh $@ --buildsystem=qmake
+	dh $@
 
 override_dh_auto_configure:
-	$(QMAKE) \
-		VERSION=$(VERSION) \
-		PREFIX=/usr \
-		LIB_INSTALL_DIR=/usr/lib/$(DEB_HOST_MULTIARCH) \
-		VERSION_UPSTREAM=$(DEB_VERSION_UPSTREAM) \
-		DEFINES+="VERSION=$(DEB_VERSION_UPSTREAM)"
+	$(QMAKE) -makefile \
+		QMAKE_CFLAGS_RELEASE=$(FLAGS) \
+		QMAKE_CFLAGS_DEBUG=$(FLAGS) \
+		QMAKE_CXXFLAGS_RELEASE=$(FLAGS) \
+		QMAKE_CXXFLAGS_DEBUG=$(FLAGS) \
+		QMAKE_LFLAGS_RELEASE=\"-Wl,-z,relro\" \
+		QMAKE_LFLAGS_DEBUG=\"-Wl,-z,relro\" \
+		QMAKE_STRIP=: \
+		PREFIX=/usr
