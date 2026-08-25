@@ -1,0 +1,13 @@
+# Build artifacts
+build-*/
+
+# Test run artifacts
+.results/
+.reports/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Coverage
+coverage/
