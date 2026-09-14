@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2011-2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2011 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -14,7 +14,6 @@ class Utils : public QObject
 public:
     static QString getQrcPath(QString imageName);
 //    static QString getQssPath(QString qssName);
-    static void passInputEvent(int wid);
     static QString colorToHex(QColor color);
     static QString colorToCMYK(QColor color);
     static QString colorToHSV(QColor color);
