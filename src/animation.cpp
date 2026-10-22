@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2011-2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2011-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -7,12 +7,12 @@
 #include <QApplication>
 #include <QColor>
 #include <QPainter>
-#include <QDebug>
+#include "ddlog.h"
 #include <QPainterPath>
 
 Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent) : QWidget(parent)
 {
-    qDebug() << "Initializing animation at position:" << x << y << "with color:" << color.name();
+    qCDebug(appLog) << "Initializing animation at position:" << x << y << "with color:" << color.name();
     
     // Init window flags to make window transparent and get correctly behavior.
     setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
@@ -42,12 +42,12 @@ Animation::Animation(int x, int y, QPixmap pixmap, QColor color, QWidget *parent
     renderTimer = new QTimer();
     connect(renderTimer, &QTimer::timeout, this, &Animation::renderAnimation);
     renderTimer->start(animationDuration);
-    qDebug() << "Animation timer started with duration:" << animationDuration << "ms";
+    qCDebug(appLog) << "Animation timer started with duration:" << animationDuration << "ms";
 }
 
 Animation::~Animation()
 {
-    qDebug() << "Destroying animation instance";
+    qCDebug(appLog) << "Destroying animation instance";
     delete renderTimer;
 }
 
@@ -79,11 +79,11 @@ void Animation::renderAnimation()
 {
     if (renderTicker < animationFrames) {
         renderTicker++;
-        qDebug() << "Animation frame:" << renderTicker << "/" << animationFrames;
+        qCDebug(appLog) << "Animation frame:" << renderTicker << "/" << animationFrames;
         repaint();
     } else {
         renderTimer->stop();
-        qInfo() << "Animation completed, hiding window";
+        qCInfo(appLog) << "Animation completed, hiding window";
         hide();                 // hide window when animation finish
 
         emit finish();

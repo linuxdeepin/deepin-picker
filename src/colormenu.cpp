@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2011-2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2011-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -12,11 +12,11 @@
 #include <QClipboard>
 #include <QPainter>
 #include <QApplication>
-#include <QDebug>
+#include "ddlog.h"
 
 ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QWidget(parent)
 {
-    qDebug() << "Initializing color menu at position:" << x << y << "with size:" << size << "and color:" << color.name();
+    qCDebug(appLog) << "Initializing color menu at position:" << x << y << "with size:" << size << "and color:" << color.name();
     
     // Init window flags.
     setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
@@ -49,7 +49,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     connect(colorMenu, &QMenu::aboutToHide, this, [&]() {
         QTimer::singleShot(200, this, [&]() {
             if (!clickMenuItem) {
-                qDebug() << "Menu closed without selection, exiting";
+                qCDebug(appLog) << "Menu closed without selection, exiting";
                 exit();
             }
         });
@@ -94,7 +94,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
     // Set menu action check status with color type.
     Settings *settings = new Settings();
     QString colorType = settings->getOption("color_type", "HEX").toString();
-    qDebug() << "Loading saved color type preference:" << colorType;
+    qCDebug(appLog) << "Loading saved color type preference:" << colorType;
 
     if (colorType == "HEX") {
         hexAction->setChecked(true);
@@ -119,7 +119,7 @@ ColorMenu::ColorMenu(int x, int y, int size, QColor color, QWidget *parent) : QW
 
 ColorMenu::~ColorMenu()
 {
-    qDebug() << "Destroying color menu instance";
+    qCDebug(appLog) << "Destroying color menu instance";
     delete hexAction;
     delete rgbAction;
     delete rgbFloatAction;

@@ -41,7 +41,9 @@ HEADERS += \
            src/animation.h \		   		   
            src/dbusnotify.h \		   		   
            src/settings.h \		   		   
-           src/utils.h
+           src/utils.h \
+           src/logger.h \
+           src/ddlog.h
 SOURCES += \
     src/cpickermanager.cpp \
     src/desktopinfo.cpp \
@@ -51,6 +53,7 @@ SOURCES += \
            src/dbusnotify.cpp \		   
            src/settings.cpp \		   
            src/utils.cpp \		   
+		   src/logger.cpp \
 		   src/main.cpp		   
 		   
 # 移除不必要的注释
@@ -82,7 +85,11 @@ manual.files = manual/*
 dbus_service.files = $$PWD/com.deepin.Picker.service
 dbus_service.path = $$PREFIX/share/dbus-1/services
 
-INSTALLS += target icon desktop manual dbus_service
+# DConfig 元数据（调试模式动态日志级别读取的默认规则）
+dconfig_meta.files = $$PWD/assets/configs/org.deepin.picker.json
+dconfig_meta.path = $$PREFIX/share/dsg/configs/org.deepin.picker
+
+INSTALLS += target icon desktop manual dbus_service dconfig_meta
 
 isEmpty(TRANSLATIONS) {
      include(translations.pri)
