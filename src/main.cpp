@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2011-2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2011-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include <DApplication>
@@ -12,7 +12,8 @@
 #include <DWidgetUtil>
 #include <QProcess>
 #include <DWindowManagerHelper>
-#include <QDebug>
+#include "ddlog.h"
+#include "logger.h"
 #include <QPointer>
 #include <iostream>
 #include "utils.h"
@@ -24,10 +25,14 @@ DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    qDebug() << "Starting Deepin Picker application";
+    // 日志处理必须放在最前（Application 实例化与任何日志打印之前），
+    // 否则 QT_LOGGING_RULES 环境变量清理与 DConfig 动态日志级别均不生效
+    MLogger logger;
+
+    qCDebug(appLog) << "Starting Deepin Picker application";
     
     if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
-        qDebug() << "Setting XDG_CURRENT_DESKTOP to Deepin";
+        qCDebug(appLog) << "Setting XDG_CURRENT_DESKTOP to Deepin";
         setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
     }
 
@@ -45,7 +50,7 @@ int main(int argc, char *argv[])
     // Init dtk application's attrubites.
     DApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
-    qDebug() << "Initialized DApplication with high DPI pixmaps support";
+    qCDebug(appLog) << "Initialized DApplication with high DPI pixmaps support";
 
     // 判断窗口特效是否开启
     //    if (!DWindowManagerHelper::instance()->hasComposite()) {
@@ -54,12 +59,12 @@ int main(int argc, char *argv[])
     //    }
 
     app.loadTranslator();
-    qDebug() << "Loaded application translations";
+    qCDebug(appLog) << "Loaded application translations";
 
     app.setOrganizationName("deepin");
     app.setApplicationName("deepin-picker");
     app.setApplicationVersion("1.2");
-    qDebug() << "Set application info - name: deepin-picker, version: 1.2";
+    qCDebug(appLog) << "Set application info - name: deepin-picker, version: 1.2";
 
     app.setProductIcon(QIcon(Utils::getQrcPath("logo_96.svg")));
     app.setProductName(DApplication::translate("MainWindow", "Deepin Picker"));
@@ -76,30 +81,30 @@ int main(int argc, char *argv[])
     parser.process(app);
 
     bool isLaunchByDBus = parser.isSet(appidOption);
-    qDebug() << "Application launch mode:" << (isLaunchByDBus ? "DBus" : "Direct");
+    qCDebug(appLog) << "Application launch mode:" << (isLaunchByDBus ? "DBus" : "Direct");
 
     // Init modules.
-    qDebug() << "Initializing application modules";
+    qCDebug(appLog) << "Initializing application modules";
     Clipboard clipboard;
     QPointer<CPickerManager> picker = new CPickerManager;
     picker->setLanchFlag(isLaunchByDBus ? CPickerManager::ELanchedByOtherApp : CPickerManager::ELanchedBySelf);
     if (!isLaunchByDBus) {
-        qDebug() << "Starting color picker in direct mode";
+        qCDebug(appLog) << "Starting color picker in direct mode";
         picker->StartPick("");
     }
     QObject::connect(picker.data(), &CPickerManager::copyColor, &clipboard, &Clipboard::copyToClipboard, Qt::QueuedConnection);
 
     if (isLaunchByDBus) {
-        qDebug() << "Registering DBus service";
+        qCDebug(appLog) << "Registering DBus service";
         QDBusConnection dbus = QDBusConnection::sessionBus();
         if (dbus.registerService("com.deepin.Picker")) {
-            qDebug() << "Successfully registered DBus service: com.deepin.Picker";
+            qCDebug(appLog) << "Successfully registered DBus service: com.deepin.Picker";
             dbus.registerObject("/com/deepin/Picker", picker.data(), QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableSignals);
         } else {
-            qWarning() << "Failed to register DBus service: com.deepin.Picker";
+            qCWarning(appLog) << "Failed to register DBus service: com.deepin.Picker";
         }
     }
     
-    qDebug() << "Entering application event loop";
+    qCDebug(appLog) << "Entering application event loop";
     return app.exec();
 }
